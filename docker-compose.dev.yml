@@ -2,13 +2,28 @@ version: '3'
 
 services:
   szeyap-api:
+    container_name: szeyap-api
     build:
       context: ./szeyap-api
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - ./szeyap-api:/usr/src/app
+      - ./szeyap-api:/usr/src/api
     command: ["python", "api.py"]
     environment:
       - FLASK_ENV=development
+  szeyap-web-client:
+    container_name: szeyap-web-client
+    build:
+      context: ./szeyap-web-client
+      dockerfile: Dockerfile
+    volumes:
+      - ./szeyap-web-client:/usr/src/web-client
+    command: ["npm", "start"]
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    ports:
+      - "3000:3000"
+    profiles:
+      - with-web

@@ -2,11 +2,21 @@ version: '3'
 
 services:
   szeyap-api:
+    container_name: szeyap-api
     build:
       context: ./szeyap-api
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
-    volumes:
-      - ./szeyap-api:/usr/src/app
     command: ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "api:app", "--bind=0.0.0.0:8000"]
+  szeyap-web-client:
+    container_name: szeyap-web-client
+    build:
+      context: ./szeyap-web-client
+      dockerfile: Dockerfile.prod
+    command: ["npm", "start"]
+    ports:
+      - '80:80'
+      - '443:443'
+    profiles:
+      - with-web-client
