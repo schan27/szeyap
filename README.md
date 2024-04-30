@@ -1,0 +1,17 @@
+# Szeyap App
+Szeyap app is a ... [include description here]
+
+## Steps to run
+Each service exists as a separate Docker container, so you can run each separately or run using `docker compose` which will *glue* all the containers together and allow your client to communicate with your api, for example.
+
+#### [DEV] Running from top level (all containers)
+```
+docker compose -f docker-compose.dev.yml build
+docker compose -f docker-compose.dev.yml up
+```
+
+#### [PROD] Running from top level (all containers)
+```
+docker compose -f docker-compose.yml build
+docker compose -f docker-compose.yml up
+```

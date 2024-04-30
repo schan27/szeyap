@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  szeyap-api:
+    build:
+      context: ./szeyap-api
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./szeyap-api:/usr/src/app
+    command: ["python", "api.py"]
+    environment:
+      - FLASK_ENV=development
