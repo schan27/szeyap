@@ -1,0 +1,122 @@
+{
+  "HSR": {
+    "initials": ["", "b", "p", "m", "f", "v", "d", "t", "n", "l", "lh", "g", "k", "ng", "h", "dz", "ts", "s", "y"],
+    "finals": ["a", "ai", "au", "au", "am", "an", "ang", "ap", "at", "ak", "m", "e", "(e)i", "eu", "em", "en", "en", "ep", "et", "et", "m", "o", "oi", "on", "ong", "ot", "ok", "(e)i", "iu", "im", "in", "ip", "it", "ia", "iau", "iam", "iang", "iap", "iak", "u", "ui", "uo", "un", "ung", "ut", "uk"],
+    "tones": {
+      "HIGH_FLAT": "55",
+      "MID_FLAT": "33",
+      "LOW_FLAT": "22",
+      "MID_FALL": "32",
+      "LOW_FALL": "21",
+      "MID_RISE": "335",
+      "LOW_RISE": "225",
+      "M_FALL_RISE": "325",
+      "L_FALL_RISE": "215",
+      "RARE1": "552",
+      "RARE2": "553",
+      "RARE3": "53",
+      "RARE4": "55",
+      "RARE5": "321",
+      "RARE6": "521",
+      "RARE7": "323",
+      "RARE8": "32",
+      "RARE9": "33"
+    }
+  },
+  "SL": {
+    "initials": ["", "b", "p", "m", "f", "v", "d", "t", "n", "l", "ɬ", "g", "k", "ŋ", "h", "dz", "ts", "s", "y"],
+    "finals": ["a", "ai", "au", "ɔu", "am", "an", "aŋ", "ap", "at", "ak", "m", "ə", "i", "əu", "əm", "ɛɪn", "ian", "əp", "ɛt", "iat", "ŋ", "ɔ", "ɔi", "ɔn", "ɔŋ", "ɔt", "ɔk", "i", "iu", "im", "in", "ip", "it", "ia", "iau", "iam", "iaŋ", "iap", "iak", "u", "ui", "ɔ", "un", "əŋ", "ut", "ək"],
+    "tones": {
+      "HIGH_FLAT": "55",
+      "MID_FLAT": "33",
+      "LOW_FLAT": "22",
+      "MID_FALL": "32",
+      "LOW_FALL": "21",
+      "MID_RISE": "335",
+      "LOW_RISE": "225",
+      "M_FALL_RISE": "325",
+      "L_FALL_RISE": "215",
+      "RARE1": "552",
+      "RARE2": "553",
+      "RARE3": "53",
+      "RARE4": "44",
+      "RARE5": "321",
+      "RARE6": "521",
+      "RARE7": "323",
+      "RARE8": "31",
+      "RARE9": "65"
+    }
+  },
+  "GC": {
+    "initials": ["", "b", "p", "m", "f", "v", "d", "t", "n", "l", "x", "g", "k", "ng", "h", "j", "ch", "s", "y"],
+    "finals": ["a", "ai", "ao", "ao", "am", "an", "ang", "ap", "at", "ak", "m", "e", "i", "eo", "eim", "ein", "en", "eip", "eik", "et", "ng", "o", "oi", "on", "ong", "ot", "ok", "i", "iu", "im", "in", "ip", "it", "eh", "el", "em", "eng", "ep", "ek", "u", "ui", "o", "un", "ung", "ut", "uk"],
+    "tones": {
+      "HIGH_FLAT": ["\u0304"],
+      "MID_FLAT": ["\u0308"],
+      "LOW_FLAT": ["\u0303"],
+      "MID_FALL": ["\u0300"],
+      "LOW_FALL": ["\u0302"],
+      "MID_RISE": ["\u0308", "/"],
+      "LOW_RISE": ["\u0303", "/"],
+      "M_FALL_RISE": ["\u0300", "/"],
+      "L_FALL_RISE": ["\u0302", "/"],
+      "RARE1": "552",
+      "RARE2": "553",
+      "RARE3": "53",
+      "RARE4": ["\u0304"],
+      "RARE5": "321",
+      "RARE6": "521",
+      "RARE7": ["\u0300", "/"],
+      "RARE8": ["\u0300"],
+      "RARE9": ["\u0308"]
+    }
+  },
+  "DJ": {
+    "initials": ["", "b", "p", "m", "f", "v", "d", "t", "n", "l", "lh", "g", "k", "ng", "h", "z/j", "c/q", "s/x", "y"],
+    "finals": ["a", "ai", "ao", "ao", "am", "an", "ang", "ab", "ad", "ag", "m", "e", "ei", "eu", "em", "en", "en", "eb", "ed", "ied", "ng", "o", "oi", "on", "ong", "od", "og", "i", "iu", "im", "in", "ib", "id", "ie", "ieu", "iem", "ieng", "ieb", "ieg", "u", "ui", "uo", "un", "ung", "ud", "ug"],
+    "tones": {
+      "HIGH_FLAT": "-",
+      "MID_FLAT": "‘",
+      "LOW_FLAT": "*",
+      "MID_FALL": "`",
+      "LOW_FALL": "〉",
+      "MID_RISE": "‘-",
+      "LOW_RISE": "*-",
+      "M_FALL_RISE": "`-",
+      "L_FALL_RISE": "〉-",
+      "RARE1": "-*",
+      "RARE2": "-’",
+      "RARE3": "-’",
+      "RARE4": "-",
+      "RARE5": "321",
+      "RARE6": "521",
+      "RARE7": "`‘",
+      "RARE8": "`",
+      "RARE9": "‘"
+    }
+  },
+  "JW": {
+    "initials": ["", "b", "p", "m", "f", "v", "d", "t", "n", "l", "lh", "g", "k", "ng", "h", "j", "c", "s", "y"],
+    "finals": ["a", "ai", "ao", "ao", "am", "an", "ang", "ab", "ad", "ag", "m", "e", "ei", "eu", "em", "en", "en", "eb", "ed", "ied", "ng", "o", "oi", "on", "ong", "od", "og", "i", "iu", "im", "in", "ib", "id", "ie", "ieu", "iem", "ieng", "ieb", "ieg", "u", "ui", "uo", "un", "ung", "ud", "ug"],
+    "tones": {
+      "HIGH_FLAT": "2",
+      "MID_FLAT": "1",
+      "LOW_FLAT": "4",
+      "MID_FALL": "3",
+      "LOW_FALL": "5",
+      "MID_RISE": "12",
+      "LOW_RISE": "42",
+      "M_FALL_RISE": "32",
+      "L_FALL_RISE": "52",
+      "RARE1": "24",
+      "RARE2": "21",
+      "RARE3": "21",
+      "RARE4": "2",
+      "RARE5": "35",
+      "RARE6": "25",
+      "RARE7": "31",
+      "RARE8": "3",
+      "RARE9": "1"
+    }
+  }
+}

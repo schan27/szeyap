@@ -3,3 +3,14 @@ __pycache__/
 env/
 
 node_modules/
+
+# OS generated files
+.DS_Store
+
+# Excel temp file
+~*.xlsx
+
+# Python cache files
+*.egg-info
+
+**/tests/*

@@ -1,0 +1,8 @@
+raw/*
+scripts/*
+
+!raw/Initial_and_Finals_Chart_for_Penyim_Converter.xlsx
+!raw/stephen-li.json
+!raw/hed_dictionary.csv
+
+!scripts/gc_dict_parser.py

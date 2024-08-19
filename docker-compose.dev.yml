@@ -10,7 +10,7 @@ services:
       - "8000:8000"
     volumes:
       - ./szeyap-api:/usr/src/api
-    command: ["python", "api.py"]
+    command: ["python", "src/szeyapapi/api.py"]
     environment:
       - FLASK_ENV=development
   szeyap-web-client:

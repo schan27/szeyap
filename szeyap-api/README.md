@@ -13,6 +13,6 @@ Go to [`http://localhost:8000/api/ui`](http://localhost:8000/api/ui)
 
 ### Main Function
 Accept a phrase as input, and
-1. Determine the source format -> [chinese | english | penyim + romanization]
+1. Determine the source format -> [chinese | english | jyutping + romanization]
 2. Translate by querying database 
 3. Return all possible translations in an easy to use, structured format

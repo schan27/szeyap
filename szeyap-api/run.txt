@@ -1,0 +1,245 @@
+Pos: [14, 13] Tone: HIGH_FLAT
+  HSR: heu55
+  GC: hēo
+  SL: həu55
+  DJ: heu-
+  JW: heu2
+
+Pos: [17, 6] Tone: MID_FLAT
+  HSR: sang33
+  GC: säng
+  SL: saŋ33
+  DJ: sang‘
+  JW: sang1
+
+Pos: [18, 9] Tone: LOW_FLAT
+  HSR: yak22
+  GC: yãk
+  SL: yak22
+  DJ: yag*
+  JW: yag4
+
+Pos: [8, 4] Tone: MID_FALL
+  HSR: nam32
+  GC: nàm
+  SL: nam32
+  DJ: nam`
+  JW: nam3
+
+Pos: [17, 7] Tone: LOW_FALL
+  HSR: sap21
+  GC: sâp
+  SL: sap21
+  DJ: sab〉
+  JW: sab5
+
+Pos: [18, 27] Tone: MID_RISE
+  HSR: yi335
+  GC: yï/
+  SL: yi335
+  DJ: yi‘-
+  JW: yi12
+
+Pos: [17, 11] Tone: LOW_RISE
+  HSR: se225
+  GC: sẽ/
+  SL: sə225
+  DJ: se*-
+  JW: se42
+
+Pos: [16, 17] Tone: M_FALL_RISE
+  HSR: tsep325
+  GC: chèip/
+  SL: tsəp325
+  DJ: ceb`-
+  JW: ceb32
+
+Pos: [17, 4] Tone: L_FALL_RISE
+  HSR: sam215
+  GC: sâm/
+  SL: sam215
+  DJ: sam〉-
+  JW: sam52
+
+Pos: [4, 8] Tone: RARE1
+  HSR: fat552
+  GC: fa5t
+  SL: fat552
+  DJ: fad-*
+  JW: fad24
+
+Pos: [4, 8] Tone: RARE2
+  HSR: fat553
+  GC: fa5t
+  SL: fat553
+  DJ: fad-’
+  JW: fad21
+
+Pos: [4, 8] Tone: RARE3
+  HSR: fat53
+  GC: fa5t/
+  SL: fat53
+  DJ: fad-’
+  JW: fad21
+
+Pos: [14, 13] Tone: HIGH_FLAT
+  HSR: heu55
+  GC: hēo
+  SL: həu55
+  DJ: heu-
+  JW: heu2
+
+Pos: [4, 8] Tone: RARE5
+  HSR: fat321
+  GC: fa3t
+  SL: fat321
+  DJ: fad321
+  JW: fad35
+
+Pos: [4, 8] Tone: RARE6
+  HSR: fat521
+  GC: fa5t
+  SL: fat521
+  DJ: fad521
+  JW: fad25
+
+Pos: [14, 13] Tone: M_FALL_RISE
+  HSR: heu325
+  GC: hèo/
+  SL: həu325
+  DJ: heu`-
+  JW: heu32
+
+Pos: [14, 13] Tone: MID_FALL
+  HSR: heu32
+  GC: hèo
+  SL: həu32
+  DJ: heu`
+  JW: heu3
+
+Pos: [14, 13] Tone: MID_FLAT
+  HSR: heu33
+  GC: hëo
+  SL: həu33
+  DJ: heu‘
+  JW: heu1
+
+Pos: [6, 6] Tone: HIGH_FLAT
+  HSR: dang55
+  GC: dāng
+  SL: daŋ55
+  DJ: dang-
+  JW: dang2
+
+Pos: [6, 6] Tone: MID_FLAT
+  HSR: dang33
+  GC: däng
+  SL: daŋ33
+  DJ: dang‘
+  JW: dang1
+
+Pos: [6, 6] Tone: LOW_FLAT
+  HSR: dang22
+  GC: dãng
+  SL: daŋ22
+  DJ: dang*
+  JW: dang4
+
+Pos: [6, 6] Tone: MID_FALL
+  HSR: dang32
+  GC: dàng
+  SL: daŋ32
+  DJ: dang`
+  JW: dang3
+
+Pos: [6, 6] Tone: MID_RISE
+  HSR: dang335
+  GC: däng/
+  SL: daŋ335
+  DJ: dang‘-
+  JW: dang12
+
+Pos: [6, 6] Tone: LOW_RISE
+  HSR: dang225
+  GC: dãng/
+  SL: daŋ225
+  DJ: dang*-
+  JW: dang42
+
+Pos: [6, 6] Tone: MID_FALL
+  HSR: dang32
+  GC: dàng
+  SL: daŋ32
+  DJ: dang`
+  JW: dang3
+
+Pos: [6, 6] Tone: L_FALL_RISE
+  HSR: dang215
+  GC: dâng/
+  SL: daŋ215
+  DJ: dang〉-
+  JW: dang52
+
+Pos: [6, 6] Tone: RARE1
+  HSR: dang552
+  GC: da5ng
+  SL: daŋ552
+  DJ: dang-*
+  JW: dang24
+
+Pos: [6, 6] Tone: RARE2
+  HSR: dang553
+  GC: da5ng
+  SL: daŋ553
+  DJ: dang-’
+  JW: dang21
+
+Pos: [6, 6] Tone: RARE2
+  HSR: dang553
+  GC: da5ng
+  SL: daŋ553
+  DJ: dang-’
+  JW: dang21
+
+Pos: [6, 6] Tone: HIGH_FLAT
+  HSR: dang55
+  GC: dāng
+  SL: daŋ55
+  DJ: dang-
+  JW: dang2
+
+Pos: [6, 6] Tone: RARE5
+  HSR: dang321
+  GC: da3ng
+  SL: daŋ321
+  DJ: dang321
+  JW: dang35
+
+Pos: [6, 6] Tone: RARE6
+  HSR: dang521
+  GC: da5ng
+  SL: daŋ521
+  DJ: dang521
+  JW: dang25
+
+Pos: [6, 6] Tone: RARE7
+  HSR: dang323
+  GC: dàng/
+  SL: daŋ323
+  DJ: dang`‘
+  JW: dang31
+
+Pos: [6, 6] Tone: MID_FALL
+  HSR: dang32
+  GC: dàng
+  SL: daŋ32
+  DJ: dang`
+  JW: dang3
+
+Pos: [6, 6] Tone: MID_FLAT
+  HSR: dang33
+  GC: däng
+  SL: daŋ33
+  DJ: dang‘
+  JW: dang1
+
