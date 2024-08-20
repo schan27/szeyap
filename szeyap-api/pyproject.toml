@@ -9,7 +9,8 @@ dependencies = [
     "Flask",
     "connexion",
     "connexion[uvicorn]",
-    "connexion[swagger-ui]"
+    "connexion[swagger-ui]",
+    "gunicorn"
 ]
 
 [project.scripts]

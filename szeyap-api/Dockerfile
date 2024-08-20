@@ -10,4 +10,4 @@ RUN pip install --editable .
 
 EXPOSE 8000
 
-CMD ["python", "src/szeyapapi/api.py"]
+CMD ["gunicorn", "szeyapapi.api:app"]
