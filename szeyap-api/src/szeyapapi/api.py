@@ -14,9 +14,9 @@ def main():
 
     if os.getenv('FLASK_ENV') == 'development':
         print("Running in development mode")
-        app.run(import_string=f"{Path(__file__).stem}:app", host='0.0.0.0', port=server_port)
+        app.run(import_string=f"{Path(__file__).stem}:app", host='0.0.0.0', port=int(server_port))
     else:
-        app.run(host='0.0.0.0', port=server_port)
+        app.run(host='0.0.0.0', port=int(server_port))
 
 if __name__ == "__main__":
     main()
