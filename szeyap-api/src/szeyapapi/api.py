@@ -11,12 +11,8 @@ app.add_api('szeyap_api.yml', resolver=RelativeResolver('szeyapapi.resolvers'))
 server_port = os.getenv('PORT', cfg.FLASK_DEFAULT_PORT)
 
 def main():
-
-    if os.getenv('FLASK_ENV') == 'development':
-        print("Running in development mode")
-        app.run(import_string=f"{Path(__file__).stem}:app", host='0.0.0.0', port=int(server_port))
-    else:
-        app.run(host='0.0.0.0', port=int(server_port))
+    print("Running in development mode")
+    app.run(import_string=f"{Path(__file__).stem}:app", host='0.0.0.0', port=int(server_port))
 
 if __name__ == "__main__":
     main()
