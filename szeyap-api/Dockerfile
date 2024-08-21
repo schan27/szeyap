@@ -5,7 +5,9 @@ WORKDIR /usr/src/api
 
 COPY . /usr/src/api/
 
-RUN ls
 RUN pip install --editable .
 
-CMD ["gunicorn", "szeyapapi.api:app"]
+ARG PORT=8000
+EXPOSE $PORT
+
+CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "szeyapapi.api:app"]
