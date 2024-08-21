@@ -8,4 +8,4 @@ COPY . /usr/src/api/
 RUN ls
 RUN pip install --editable .
 
-CMD ["python", "src/szeyapapi/api.py"]
+CMD ["gunicorn", "szeyapapi.api:app"]
