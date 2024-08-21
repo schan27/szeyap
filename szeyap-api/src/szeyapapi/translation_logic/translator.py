@@ -37,6 +37,8 @@ class Translator:
 
     def _search_dictionary_by_english(self, q: TranslationQuestion, limit: int) -> Response:
         response = Response(q)
+        response.add_metadata("dictionary_name", self.data.name)
+        response.add_metadata("dictionary_url", self.data.src_url)
         
         def construct_translation(i, defn):
             jyut_as_api_resp = []
@@ -52,6 +54,7 @@ class Translator:
                 "chinese": {
                     "traditional": defn["TRAD"],
                     "simplified": defn["SIMP"],
+                    "penyim": defn["PENYIM"],
                     "jyutping": jyut_as_api_resp
                 }
             }

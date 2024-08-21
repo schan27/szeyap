@@ -7,9 +7,10 @@ import os
 
 class GeneChinDictionary(DictionaryBase):
 
-  def __init__(self, name):
+  def __init__(self, name, src_url):
     super().__init__(name)
     self.jyutping_lang_type = lang.GC
+    self.src_url = src_url
   
   def load_dictionary(self):
     with open(os.path.join(PROJ_ROOT, GENE_CHIN_DICTIONARY_PATH), 'r') as file:
@@ -39,6 +40,6 @@ class GeneChinDictionary(DictionaryBase):
 # Singleton instance of GeneChinDictionary
 # This is the instance that should be used throughout the program
 # import this instance in other files to use the dictionary
-GC = GeneChinDictionary("Gene Chin")
+GC = GeneChinDictionary("Gene Chin", "https://www.chinfamilytree.com/hed/")
 GC.load_dictionary()
 

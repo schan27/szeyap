@@ -27,3 +27,13 @@ services:
       - "3000:3000"
     profiles:
       - with-web
+  szeyap-discord-client:
+    container_name: szeyap-discord-client
+    build:
+      context: ./szeyap-discord-client
+      dockerfile: Dockerfile
+    volumes:
+      - ./szeyap-discord-client:/usr/src/szeyap-discord-client
+    command: ["npm", "run", "dev"]
+    environment:
+      - NODE_ENV=DEVELOPMENT

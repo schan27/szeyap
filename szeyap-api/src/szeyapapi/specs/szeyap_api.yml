@@ -57,10 +57,18 @@ paths:
                     type: array
                     items:
                       type: string
+                  metadata:
+                    type: object
+                    properties:
+                      dictionary_name: 
+                        type: string
+                      dictionary_url: 
+                        type: string
                 required:
                   - original_phrase
                   - detected_language
                   - translations
+                  - metadata
 
   /hello_world:
     get:
