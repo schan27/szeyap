@@ -11,8 +11,9 @@ const folderOfCommands = path.join(__dirname, 'commands');
 fs.readdirSync(folderOfCommands, { recursive: true }).forEach(file => {
   const fullFilePath = path.join(folderOfCommands, file);
   const command = require(fullFilePath);
+  console.log(command)
 
-  if (['data', 'execute'].every(prop => command.hasOwnProperty(prop))) {
+  if ('data' in command && 'execute' in command) {
     commands.push(command.data.toJSON());
   } else {
     logger.error(`[WARNING] The command at ${fullFilePath} is missing a required "data" or "execute" property.`);
