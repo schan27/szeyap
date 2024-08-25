@@ -35,23 +35,44 @@ function toggleTxt(isEmbed) {
 
 function reportErr() {
   const reportError = new ButtonBuilder()
-    .setCustomId('report_error.open')
+    .setCustomId('report_error.error')
     .setLabel('Report Error in translation')
     .setStyle(ButtonStyle.Danger);
   return reportError;
 }
 
-function reportModal() {
+function reportMiss() {
+  const reportMissing = new ButtonBuilder()
+    .setCustomId('report_error.missing')
+    .setLabel('Report Missing Translation')
+    .setStyle(ButtonStyle.Danger);
+  return reportMissing;
+}
+
+function reportModal(action) {
+  const trnslnErrTxt = {
+    title: 'Report Translation Error',
+    placeholder: 'Enter a description of the error',
+    isRequired: true
+  }
+  const trsnlnMissingTxt = {
+    title: 'Report Missing Translation',
+    placeholder: 'Enter any additional information about translation',
+    isRequired: false
+  }
+
+  const modalTxt = action === 'missing' ? trsnlnMissingTxt : trnslnErrTxt;
+
   const description = new TextInputBuilder()
     .setCustomId('report_error.description')
-    .setPlaceholder('Enter a description of the error')
+    .setPlaceholder(modalTxt.placeholder)
     .setLabel('Description')
     .setStyle(TextInputStyle.Paragraph)
-    .setRequired(true)
+    .setRequired(modalTxt.isRequired)
     .setMaxLength(1_000)
     .setMinLength(10);
   const reportModal = new ModalBuilder()
-    .setTitle('Report Translation Error')
+    .setTitle(modalTxt.title)
     .setCustomId('report_error.modal')
     .addComponents(new ActionRowBuilder().addComponents(description))
   return reportModal;
@@ -61,5 +82,6 @@ module.exports = {
   wasd,
   reportErr,
   reportModal,
-  toggleTxt
+  toggleTxt,
+  reportMiss
 }

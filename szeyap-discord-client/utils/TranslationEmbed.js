@@ -17,6 +17,33 @@ function wrapText(string, max, delim='\n') {
   return lines.join(delim);
 }
 
+class NoResultsEmbed {
+
+  constructor({ phrase, metadata }) {
+    this.title = `No results for '**${phrase}**'`;
+    this.desc = `We couldn't find anything in [${metadata.dictionary_name}'s dictionary](${metadata.dictionary_url}) for the query '**${phrase}**'`;
+    this.gifs = [
+      'https://gifdb.com/images/high/cartoon-cat-chasing-a-mouse-3n44wd968nqn6am0.gif',
+      'https://i.pinimg.com/originals/b3/ae/92/b3ae9223e62976d363ca91999688d7b9.gif',
+      'https://media3.giphy.com/media/xKUD3rSTA6haw/giphy.gif?cid=6c09b95260nptpujhru8u4wt0g9zg18zo4i6ylh487eenoh7&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=g'
+    ]
+  }
+
+  _pick_random_gif() {
+    return this.gifs[Math.floor(Math.random() * this.gifs.length)];
+  }
+
+  render() {
+    return new EmbedBuilder()
+      .setColor([205,215,175])
+      .setTitle(this.title)
+      .setDescription(this.desc)
+      .setImage(this._pick_random_gif())
+      .setTimestamp()
+      // .setFooter({ text: "", iconURL: indexjs.client.user.avatarURL() });
+  }
+}
+
 class TranslationEmbed {
 
     /**
@@ -75,4 +102,4 @@ ${this.fields.map(({ fieldTitle, description }, i) => {
     }
 }
 
-module.exports = { TranslationEmbed };
+module.exports = { TranslationEmbed, NoResultsEmbed };

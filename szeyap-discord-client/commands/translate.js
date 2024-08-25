@@ -4,8 +4,8 @@ const { API_ENDPOINT, RESULTS_PER_PAGE } = require('../config');
 const logger = require('../logging/logger');
 
 const { Pagination } = require('../utils/Pagination');
-const { TranslationEmbed } = require('../utils/TranslationEmbed');
-const { wasd, reportErr, reportModal, toggleTxt } = require('../utils/ComponentHelpers');
+const { TranslationEmbed, NoResultsEmbed } = require('../utils/TranslationEmbed');
+const { wasd, reportModal, toggleTxt, reportErr, reportMiss } = require('../utils/ComponentHelpers');
 
 function combineDisplayChinese(prefRomanization, { traditional, simplified, penyim, jyutping }) {
   const zipped = traditional.map((_, i) => [traditional[i], simplified[i], penyim[i], jyutping[i]]);
@@ -30,6 +30,14 @@ function calcNPages(arr) {
 
 function getNthGrp(arr, n) {
   return arr.slice(n * RESULTS_PER_PAGE, Math.min((n + 1) * RESULTS_PER_PAGE, arr.length));
+}
+
+function launchReportModal(interaction, action, request_info) {
+  interaction.showModal(reportModal(action));
+  interaction.awaitModalSubmit({ time: 60_000 }).then(i => {
+    i.reply({ content: `<@${i.user.id}> thanks for reporting!`, ephemeral: true });
+    // api make post req to report error
+  }).catch(err => logger.warn(`Error while waiting for modal submit: ${err}`));
 }
 
 module.exports = {
@@ -80,6 +88,22 @@ module.exports = {
 
     const nPages = calcNPages(data.translations);
 
+    if (nPages === 0) {
+      const answer = await interaction.editReply({
+        embeds: [new NoResultsEmbed({ phrase: data.original_phrase, metadata: data.metadata }).render()],
+        components: [new ActionRowBuilder().addComponents(reportMiss())]
+      });
+      const btnCollect = answer.createMessageComponentCollector({ componentType: ComponentType.Button, time: 120_000 })
+      btnCollect.on('collect', async (i) => {
+        if (i.customId === 'report_error.missing') {
+          launchReportModal(i, 'missing');
+        } else {
+          logger.warn(`Unknown group.action: ${i.customId}`);
+        }
+      });
+      return;
+    }
+
     const pagination = new Pagination(interaction, data, nPages, (data, i) => {
       const embFields = getNthGrp(data.translations, i).map((trnsln) => ({
           fieldTitle: combineDisplayChinese(state.prefRomanization, trnsln.chinese),
@@ -88,7 +112,7 @@ module.exports = {
 
       return new TranslationEmbed({
         title: `Query: *${data.original_phrase}*`, 
-        desc: `searching [${data.metadata.dictionary_name}](${data.metadata.dictionary_url}) dictionary`, 
+        desc: `searching [${data.metadata.dictionary_name} dictionary](${data.metadata.dictionary_url})`, 
         footer: `Page ${i+1} of ${nPages}`, 
         fields: embFields
       });
@@ -108,7 +132,7 @@ module.exports = {
       components: components()
     });
 
-    const btnCollect = answer.createMessageComponentCollector({ componentType: ComponentType.Button, time: 120000 });
+    const btnCollect = answer.createMessageComponentCollector({ componentType: ComponentType.Button, time: 120_000 });
 
     btnCollect.on('collect', async (i) => {
       const [group, action] = i.customId.split('.');
@@ -133,16 +157,10 @@ module.exports = {
             embeds: [],
           })
         }
-      } else if (group === 'report_error') {
-        if (action === 'open') {
-          await i.showModal(reportModal());
-          i.awaitModalSubmit({ time: 60_000 }).then(i => {
-            i.reply({ content: `<@${i.user.id}> thanks for reporting!`, ephemeral: true });
-            // api make post req to report error
-          }).catch(err => logger.warn(`Error while waiting for modal submit: ${err}`));
-        } else {
-          logger.warn(`Unknown group.action: ${group}.${action}`);
-        }
+      } else if (group === 'report_error' && action === 'error') {
+        launchReportModal(i, 'error');
+      } else {
+        logger.warn(`Unknown group.action: ${group}.${action}`);
       }
     });
   }
