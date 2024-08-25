@@ -60,8 +60,6 @@ class Translator:
             }
 
         for i, defn in enumerate(self._search_dictionary(q.query, "DEFN")):
-            if (i == 46):
-                pass
             response.add_answer(construct_translation(i, defn))
             if len(response.answers) == limit:
                 break

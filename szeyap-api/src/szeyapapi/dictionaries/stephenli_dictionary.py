@@ -15,13 +15,13 @@ class StephenLiDictionary(DictionaryBase):
 
     def load_dictionary(self):
         self.load_json(STEPHEN_LI_DICTIONARY_PATH)
-        self.dictionary = map(lambda x: {
+        self.dictionary = list(map(lambda x: {
             "SIMP": [x["taishanese"]],
             "TRAD": [None],  # we just group everything as simplified for stephen li
             "JYUTPING": [x["taishaneseRomanization"].replace('[', '').replace(']', '')],
             "PENYIM": [None],
             "DEFN": x["english"]
-        }, self.dictionary)
+        }, self.dictionary))
 
 
 # Singleton instance of StephenLiDictionary
