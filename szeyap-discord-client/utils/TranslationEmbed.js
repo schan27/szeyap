@@ -77,6 +77,7 @@ class TranslationEmbed {
         .setDescription(this.desc + "\n\u200B")
         // .setAuthor({ name: this.title, iconURL: indexjs.client.user.avatarURL() })
         .addFields(this.fields.map(({ fieldTitle, description }, i) => {
+          fieldTitle = fieldTitle.replaceAll('`', '\u00a0\u0300 ');
           if (i == this.selFld) {
             return { name: `__**${fieldTitle}**__`, value: `>>> \`\`\`fix\n${description}\`\`\`` };
           } else {

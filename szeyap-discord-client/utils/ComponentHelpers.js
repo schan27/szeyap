@@ -1,4 +1,5 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
+const { ROMANIZATION_SYSTEMS } = require('../config.js')
 
 // =====================================================================
 // All custom Ids have the format group.action for easy identification
@@ -23,6 +24,32 @@ function wasd() {
     .setStyle(ButtonStyle.Primary);
 
   return [prev, up, down, next];
+}
+
+function romanization(current) {
+  const select_romanization = new StringSelectMenuBuilder()
+    .setCustomId('romanization.select')
+    .setPlaceholder('Select Romanization')
+    .addOptions(
+      new StringSelectMenuOptionBuilder()
+        .setLabel(ROMANIZATION_SYSTEMS['HSR'])
+        .setValue('HSR'),
+      new StringSelectMenuOptionBuilder()
+        .setLabel(ROMANIZATION_SYSTEMS['SL'])
+        .setValue('SL'),
+      new StringSelectMenuOptionBuilder()
+        .setLabel(ROMANIZATION_SYSTEMS['GC'])
+        .setValue('GC'),
+      new StringSelectMenuOptionBuilder()
+        .setLabel(ROMANIZATION_SYSTEMS['DJ'])
+        .setValue('DJ'),
+      new StringSelectMenuOptionBuilder()
+        .setLabel(ROMANIZATION_SYSTEMS['JW'])
+        .setValue('JW'))
+    .setMinValues(1)
+    .setMaxValues(1)
+    .setPlaceholder((ROMANIZATION_SYSTEMS[current] || 'Select') + ' Romanization');
+  return select_romanization;
 }
 
 function toggleTxt(isEmbed) {
@@ -80,6 +107,7 @@ function reportModal(action) {
 
 module.exports = {
   wasd,
+  romanization,
   reportErr,
   reportModal,
   toggleTxt,

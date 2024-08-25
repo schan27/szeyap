@@ -1,11 +1,11 @@
-const { SlashCommandBuilder, CommandInteraction, ActionRowBuilder, createMessageComponentCollector, ComponentType } = require('discord.js');
+const { SlashCommandBuilder, CommandInteraction, ActionRowBuilder, createMessageComponentCollector, ComponentType, SelectMenuComponent } = require('discord.js');
 const axios = require('axios').default;
 const { API_ENDPOINT, RESULTS_PER_PAGE } = require('../config');
 const logger = require('../logging/logger');
 
 const { Pagination } = require('../utils/Pagination');
 const { TranslationEmbed, NoResultsEmbed } = require('../utils/TranslationEmbed');
-const { wasd, reportModal, toggleTxt, reportErr, reportMiss } = require('../utils/ComponentHelpers');
+const { wasd, romanization, reportModal, toggleTxt, reportErr, reportMiss } = require('../utils/ComponentHelpers');
 
 function combineDisplayChinese(prefRomanization, { traditional, simplified, penyim, jyutping }) {
   const zipped = traditional.map((_, i) => [traditional[i], simplified[i], penyim[i], jyutping[i]]);
@@ -55,13 +55,26 @@ module.exports = {
           { name: 'Stephen Li', value: 'SL_DICT' },
           { name: 'Gene Chin', value: 'GC_DICT' }
         ])
-        .setRequired(false)),
+        .setRequired(false))
+    .addStringOption(option => 
+      option.setName('romanization')
+        .setDescription('Select the romanization system to use for Jyutping.')
+        .addChoices([
+          { name: 'Hoisan Sauce', value: 'HSR' },
+          { name: 'Stephen Li', value: 'SL' },
+          { name: 'Gene Chin', value: 'GC' },
+          { name: 'Deng Jun', value: 'DJ' },
+          { name: 'Jade Wu', value: 'JW' }
+        ])
+        .setRequired(false)
+    ),
   /**
    * @param {CommandInteraction} interaction
    */
   async execute(interaction) {
     const message = interaction.options.getString('message');
     const dictionary = interaction.options.getString('dictionary');
+    const selRomanization = interaction.options.getString('romanization');
     await interaction.deferReply();
 
     // ask api
@@ -75,7 +88,7 @@ module.exports = {
 
     const state = {
       isEmbed: true,
-      prefRomanization: 'GC'
+      prefRomanization: selRomanization ?? dictionary === 'GC_DICT' ? 'GC' : 'SL'
     };
 
     if (response.status !== 200) {
@@ -124,6 +137,7 @@ module.exports = {
     // when the state updates
     const components = () => [
       new ActionRowBuilder().addComponents(...wasd()),
+      new ActionRowBuilder().addComponents(romanization(state.prefRomanization)),
       new ActionRowBuilder().addComponents(reportErr(), toggleTxt(state.isEmbed))
     ];
 
@@ -136,6 +150,7 @@ module.exports = {
 
     btnCollect.on('collect', async (i) => {
       const [group, action] = i.customId.split('.');
+      state.isEmbed = true;
       if (group === 'wasd') {
         await i.update({
           content: '',
@@ -161,6 +176,22 @@ module.exports = {
         launchReportModal(i, 'error');
       } else {
         logger.warn(`Unknown group.action: ${group}.${action}`);
+      }
+    });
+
+    const selectCollect = answer.createMessageComponentCollector({ componentType: ComponentType.StringSelect, time: 120_000 });
+
+    selectCollect.on('collect', async (i) => {
+      const [group, action] = i.customId.split('.');
+      if (group === 'romanization') {
+        state.prefRomanization = i.values[0];
+        await i.update({
+          content: '',
+          embeds: [pagination.render()],
+          components: components()
+        });
+      } else {
+        logger.warn(`Unknown select id: ${i.customId}`);
       }
     });
   }
