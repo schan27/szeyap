@@ -29,6 +29,12 @@ paths:
             type: integer
             default: 100
         - in: query
+          name: dictionary
+          required: true
+          schema:
+            type: string
+            enum: [GC_DICT, SL_DICT]
+        - in: query
           name: src_lang
           required: true
           schema: 
