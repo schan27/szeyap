@@ -39,19 +39,29 @@ module.exports = {
     .addStringOption(option =>
       option.setName('message')
         .setDescription('The message to translate.')
-        .setRequired(true)),
+        .setRequired(true))
+    .addStringOption(option =>
+      option.setName('dictionary')
+        .setDescription('Select dictionary to search in.')
+        .addChoices([
+          { name: 'Stephen Li', value: 'SL_DICT' },
+          { name: 'Gene Chin', value: 'GC_DICT' }
+        ])
+        .setRequired(false)),
   /**
    * @param {CommandInteraction} interaction
    */
   async execute(interaction) {
     const message = interaction.options.getString('message');
+    const dictionary = interaction.options.getString('dictionary');
     await interaction.deferReply();
 
     // ask api
     const response = await axios.get(`${API_ENDPOINT}/translation`, {
       params: {
         phrase: message,
-        src_lang: 'UNK'
+        src_lang: 'UNK',
+        dictionary: dictionary ?? 'SL_DICT'
       }
     });
 
@@ -98,7 +108,7 @@ module.exports = {
       components: components()
     });
 
-    const btnCollect = answer.createMessageComponentCollector({ componentType: ComponentType.Button, time: 60000 });
+    const btnCollect = answer.createMessageComponentCollector({ componentType: ComponentType.Button, time: 120000 });
 
     btnCollect.on('collect', async (i) => {
       const [group, action] = i.customId.split('.');
@@ -129,9 +139,7 @@ module.exports = {
           i.awaitModalSubmit({ time: 60_000 }).then(i => {
             i.reply({ content: `<@${i.user.id}> thanks for reporting!`, ephemeral: true });
             // api make post req to report error
-          })
-        } else if (action === 'description') {
-          // send error report
+          }).catch(err => logger.warn(`Error while waiting for modal submit: ${err}`));
         } else {
           logger.warn(`Unknown group.action: ${group}.${action}`);
         }
