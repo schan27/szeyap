@@ -28,14 +28,25 @@ class Translator:
         
         return filter(_search_match_fn, self.data.dictionary)
 
-    def _search_dictionary_by_jyutping(self, jyutping_phrase: str, jyutping_type: lang) -> Response:
-        # jyutping = Jyutping(jyutping_phrase, jyutping_type)
-        pass
+    def _search_dictionary_by_jyutping(self, jyutping: Jyutping) -> Response:
+        def _search_match_fn(x):
+            return any(jyutping == j and j is not None for j in x["JYUTPING"])
+
+        return filter(_search_match_fn, self.data.dictionary)
+
 
     def _search_dictionary_by_chinese(self, ch_phrase: str) -> Response:
-        pass
+        def _search_match_fn(x):
+            for trad in x["TRAD"]:
+                if trad and ch_phrase in trad:
+                    return True
+            for simp in x["SIMP"]:
+                if simp and ch_phrase in simp:
+                    return True
+        
+        return filter(_search_match_fn, self.data.dictionary)
 
-    def _search_dictionary_by_english(self, q: TranslationQuestion, limit: int) -> Response:
+    def _construct_answer(self, q: TranslationQuestion, answers: list, limit: int) -> Response:
         response = Response(q)
         response.add_metadata("dictionary_name", self.data.name)
         response.add_metadata("dictionary_url", self.data.src_url)
@@ -43,10 +54,8 @@ class Translator:
         def construct_translation(i, defn):
             jyut_as_api_resp = []
             for j, jyut in enumerate(defn["JYUTPING"]):
-                if jyut:
-                    jyut = Jyutping(jyut, self.data.jyutping_lang_type)
-                    if jyut.has_errors():
-                        response.errors.append(f"#{i}: jyutping[{j}] - {jyut.summarize_errors()}")
+                if jyut and jyut.has_errors():
+                    response.errors.append(f"#{i}: jyutping[{j}] - {jyut.summarize_errors()}")
                 jyut_as_api_resp.append(jyut.as_dict() if jyut else None)
             
             return {
@@ -59,7 +68,9 @@ class Translator:
                 }
             }
 
-        for i, defn in enumerate(self._search_dictionary(q.query, "DEFN")):
+        if not answers:
+            return response
+        for i, defn in enumerate(answers):
             response.add_answer(construct_translation(i, defn))
             if len(response.answers) == limit:
                 break
@@ -69,27 +80,31 @@ class Translator:
     # Search algorithm is simple here, just iterate the dictionary and search for 
     # matching string
     def ask(self, q: TranslationQuestion, limit: int) -> Response:
-        match q.lang:
-            case lang.CH:
-                return self._search_dictionary_by_chinese(q, limit)
-            case lang.HSR|lang.DJ|lang.GC|lang.SL|lang.JW:
-                return self._search_dictionary_by_jyutping(q, limit)
-            case _: # lang.EN or lang.UNK
-                return self._search_dictionary_by_english(q, limit)
 
-    @classmethod
-    def detect_language_format(cls, phrase: str):
-        match_obj = re.search(cls.JYUTPING_MATCH_REGEX, phrase)
-        if match_obj:
-            # TODO: determine type of jyutping
-            return lang.HSR
+        if q.lang == lang.CH or re.match(self.CHINESE_MATCH_REGEX, q.query):
+            answers = self._search_dictionary_by_chinese(q.query)
+            return self._construct_answer(q, answers, limit)
+        
+        jyutping = Jyutping(q.query, q.lang)
+        if not jyutping.has_errors():                
+            answers = self._search_dictionary_by_jyutping(jyutping)
+            return self._construct_answer(q, answers, limit)
+        
+        answers = self._search_dictionary(q.query, "DEFN")
+        return self._construct_answer(q, answers, limit)
 
-        match_obj = re.search(cls.CHINESE_MATCH_REGEX, phrase)
-        if match_obj:
-            return lang.CH
+    # def detect_language_format(self, sample: str):
+    #     match_obj = re.search(self.JYUTPING_MATCH_REGEX, sample)
+    #     if match_obj:
+    #         # TODO: determine type of jyutping
+    #         return lang.HSR
 
-        match_obj = re.search(cls.ENGLISH_MATCH_REGEX, phrase)
-        if match_obj:
-            return lang.EN
+    #     match_obj = re.search(self.CHINESE_MATCH_REGEX, sample)
+    #     if match_obj:
+    #         return lang.CH
 
-        return lang.UNK
+    #     match_obj = re.search(self.ENGLISH_MATCH_REGEX, sample)
+    #     if match_obj:
+    #         return lang.EN
+
+    #     return lang.UNK

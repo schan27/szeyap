@@ -22,7 +22,7 @@ class TranslationQuestion(Question):
 
     def __init__(self, query: str, lang: Lang) -> None:
         super().__init__(query, Qtype.TRANSLATE)
-        self.lang: Lang = lang
+        self.lang: Lang = lang # if lang != Lang.UNK else Translator.detect_language_format(query)
     
     def __repr__(self) -> str:
         return super().__repr__()[:-1] + f", lang={self.lang})"

@@ -58,17 +58,24 @@ class Jyutping:
       positions.append(match.span())
 
     return phrases, positions
+  
+  def set_as_err(self, msg):
+    self.errors[0] = msg
+    self.indices.append((-1, -1))
+    self.formats.append(None)
+    self.tone.append(None)
+    self.positions = [(0, len(self.sample))]
 
   def init_jyutping(self, lang_type: Lang):
+    if lang_type not in (Lang.HSR, Lang.GC, Lang.SL, Lang.DJ, Lang.JW, Lang.UNK):
+      self.set_as_err(f"Invalid language type '{lang_type}'")
+      return
+
     phrases, positions = self.extract_jyutping_phrases()
     self.positions = positions
 
     if not phrases:
-      self.errors[0] = "No jyutping phrases found"
-      self.indices.append((-1, -1))
-      self.formats.append(None)
-      self.tone.append(None)
-      self.positions = [(0, len(self.sample))]
+      self.set_as_err("No jyutping phrases found")
       return
 
     for i, (jyutping_q, tone_q) in enumerate(phrases):
@@ -124,3 +131,13 @@ class Jyutping:
 
   def as_dict(self) -> dict:
     return {lang: self.render_in_original_format(lang) for lang in [Lang.HSR, Lang.GC, Lang.SL, Lang.DJ, Lang.JW]}
+  
+  def __eq__(self, other):
+    if not isinstance(other, Jyutping):
+      return False
+    return self.indices == other.indices
+
+  def __ne__(self, other) -> bool:
+    if not isinstance(other, Jyutping):
+      return True
+    return self.indices != other.indices

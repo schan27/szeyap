@@ -15,7 +15,7 @@ from ..config import PROJ_ROOT
 # {
 #   "TRAD": "你好",
 #   "SIMP": "你好",
-#   "JYUTPING": ni hao",
+#   "JYUTPING": Jyutping("ni33 hao35"),
 #   "PENYIM": ni hao",
 #   "DEFN": hello",
 # }

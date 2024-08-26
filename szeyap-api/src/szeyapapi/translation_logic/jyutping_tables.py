@@ -72,38 +72,14 @@ class JyutpingTables:
         else:
             return self._get_tone_type_from_num(lang, tone_q)
 
-
-
-    # def _split_sample_into_jyutping_tone(self, jyutping: str, lang: Lang) -> tuple[str, Tone] | tuple[None, None]:
-    #     jyutping = normalize("NFD", jyutping).lower()
-    #     gc_match = re.match(r"[a-z]{1,2}(?P<combining_ch>[a-z][\u0304\u0308\u0303\u0300\u0302])[a-z]*(?P<end_slash>/?)", jyutping)
-    #     if gc_match:
-    #         jyutping = jyutping.replace("/", "").replace(gc_match.group("combining_ch")[1], "")
-    #         return jyutping, self._get_gc_tone_type_from_combining_ch(gc_match.group("combining_ch"), gc_match.group("end_slash") == "/", lang)
-    #     elif lang == Lang.GC:
-    #         # if we don't match, it could be a rare tone, so we iterate through gc tones to check
-    #         for rare_tone in (Tone.RARE1, Tone.RARE2, Tone.RARE3, Tone.RARE5, Tone.RARE6):
-    #             if jyutping.endswith(self.tones[Lang.GC][rare_tone]):
-    #                 return jyutping[:-len(self.tones[Lang.GC][rare_tone])], rare_tone
-    #         else:
-    #             return None, None
-
-    #     # not gc, so we check for the other jyutping formats
-    #     match = re.match(r"(?P<jyutping>[a-z]+)(?P<tone>[0-9]+)", jyutping)
-    #     if match:
-    #         return match.group("jyutping"), self._get_tone_type_from_num(lang, match.group("tone"))
-    #     else:
-    #         return None, None
-
     def search(self, jyutping_q: str, tone_q: str, lang_type: Lang) -> tuple[tuple[int,int], Tone|None]:
-        tone = self._answer_tone_q(tone_q, lang_type)
-
         tables_to_search = [lang_type] if lang_type != Lang.UNK else [Lang.HSR, Lang.GC, Lang.SL, Lang.DJ, Lang.JW]
         
         for table in tables_to_search:
             for i, row in enumerate(self.tables[table]):
                 for j, cell in enumerate(row):
                     if jyutping_q in cell:
+                        tone = self._answer_tone_q(tone_q, table)
                         return (j, i), tone
         else:
             return (-1, -1), None

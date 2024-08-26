@@ -1,6 +1,7 @@
 from .dictionary_base import DictionaryBase
 from ..config import STEPHEN_LI_DICTIONARY_PATH
 from ..utils.enums import LanguageFormats as lang
+from ..translation_logic.jyutping import Jyutping
 
 import os
 
@@ -18,7 +19,7 @@ class StephenLiDictionary(DictionaryBase):
         self.dictionary = list(map(lambda x: {
             "SIMP": [x["taishanese"]],
             "TRAD": [None],  # we just group everything as simplified for stephen li
-            "JYUTPING": [x["taishaneseRomanization"].replace('[', '').replace(']', '')],
+            "JYUTPING": [Jyutping(x["taishaneseRomanization"].replace('[', '').replace(']', ''), lang.SL)],
             "PENYIM": [None],
             "DEFN": x["english"]
         }, self.dictionary))
