@@ -2,7 +2,7 @@ import re
 import csv
 import json
 
-from szeyapapi.translation_logic.phrase_definition import PhraseDefinition
+from szeyapapi.data.scripts.phrase_definition import PhraseDefinition
 
 # logic to convert various formats to human readable and 
 # structured json list format.

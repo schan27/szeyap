@@ -59,7 +59,7 @@ class Jyutping:
 
     return phrases, positions
   
-  def set_as_err(self, msg):
+  def _set_as_err(self, msg):
     self.errors[0] = msg
     self.indices.append((-1, -1))
     self.formats.append(None)
@@ -68,14 +68,14 @@ class Jyutping:
 
   def init_jyutping(self, lang_type: Lang):
     if lang_type not in (Lang.HSR, Lang.GC, Lang.SL, Lang.DJ, Lang.JW, Lang.UNK):
-      self.set_as_err(f"Invalid language type '{lang_type}'")
+      self._set_as_err(f"Invalid language type '{lang_type}'")
       return
 
     phrases, positions = self.extract_jyutping_phrases()
     self.positions = positions
 
     if not phrases:
-      self.set_as_err("No jyutping phrases found")
+      self._set_as_err("No jyutping phrases found")
       return
 
     for i, (jyutping_q, tone_q) in enumerate(phrases):

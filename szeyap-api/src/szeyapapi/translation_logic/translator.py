@@ -4,7 +4,6 @@ from typing import List
 from .response import Response
 from .question import TranslationQuestion
 from ..dictionaries.dictionary_base import DictionaryBase
-from .phrase_definition import PhraseDefinition
 from .jyutping import Jyutping
 
 
@@ -22,9 +21,9 @@ class Translator:
         self.name: str = name
         self.data: DictionaryBase = dictionary
     
-    def _search_dictionary(self, phrase: str, column: str):
+    def _search_dictionary(self, phrase: str, field: str):
         def _search_match_fn(x):
-            return phrase in x[column]
+            return phrase in x[field]
         
         return filter(_search_match_fn, self.data.dictionary)
 
@@ -85,6 +84,7 @@ class Translator:
             answers = self._search_dictionary_by_chinese(q.query)
             return self._construct_answer(q, answers, limit)
         
+        # we are trying to see if the query is a jyutping
         jyutping = Jyutping(q.query, q.lang)
         if not jyutping.has_errors():                
             answers = self._search_dictionary_by_jyutping(jyutping)
