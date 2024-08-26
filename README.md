@@ -21,3 +21,36 @@ You may not want to run everything, ie if you are developing the discord bot you
 ```
 docker compose --profile with-web-client up
 ```
+
+## v0.0.1 Initial release TODO
+### API
+- [ ] Improve order of results returned in api, sorted by relevance
+- [ ] Automatic language detection
+- [ ] User account creation
+- [ ] Penyim conversion
+
+### Bot
+- [ ] Help pages
+- [ ] User account creation
+- [ ] Penyim conversion
+
+## v0.0.2 Web + Features release TODO
+### Web
+- [ ] Create search page, where users can search the dictionary
+- [ ] Add admin page, allowing editing of dictionaries + jyutping conversion table
+
+### Bot
+- [ ] Server stats
+  - Use all member join date data to construct graph of historical server membership trend
+  - Start tracking server membership, push data to API onMemberJoin
+- [ ] Canto Rocks knock-off practice game
+- [ ] Stroke order command
+
+### API
+- [ ] Server stats, store info in a csv file from now on
+
+### R&D
+- [ ] Calculate relevance of definition to query using GLoVE or Word2Vec, and maybe chinese equivalents?
+  - Hopefully allow for capturing of semantic meaning instead of merely matching words
+  - Need to clean out weird unicode data like the ref numbers, etc.
+  - Could also try using a transformer model maybe? Would definitely need to source more data though ...
