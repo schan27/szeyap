@@ -1,6 +1,8 @@
 # Szeyap App
 Szeyap app is a ... [include description here]
 
+## v0.0.1 Initial Release TODO
+
 ## Steps to run
 Each service exists as a separate Docker container, so you can run each separately or run using `docker compose` which will *glue* all the containers together and allow your client to communicate with your api, for example.
 
