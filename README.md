@@ -25,7 +25,7 @@ docker compose --profile with-web-client up
 ## v0.0.1 Initial release TODO
 ### API
 - [ ] Improve order of results returned in api, sorted by relevance
-- [ ] Automatic language detection
+- [x] Automatic language detection
 - [ ] User account creation
 - [ ] Penyim conversion
 
