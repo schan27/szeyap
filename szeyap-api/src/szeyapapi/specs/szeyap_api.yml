@@ -75,6 +75,36 @@ paths:
                   - detected_language
                   - translations
                   - metadata
+  /romanizations:
+    get:
+    summary: Returns a Jyutping Object
+      description: Optional extended description in CommonMark or HTML.
+      operationId: romanizations.get
+      parameters:
+        - in: query
+          name: phrase
+          required: true
+          schema:
+            type: string
+          examples:
+            onePhrase:
+              summary: Example of a single phrase
+              value: "How are you doing?"
+        - in: query
+          name: src_lang
+          required: false
+          schema: 
+            type: string
+            default: UNK
+            enum: [EN, CH, HSR, SL, GC, DJ, JW, UNK]
+          description: The source language of the phrase. Available options include en (English), ch (Chinese), and default is unk (Unknown).
+      responses:
+        '200':
+        description: A response with metadata and a list of translations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Jyutping'
 
   /hello_world:
     get:
@@ -114,15 +144,22 @@ components:
             jyutping:
               type: array
               items:
-                type: object
-                properties:
-                  HSR:
-                    type: string
-                  SL:
-                    type: string
-                  GC:
-                    type: string
-                  DJ:
-                    type: string
-                  JW:
-                    type: string
+                $ref: '#/components/schemas/Jyutping'
+    Jyutping:
+      type: object
+        properties:
+          HSR:
+            type: string
+          SL:
+            type: string
+          GC:
+            type: string
+          DJ:
+            type: string
+          JW:
+            type: string
+        required:
+          - HSR
+          - SL
+          - GC
+          - JW
