@@ -42,7 +42,7 @@ class Jyutping:
   
   # recognize jyutping looking phrases and separate tone from initial_final
   def extract_jyutping_phrases(self) -> tuple[tuple]:
-    match_exp = r"(?:[a-z]{0,3}(?P<diacritic>[\u0304\u0308\u0303\u0300\u0302])[a-z]*/?)|(?:(?P<initial_final>[a-z]+)(?P<tone>[1-6]{1,3}(?![a-z0-9])|‘-|`-|\*-|`‘|〉-|-\*|-’|-|‘|\*|`|〉))"
+    match_exp = r"(?:[a-z]{0,3}(?P<diacritic>[\u0304\u0308\u0303\u0300\u0302])[a-z]*/?)|(?:(?P<initial_final>[a-zɛɪɬŋɔə]+)(?P<tone>[1-6]{1,3}(?![a-z0-9])|‘-|`-|\*-|`‘|〉-|-\*|-’|-|‘|\*|`|〉))"
     
     phrases = []
     positions = []
