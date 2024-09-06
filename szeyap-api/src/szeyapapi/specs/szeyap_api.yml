@@ -114,15 +114,22 @@ components:
             jyutping:
               type: array
               items:
-                type: object
-                properties:
-                  HSR:
-                    type: string
-                  SL:
-                    type: string
-                  GC:
-                    type: string
-                  DJ:
-                    type: string
-                  JW:
-                    type: string
+                $ref: '#/components/schemas/Jyutping'
+        similarity:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+    Jyutping:
+      type: object
+      properties:
+        HSR:
+          type: string
+        SL:
+          type: string
+        GC:
+          type: string
+        DJ:
+          type: string
+        JW:
+          type: string

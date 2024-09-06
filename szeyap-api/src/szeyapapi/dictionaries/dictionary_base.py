@@ -2,6 +2,8 @@ import json
 import os
 from ..config import PROJ_ROOT
 
+from ..processesing.comparison import LANG_MODEL
+
 # A base class for all dictionaries
 # Dictionary classes are designed to be used as a singleton, 
 # meaning they are instantiated once and used throughout the program

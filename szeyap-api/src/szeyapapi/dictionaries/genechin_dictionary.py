@@ -1,11 +1,14 @@
 from .dictionary_base import DictionaryBase
-from ..config import GENE_CHIN_DICTIONARY_PATH, PROJ_ROOT
+from ..config import GENE_CHIN_DICTIONARY_PATH, PROJ_ROOT, GENE_CHIN_EN_EMBEDDINGS_PATH, GENE_CHIN_CH_EMBEDDINGS_PATH
 from ..utils.enums import LanguageFormats as lang
 from ..translation_logic.jyutping import Jyutping
 
+import logging
+logger = logging.getLogger("szeyapapi")
+
 import json
 import os 
-
+import torch
 class GeneChinDictionary(DictionaryBase):
 
   def __init__(self, name, src_url):
@@ -36,11 +39,13 @@ class GeneChinDictionary(DictionaryBase):
       entry.update({
         "JYUTPING": [Jyutping(word.replace("-", " "), lang.GC) if word else None for word in entry["JYUTPING"]]
       })
-
+  
+  def load_embeddings(self):
+    logger.info("Loading GC embeddings")
+    self.en_embeddings = torch.load(os.path.join(PROJ_ROOT, GENE_CHIN_CH_EMBEDDINGS_PATH))
+    self.ch_embeddings = torch.load(os.path.join(PROJ_ROOT, GENE_CHIN_EN_EMBEDDINGS_PATH))
 
 # Singleton instance of GeneChinDictionary
 # This is the instance that should be used throughout the program
 # import this instance in other files to use the dictionary
 GC = GeneChinDictionary("Gene Chin", "https://www.chinfamilytree.com/hed/")
-GC.load_dictionary()
-

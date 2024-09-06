@@ -6,6 +6,8 @@ from .question import TranslationQuestion
 from ..dictionaries.dictionary_base import DictionaryBase
 from .jyutping import Jyutping
 
+from ..processesing.comparison import LANG_MODEL
+import torch
 
 # A Translator receives Questions and create Responses
 #  - the Translator is created by giving it a dictionary, and it uses the dictionary to create Responses
@@ -20,19 +22,30 @@ class Translator:
     def __init__(self, name: str, dictionary: DictionaryBase):
         self.name: str = name
         self.data: DictionaryBase = dictionary
-    
+
     def _search_dictionary(self, phrase: str, field: str):
+
         def _search_match_fn(x):
-            return phrase in x[field]
+            return phrase in x[field] or LANG_MODEL.compare_encoded(phrase_embedding, (x["EN_EMBEDDING"], x["CH_EMBEDDING"])) > 0.8
+        def _calc_simularity(match) -> List:
+            return LANG_MODEL.compare_encoded(phrase_embedding, (match["EN_EMBEDDING"], match["CH_EMBEDDING"]))
         
-        return filter(_search_match_fn, self.data.dictionary)
+        phrase_embedding = LANG_MODEL.encode_data(phrase)
+        return sorted(({"SIMILARITY": _calc_simularity(answer), **answer} for answer in filter(_search_match_fn, self.data.dictionary)), key=lambda x: x["SIMILARITY"], reverse=True)
+
+    def _search_dictionary_w_embeddings(self, phrase):
+        en_sim = LANG_MODEL.calc_simularities(phrase, self.data.en_embeddings)
+        ch_sim = LANG_MODEL.calc_simularities(phrase, self.data.ch_embeddings)
+        simularities = [(x + y) / 2 for x, y in zip(en_sim, ch_sim)]
+
+        filter_sorted = sorted(({"SIMILARITY": simularities[i], **entry} for i, entry in enumerate(self.data.dictionary) if simularities[i] > 0.8 or phrase in entry["DEFN"]), key=lambda x: x["SIMILARITY"], reverse=True)
+        return filter_sorted
 
     def _search_dictionary_by_jyutping(self, jyutping: Jyutping) -> Response:
         def _search_match_fn(x):
             return any(jyutping == j and j is not None for j in x["JYUTPING"])
 
-        return filter(_search_match_fn, self.data.dictionary)
-
+        return [{"SIMILARITY": 1, **answer} for answer in filter(_search_match_fn, self.data.dictionary)]
 
     def _search_dictionary_by_chinese(self, ch_phrase: str) -> Response:
         def _search_match_fn(x):
@@ -43,7 +56,7 @@ class Translator:
                 if simp and ch_phrase in simp:
                     return True
         
-        return filter(_search_match_fn, self.data.dictionary)
+        return [{"SIMILARITY": 1, **answer} for answer in filter(_search_match_fn, self.data.dictionary)]
 
     def _construct_answer(self, q: TranslationQuestion, answers: list, limit: int) -> Response:
         response = Response(q)
@@ -64,7 +77,8 @@ class Translator:
                     "simplified": defn["SIMP"],
                     "penyim": defn["PENYIM"],
                     "jyutping": jyut_as_api_resp
-                }
+                },
+                "similarity": defn["SIMILARITY"]
             }
 
         if not answers:
@@ -90,7 +104,7 @@ class Translator:
             answers = self._search_dictionary_by_jyutping(jyutping)
             return self._construct_answer(q, answers, limit)
         
-        answers = self._search_dictionary(q.query, "DEFN")
+        answers = self._search_dictionary_w_embeddings(q.query)
         return self._construct_answer(q, answers, limit)
 
     # def detect_language_format(self, sample: str):

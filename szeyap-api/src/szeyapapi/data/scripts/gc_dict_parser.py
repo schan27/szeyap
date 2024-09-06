@@ -82,10 +82,10 @@ class RawDictionaryParser():
           parsed.append(
             PhraseDefinition(
               definition=row[7],
-              simplified=row[4],
-              traditional=row[3],
-              jyutping=row[5],
-              penyim=row[6]
+              simplified=[row[4]],
+              traditional=[row[3]],
+              jyutping=[row[5]],
+              penyim=[row[6]]
           ))
           PARSE_STATS["matched"] += 1
         else:

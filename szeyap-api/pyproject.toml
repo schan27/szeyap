@@ -10,7 +10,9 @@ dependencies = [
     "connexion",
     "connexion[uvicorn]",
     "connexion[swagger-ui]",
-    "gunicorn"
+    "gunicorn",
+    "torch",
+    "sentence-transformers",
 ]
 
 [project.scripts]

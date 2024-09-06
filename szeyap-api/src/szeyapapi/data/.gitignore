@@ -6,3 +6,4 @@ scripts/*
 !raw/hed_dictionary.csv
 
 !scripts/gc_dict_parser.py
+!scripts/szeyap.ipynb
