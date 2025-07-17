@@ -2,11 +2,9 @@
 Szeyap app is a ... [include description here]
 
 ## Developing locally
-
-### Setup environment
 1. Prerequisite: `uv` is installed
 2. Create and activate the virtual environment: `bash setup.sh`
-3. Start the server: `uv run src/szeyapapi/api.py`
+3. Start the server: `uv run src/szeyapapi/api.py --reload`
 4. Access Swagger UI at `http://localhost:8000/api/ui`
 
 ## Steps to run
