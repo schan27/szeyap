@@ -1,8 +1,6 @@
 import re
-from typing import List
 
 from fuzzywuzzy import fuzz 
-import numpy as np 
 from wordfreq import word_frequency
 
 from ..utils.enums import LanguageFormats as lang
@@ -97,7 +95,10 @@ class Translator:
         # we are trying to see if the query is a jyutping
         jyutping = Jyutping(q.query, q.lang)
         # is_jyutping = not jyutping.has_errors()
+
+        # TODO: Add unit tests for is_jyutping
         is_jyutping = self.JYUTPING_MATCH_REGEX.match(q.query) is not None
+
         if is_jyutping:           
             answers = self._search_dictionary_by_jyutping(jyutping)
             return self._construct_answer(q, answers, limit)
@@ -107,7 +108,7 @@ class Translator:
         
     @staticmethod
     def rank_by_fuzzy(q: TranslationQuestion, results: list[dict]):
-        """Ranks results based on fuzzy matching score."""
+        """Ranks English results based on fuzzy matching score."""
         if q.lang != lang.EN: # Only rank English results
             return results 
         
@@ -123,10 +124,10 @@ class Translator:
     
     @staticmethod
     def rank_by_frequency(q: TranslationQuestion, results: list[dict]):
+        """Ranks English results based on frequency of search result."""
         if q.lang != lang.EN: # Only rank English results
             return results 
         
-        query = q.query.lower()
         ranked_results = []
         for result in results:
             word = result["TRAD"][0]

@@ -21,7 +21,7 @@ paths:
           examples:
             onePhrase:
               summary: Example of a single phrase
-              value: "How are you doing?"
+              value: "cat"
         - in: query
           name: limit
           required: false
