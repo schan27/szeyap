@@ -135,6 +135,7 @@ class Penyim:
   def __eq__(self, other):
     if not isinstance(other, Penyim):
       return False
+    # TODO: Update to take tone into account 
     return self.indices == other.indices
 
   def __ne__(self, other) -> bool:

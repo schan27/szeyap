@@ -38,7 +38,8 @@ class Translator:
     def _search_dictionary_by_penyim(self, penyim: Penyim) -> Response:
         """Penyim search"""
         def _search_match_fn(x):
-            return any(penyim == j and j is not None for j in x["JYUTPING"])
+            return any(penyim == dict_entry_penyim and dict_entry_penyim is not None 
+                       for dict_entry_penyim in x["PENYIM"])
         return filter(_search_match_fn, self.data.dictionary)
 
     def _search_dictionary_by_chinese(self, ch_phrase: str) -> Response:
@@ -92,14 +93,13 @@ class Translator:
     def ask(self, q: TranslationQuestion, limit: int) -> Response:
         detected_language = detect_multilingual(q.query)[0]["lang"]
 
-        # TODO: Automatically detect penyim type 
-        parsed_penyim = Penyim(q.query, lang.JW)
+        parsed_penyim = Penyim(q.query, lang.UNK)
         answers = self._search_dictionary_by_penyim(q.query)
         is_penyim = not parsed_penyim.has_errors()
 
         if is_penyim:
             answers = self._search_dictionary_by_penyim(parsed_penyim)
-            q.lang = lang.JW
+            q.lang = lang.UNK
         elif detected_language == "zh":
             answers = self._search_dictionary_by_chinese(q.query)
             q.lang = lang.CH
@@ -107,7 +107,7 @@ class Translator:
             q.lang = lang.EN
             answers = self._search_dictionary(q.query, "DEFN", full_match=True)
         else:
-            raise ValueError("Query could not be parsed as: English, Chinese, or Jyutping")
+            raise ValueError("Query could not be parsed as: English, Chinese, or Penyim")
         return self._construct_answer(q, answers, limit)
     
     @staticmethod

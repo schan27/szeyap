@@ -4,10 +4,11 @@ Szeyap app is a ... [include description here]
 ## Developing locally
 1. Prerequisite: `uv` is installed
 2. `cd szeyap-api`
-3. Create the environment `uv venv venv` and activate it `source venv/bin/activate`
-4. Download the spaCy model `uv run --with spacy spacy download en_core_web_sm`
-5. Start the server: `uv run src/szeyapapi/api.py --reload`
-6. Access Swagger UI at `http://localhost:8000/api/ui`
+3. Create the environment `uv venv venv` 
+4. Activate it `source venv/bin/activate` and sync it `uv sync`
+5. Download the spaCy model `uv run --with spacy spacy download en_core_web_sm`
+6. Start the server: `uv run src/szeyapapi/api.py --reload`
+7. Access Swagger UI at `http://localhost:8000/api/ui`
 
 
 ## Steps to run

@@ -4,9 +4,11 @@ import szeyapapi.config as cfg
 from ..utils.enums import LanguageFormats as Lang
 from ..utils.enums import Tones as Tone
 import os
-from unicodedata import normalize
+
+import pandas as pd 
 
 PROJECT_ROOT_PATH = os.path.join(os.path.dirname(__file__), "..")
+
 
 class PenyimTables:
 
@@ -20,20 +22,27 @@ class PenyimTables:
         self.load_tones()
 
     def load_tables(self):
+        df_dict = pd.read_excel(cfg.PENYIM_TABLES_PATH, sheet_name=None)
+
+        def clean_df(df: pd.DataFrame):
+            last_col = df.columns.get_loc("y")
+            df = df[df.columns[:last_col+1]]
+            return df
+
         # HSR
-        self.tables[Lang.HSR] = self.read_table(cfg.HSR_PENYIM_TABLE_PATH)
+        self.tables[Lang.HSR] = clean_df(df_dict["HSR"])
 
         # SL
-        self.tables[Lang.SL] = self.read_table(cfg.SL_PENYIM_TABLE_PATH)
+        self.tables[Lang.SL] = clean_df(df_dict["SL"])
 
         # GC
-        self.tables[Lang.GC] = self.read_table(cfg.GC_PENYIM_TABLE_PATH)
+        self.tables[Lang.GC] = clean_df(df_dict["GPS"])
 
         # DJ
-        self.tables[Lang.DJ] = self.read_table(cfg.DJ_PENYIM_TABLE_PATH)
+        self.tables[Lang.DJ] = clean_df(df_dict["DJ"])
 
         # JW
-        self.tables[Lang.JW] = self.read_table(cfg.JW_PENYIM_TABLE_PATH)
+        self.tables[Lang.JW] = clean_df(df_dict["JW"])
     
     def read_table(self, path: str):
         table = []
