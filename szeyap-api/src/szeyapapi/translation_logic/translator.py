@@ -1,10 +1,6 @@
 import re
 
-<<<<<<< HEAD
-from fuzzywuzzy import fuzz 
-=======
 import spacy
->>>>>>> 3c224b5 (fixed environment and implemented basic search functionality)
 from wordfreq import word_frequency
 from fast_langdetect import detect_multilingual
 
