@@ -83,11 +83,7 @@ paths:
           name: phrase
           required: true
           schema:
-            type: string
-          examples:
-            onePhrase:
-              summary: Example of a single phrase
-              value: "cats"
+            type: string  
       responses:
         '200':
           description: A response with metadata and a list of translations
