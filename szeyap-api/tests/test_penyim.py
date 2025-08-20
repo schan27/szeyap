@@ -31,4 +31,4 @@ def test_gc_syllable():
 def test_sc_phrase():
     test = 'vi32 saŋ33 dzi55'
     result = Penyim(test, Lang.SL)
-    assert unidecode(result.formats[0][Lang.SL]) == unidecode
+    assert unidecode(result.formats[0][Lang.SL]) == unidecode("vi32 saŋ33 dzi55")
