@@ -1,7 +1,7 @@
-from .dictionary_base import DictionaryBase
-from ..config import GENE_CHIN_DICTIONARY_PATH, PROJ_ROOT
-from ..utils.enums import LanguageFormats as lang
-from ..translation_logic.penyim import Penyim
+from szeyapapi.dictionaries.dictionary_base import DictionaryBase
+from szeyapapi.config import GENE_CHIN_DICTIONARY_PATH, PROJ_ROOT
+from szeyapapi.utils.enums import LanguageFormats as lang
+from szeyapapi.translation_logic.penyim import Penyim
 
 import json
 import os 
@@ -32,10 +32,10 @@ class GeneChinDictionary(DictionaryBase):
           })
 
     # Adjust Jyutping format to allow for parsing
-    for entry in self.dictionary:
-      entry.update({
-        "PENYIM": [Penyim(word.replace("-", " "), lang.GC) if word else None for word in entry["JYUTPING"]]
-      })
+    for i, entry in enumerate(self.dictionary):
+      parsed_penyim = [Penyim(word.replace("-", " "), lang.GC) if word 
+                  else None for word in entry["PENYIM"]]
+      entry["PENYIM"] = parsed_penyim
 
 
 # Singleton instance of GeneChinDictionary

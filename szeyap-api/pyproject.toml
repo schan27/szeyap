@@ -29,4 +29,10 @@ szeyapapi = "szeyapapi.api:main"
 dev = [
     "ipdb>=0.13.13",
     "pyppeteer>=2.0.0",
+    "pytest>=8.4.1",
+    "szeyapapi",
+    "unidecode>=1.4.0",
 ]
+
+[tool.uv.sources]
+szeyapapi = { workspace = true }

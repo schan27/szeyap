@@ -6,6 +6,6 @@ FLASK_DEFAULT_PORT=8000
 STEPHEN_LI_DICTIONARY_PATH = "data/stephen_li_dictionary.json"
 GENE_CHIN_DICTIONARY_PATH = "data/gene_chin_dictionary.json"
 PENYIM_TONES_PATH = "data/tones.json"
-PENYIM_TABLES_PATH = "data/Initial and Finals Chart for Penyim Converter.xlsx"
+PENYIM_TABLES_PATH = "data/initials_finals.xlsx"
 
 PROJ_ROOT = os.path.dirname(os.path.abspath(__file__))
