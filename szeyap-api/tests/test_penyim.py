@@ -46,9 +46,25 @@ def test_basic_no_tone():
     assert unidecode(result.formats[0][Lang.DJ]) == unidecode("n(e)i")
     assert unidecode(result.formats[0][Lang.JW]) == unidecode("n(e)i")
 
+
 def test_no_space():
     test = "neihau"
 
     result = Penyim(test, Lang.UNK)
     assert unidecode(result.formats[0][Lang.HSR]) == unidecode("n(e)i")
     assert unidecode(result.formats[1][Lang.HSR]) == unidecode("hau")
+
+
+def test_cei():
+    test = "cei ao"
+
+    result = Penyim(test, Lang.UNK)
+    assert unidecode(result.formats[0][Lang.HSR]) == unidecode("tsi")
+    assert unidecode(result.formats[1][Lang.HSR]) == unidecode("au")
+
+
+def test_lh_reversal():
+    test = "hlam1"
+
+    result = Penyim(test, Lang.UNK)
+    assert unidecode(result.formats[0][Lang.HSR]) == unidecode("lham33")

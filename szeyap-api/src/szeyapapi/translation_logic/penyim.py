@@ -82,9 +82,9 @@ class Penyim:
         final = match.group("final")
         tone = match.group("tone")
         penyim = initial + final
-
       phrases.append((penyim, tone))
       positions.append(match.span())
+    
     return phrases, positions
   
   def _set_as_err(self, msg):
@@ -111,7 +111,7 @@ class Penyim:
       penyim_q = apply_penyim_rules(penyim_q)
 
       indices, tone = PENYIM_TABLES.search(penyim_q, tone_q, lang_type)
-
+      
       if indices == (-1, -1):
         self.indices.append((-1, -1))
         self.formats.append(None)

@@ -80,6 +80,12 @@ class PenyimTables:
 
     def search(self, jyutping_q: str, tone_q: str, lang_type: Lang) -> tuple[tuple[int,int], Tone|None]:
         tables_to_search = [lang_type] if lang_type != Lang.UNK else PENYIM_LANG_TYPES
+
+        for table in tables_to_search:
+            tone = self._answer_tone_q(tone_q, table)
+            if tone:
+                break 
+        
         for table in tables_to_search:
             table_arr = self.tables[table].to_numpy()
             result = np.where(table_arr == jyutping_q)
@@ -91,7 +97,6 @@ class PenyimTables:
                 j = int(col_result[0]) # row number
                 i = int(row_result[0]) # column number
 
-                tone = self._answer_tone_q(tone_q, table)
                 print(f"Found {jyutping_q} at ({j}, {i}) with tone {tone} in {table}")
                 return (j, i), tone
         else:
