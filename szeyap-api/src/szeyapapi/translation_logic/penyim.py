@@ -1,9 +1,11 @@
 from ..utils.enums import LanguageFormats as Lang
 from ..utils.enums import Tones as Tone
 from .penyim_tables import PENYIM_TABLES, PENYIM_LANG_TYPES
+from .penyim_rules import apply_penyim_rules
 
 import re
 from unicodedata import normalize
+from itertools import chain
 
 
 RARE_TONES = [Tone.RARE1, Tone.RARE2, Tone.RARE3, Tone.RARE5, Tone.RARE6]
@@ -46,21 +48,43 @@ class Penyim:
   
   # recognize penyim looking phrases and separate tone from initial_final
   def extract_penyim_phrases(self) -> tuple[tuple]:
-    match_exp = r"(?:[a-z]{0,3}(?P<diacritic>[\u0304\u0308\u0303\u0300\u0302])[a-z]*/?)|(?:(?P<initial_final>[a-zɛɪɬŋɔə]+)(?P<tone>[1-6]{1,3}(?![a-z0-9])|‘-|`-|\*-|`‘|〉-|-\*|-’|-|‘|\*|`|〉))"
-    
+    all_finals = chain.from_iterable(PENYIM_TABLES.finals.values())
+    finals_sorted = sorted(filter(None, all_finals), key=len, reverse=True)
+    finals_pattern = '|'.join([re.escape(f) for f in finals_sorted])
+    tone_pattern = r"[1-6]{1,3}(?![a-z0-9])|‘-|-|\*-|‘|〉-|-*|-’|-|‘|\*|`|〉"
+
+    pattern = re.compile(
+      rf"""
+      (?:  # === Branch 1: Diacritic ===
+          (?P<base>[a-z]{{0,3}})
+          (?P<diacritic>[\u0304\u0308\u0303\u0300\u0302])
+          [a-z]?\/?
+      )
+      |
+      (?:  # === Branch 2: Initial + Final + Tone ===
+          (?P<initial>[a-zɛɪɬŋɔə]{{0,3}}?)
+          (?P<final>{finals_pattern})
+          (?P<tone>{tone_pattern})?
+      )
+      """,
+      re.VERBOSE | re.UNICODE
+  )
+
     phrases = []
     positions = []
-    for match in re.finditer(match_exp, self.sample):
+    for match in re.finditer(pattern, self.sample):
       tone = match.group("diacritic")
       if tone:
         penyim = match[0].replace(match.group("diacritic")[0], "").replace("/", "")
         tone = (match.group("diacritic"), "/") if "/" in match[0] else tuple(match.group("diacritic"))
       else:
-        penyim = match.group("initial_final")
+        initial = match.group("initial")
+        final = match.group("final")
         tone = match.group("tone")
+        penyim = initial + final
+
       phrases.append((penyim, tone))
       positions.append(match.span())
-
     return phrases, positions
   
   def _set_as_err(self, msg):
@@ -76,15 +100,19 @@ class Penyim:
       return
 
     phrases, positions = self.extract_penyim_phrases()
+    print(f"{phrases=}")
     self.positions = positions
 
     if not phrases:
       self._set_as_err("No penyim phrases found")
       return
-
+    
     for i, (penyim_q, tone_q) in enumerate(phrases):
+      penyim_q = apply_penyim_rules(penyim_q)
+
       indices, tone = PENYIM_TABLES.search(penyim_q, tone_q, lang_type)
-      if indices == (-1, -1) or tone is None:
+
+      if indices == (-1, -1):
         self.indices.append((-1, -1))
         self.formats.append(None)
         self.tone.append(None)
@@ -102,11 +130,11 @@ class Penyim:
     tone = PENYIM_TABLES.get_tone(lang, tone)
 
     if lang == lang.GC: # Treat Gene Chin tones differently
-      if tone not in RARE_TONES:
+      if (tone) and (tone not in RARE_TONES):
         combining_ch, slash = (tone[0], "/") if len(tone) == 2 else (tone[0], "")
         initial, final = PENYIM_TABLES.get_initial_final(indices, lang)
         return initial + final[:1] + combining_ch + final[1:] + slash
-      
+    
     result = PENYIM_TABLES.get_transdimensional_match(indices, lang) + tone
     return result
 

@@ -80,7 +80,6 @@ class PenyimTables:
 
     def search(self, jyutping_q: str, tone_q: str, lang_type: Lang) -> tuple[tuple[int,int], Tone|None]:
         tables_to_search = [lang_type] if lang_type != Lang.UNK else PENYIM_LANG_TYPES
-        
         for table in tables_to_search:
             table_arr = self.tables[table].to_numpy()
             result = np.where(table_arr == jyutping_q)
@@ -99,7 +98,7 @@ class PenyimTables:
             return (-1, -1), None
         
     def get_tone(self, lang_type: Lang, tone: Tone) -> dict:
-        return self.tones[lang_type][tone]
+        return self.tones[lang_type].get(tone, "")
 
     def get_initial_final(self, indices: tuple, lang_type: Lang) -> tuple[str, str]:
         initial_i, final_i = indices
