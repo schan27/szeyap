@@ -30,6 +30,7 @@ dev = [
     "ipdb>=0.13.13",
     "pyppeteer>=2.0.0",
     "pytest>=8.4.1",
+    "ruff>=0.12.12",
     "szeyapapi",
     "unidecode>=1.4.0",
 ]
