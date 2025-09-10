@@ -1,8 +1,9 @@
+# TODO: All the tests are being compared against the parsed result for HSR, we should also test for the other systems
 from pathlib import Path 
 
 import pandas as pd 
 from unidecode import unidecode
-
+from unicodedata import normalize
 from szeyapapi.translation_logic.penyim import Penyim
 from szeyapapi.utils.enums import LanguageFormats as Lang
 
@@ -18,20 +19,19 @@ df = pd.read_excel(penyim_data_path, sheet_name=None, index_col=0)
 def test_gc_no_initial():
     test = "ō"
     result = Penyim(test, Lang.GC)
-    assert unidecode(result.formats[0][Lang.GC]) == unidecode("ō")
+    assert normalize("NFD", result.formats[0][Lang.GC]) == normalize("NFD", "ō")
 
 
 def test_gc_syllable():
     test = "dā"
     result = Penyim(test, Lang.GC)
-    assert unidecode(result.formats[0][Lang.GC]) == unidecode("dā")
+    assert normalize("NFD", result.formats[0][Lang.GC]) == normalize("NFD", "dā")
 
 
 ### Stephen Li ###
 def test_sc_phrase():
     test = 'vi32 saŋ33 dzi55'
     result = Penyim(test, Lang.SL)
-
     expected_result = ["vi32", "saŋ33", "dzi55"]
     for i, word_formats in enumerate(result.formats):
         assert unidecode(word_formats[Lang.SL]) == unidecode(expected_result[i])
@@ -57,7 +57,6 @@ def test_no_space():
 
 def test_cei():
     test = "cei ao"
-
     result = Penyim(test, Lang.UNK)
     assert unidecode(result.formats[0][Lang.HSR]) == unidecode("tsi")
     assert unidecode(result.formats[1][Lang.HSR]) == unidecode("au")
@@ -68,3 +67,52 @@ def test_lh_reversal():
 
     result = Penyim(test, Lang.UNK)
     assert unidecode(result.formats[0][Lang.HSR]) == unidecode("lham33")
+
+
+def test_mix_romanization_tone():
+    test = "xel33"
+
+    result = Penyim(test, Lang.UNK)
+    assert unidecode(result.formats[0][Lang.HSR]) == unidecode("lhiau33")
+
+
+def test_diacritic_markers():
+    test1 = "chïäo"
+    test2 = "chïao33"
+
+    result1 = Penyim(test1, Lang.UNK)
+    result2 = Penyim(test2, Lang.UNK)
+
+    assert unidecode(result1.formats[0][Lang.HSR]) == unidecode("tsi33")
+    assert unidecode(result1.formats[1][Lang.HSR]) == unidecode("au33")
+    assert unidecode(result2.formats[0][Lang.HSR]) == unidecode("tsi33")
+    assert unidecode(result2.formats[1][Lang.HSR]) == unidecode("au33")
+
+
+def test_double_tone():
+    test = "hao-’"
+    result = Penyim(test, Lang.UNK)
+    assert unidecode(result.formats[0][Lang.HSR]) == unidecode("hau553")
+
+
+def test_bracket_input():
+    test1 = "d(e)i"
+    test2 = "c(h)a"
+    result1 = Penyim(test1, Lang.UNK)
+    result2 = Penyim(test2, Lang.UNK)
+    assert unidecode(result1.formats[0][Lang.HSR]) == unidecode("d(e)i")
+    assert unidecode(result2.formats[0][Lang.HSR]) == unidecode("tsa")
+
+
+def test_unknown_term():
+    test = "nai5fuk215"
+    result = Penyim(test, Lang.UNK)
+    assert unidecode(result.formats[0][Lang.HSR]) == unidecode("nai21")
+    assert unidecode(result.formats[1][Lang.HSR]) == unidecode("fuk215")
+
+
+def test_ng_reversal():
+    test = "gno"
+    result = Penyim(test, Lang.UNK)
+    assert unidecode(result.formats[0][Lang.HSR]) == unidecode("ngo")
+

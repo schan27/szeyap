@@ -1,15 +1,15 @@
 from ..utils.enums import LanguageFormats as Lang
 from ..utils.enums import Tones as Tone
 from .penyim_tables import PENYIM_TABLES, PENYIM_LANG_TYPES
-from .penyim_rules import apply_penyim_rules
+from .penyim_rules import apply_penyim_rules, match_syllables_backward
 
 import re
-from unicodedata import normalize
 from itertools import chain
-
+from unicodedata import normalize
+ 
 
 RARE_TONES = [Tone.RARE1, Tone.RARE2, Tone.RARE3, Tone.RARE5, Tone.RARE6]
-
+DIACRITICS_PATTERN = re.compile("(\u0304|\u0308|\u0303|\u0300|\u0302)")
 
 class Penyim:
 
@@ -48,44 +48,88 @@ class Penyim:
   
   # recognize penyim looking phrases and separate tone from initial_final
   def extract_penyim_phrases(self) -> tuple[tuple]:
-    all_finals = chain.from_iterable(PENYIM_TABLES.finals.values())
+    
+    syllables = []
+    positions = []
+    
+    # We should create a regex for each romanization system
+    tone_pattern = r"""
+        (?:                                      # Non-capturing group for alternation
+            [1-6]{1,3}(?![a-z0-9])               # 1–3 digit tone numbers (with lookahead guard)
+            |
+            /                                    # Slash for rising tone
+            |
+            [-`*‘’〉]+                            # One or more characters from your symbol set
+        )?
+    """
+
+    all_initials = list(chain.from_iterable(
+      PENYIM_TABLES.initials.values())) + ["hl", "gn"]
+    
+    initials_sorted = sorted(filter(None, all_initials), key=len, reverse=True)
+    initials_pattern = '|'.join([re.escape(f) for f in initials_sorted])
+
+    all_finals = list(chain.from_iterable(
+      PENYIM_TABLES.finals.values()))
+
     finals_sorted = sorted(filter(None, all_finals), key=len, reverse=True)
     finals_pattern = '|'.join([re.escape(f) for f in finals_sorted])
-    tone_pattern = r"[1-6]{1,3}(?![a-z0-9])|‘-|-|\*-|‘|〉-|-*|-’|-|‘|\*|`|〉"
 
-    pattern = re.compile(
-      rf"""
-      (?:  # === Branch 1: Diacritic ===
-          (?P<base>[a-z]{{0,3}})
-          (?P<diacritic>[\u0304\u0308\u0303\u0300\u0302])
-          [a-z]?\/?
+    syllable_pattern = re.compile(
+      rf"""(?xiu)                            # enables VERBOSE, IGNORECASE, UNICODE
+      (?P<syllable>
+          (?P<initial>{initials_pattern})?   # optional initial
+          (?P<final>{finals_pattern})        # required final 
+          (?P<tone>{tone_pattern})?          # optional tone
       )
-      |
-      (?:  # === Branch 2: Initial + Final + Tone ===
-          (?P<initial>[a-zɛɪɬŋɔə]{{0,3}}?)
-          (?P<final>{finals_pattern})
-          (?P<tone>{tone_pattern})?
-      )
-      """,
-      re.VERBOSE | re.UNICODE
-  )
+      """
+    )
+  
+    start = 0
+    # Remove brackets 
+    for bracket in "()[]{{}}":
+      self.sample = self.sample.replace(bracket, "")
 
-    phrases = []
-    positions = []
-    for match in re.finditer(pattern, self.sample):
-      tone = match.group("diacritic")
-      if tone:
-        penyim = match[0].replace(match.group("diacritic")[0], "").replace("/", "")
-        tone = (match.group("diacritic"), "/") if "/" in match[0] else tuple(match.group("diacritic"))
-      else:
-        initial = match.group("initial")
-        final = match.group("final")
-        tone = match.group("tone")
-        penyim = initial + final
-      phrases.append((penyim, tone))
-      positions.append(match.span())
-    
-    return phrases, positions
+    # Remove diacritics 
+    normalized = "".join(DIACRITICS_PATTERN.sub("", self.sample).split())
+
+    for (match, start, end) in match_syllables_backward(syllable_pattern, normalized):
+      if start != start:
+        break
+  
+      # Step one: Deal with the segment
+      initial = match.group("initial")
+      if initial is None:
+        initial = ""
+      final = match.group("final")
+      segment = initial + final
+      segment = apply_penyim_rules(segment)
+
+      # Step two: Deal with the tone
+      diacritic_match = DIACRITICS_PATTERN.search(
+        self.sample[start:end+1]
+      ) # Add one to the segment span as the diacritic is one character long
+      tone = match.group("tone")
+      
+      if diacritic_match is not None:
+        is_rising = (tone == "/")
+        diacritic = diacritic_match.group(0)
+        if is_rising:
+          tone = (diacritic, "/")
+        else:
+          tone = (diacritic,)
+
+      syllables.append((segment, tone))
+      positions.append((start, end))
+
+      # Update start marker to ensure no characters are lost
+      start = end
+      # Find the next non-whitespace character
+      if (start != len(normalized)) and (normalized[start].isspace()):
+        non_whitespace_index = re.search(r'\S', normalized[start:]).start()
+        start += non_whitespace_index
+
+    return syllables, positions
   
   def _set_as_err(self, msg):
     self.errors[0] = msg
@@ -108,8 +152,6 @@ class Penyim:
       return
     
     for i, (penyim_q, tone_q) in enumerate(phrases):
-      penyim_q = apply_penyim_rules(penyim_q)
-
       indices, tone = PENYIM_TABLES.search(penyim_q, tone_q, lang_type)
       
       if indices == (-1, -1):

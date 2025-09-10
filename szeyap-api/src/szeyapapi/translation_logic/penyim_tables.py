@@ -22,9 +22,11 @@ class PenyimTables:
         self.finals = {}
         self.tones = {}
         self.tables = {}
+        self.allowed_segments = set()
 
         self.load_tables()
         self.load_tones()
+        self.load_allowed_segments()
 
     def load_tables(self):
         df_dict = pd.read_excel(Path(PROJECT_ROOT_PATH, cfg.PENYIM_TABLES_PATH), sheet_name=None, index_col=0)
@@ -73,12 +75,12 @@ class PenyimTables:
             return None
     
     def _answer_tone_q(self, tone_q: str|tuple, lang: Lang) -> Tone:
-        if lang == Lang.GC and isinstance(tone_q, tuple):
-            return self._get_gc_tone_type_from_combining_ch(tone_q, lang)
+        if isinstance(tone_q, tuple):
+            return self._get_gc_tone_type_from_combining_ch(tone_q, Lang.GC)
         else:
             return self._get_tone_type_from_num(lang, tone_q)
 
-    def search(self, jyutping_q: str, tone_q: str, lang_type: Lang) -> tuple[tuple[int,int], Tone|None]:
+    def search(self, penyim_q: str, tone_q: str, lang_type: Lang) -> tuple[tuple[int,int], Tone|None]:
         tables_to_search = [lang_type] if lang_type != Lang.UNK else PENYIM_LANG_TYPES
 
         for table in tables_to_search:
@@ -88,7 +90,7 @@ class PenyimTables:
         
         for table in tables_to_search:
             table_arr = self.tables[table].to_numpy()
-            result = np.where(table_arr == jyutping_q)
+            result = np.where(table_arr == penyim_q)
             
             row_result = result[0]
             col_result = result[1]
@@ -97,7 +99,7 @@ class PenyimTables:
                 j = int(col_result[0]) # row number
                 i = int(row_result[0]) # column number
 
-                print(f"Found {jyutping_q} at ({j}, {i}) with tone {tone} in {table}")
+                print(f"Found {penyim_q} at ({j}, {i}) with tone {tone} in {table}")
                 return (j, i), tone
         else:
             return (-1, -1), None
@@ -119,5 +121,11 @@ class PenyimTables:
         if isinstance(result, float) and np.isnan(result):
             return ""
         return result 
+    
+    def load_allowed_segments(self):
+        for lang in PENYIM_LANG_TYPES:
+            self.allowed_segments.update(
+                self.tables[lang].stack().values
+            )
 
 PENYIM_TABLES = PenyimTables()
