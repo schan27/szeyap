@@ -16,6 +16,17 @@ def apply_penyim_rules(segment: str):
     # NG reversal
     if segment.startswith("gn"):
         segment = segment.replace("gn", "ng")
+    
+    # Common variants: 'sha', 'chee', 'wa'
+    if segment == "sha":
+        segment = "sa"
+    
+    if segment.endswith("ee"):
+        segment = segment.replace("ee", "i")
+    
+    if segment.startswith("w"):
+        segment = segment.replace("w", "v")
+
     return segment
 
 

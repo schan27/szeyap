@@ -15,7 +15,6 @@ penyim_data_path = Path(
 
 df = pd.read_excel(penyim_data_path, sheet_name=None, index_col=0)
 
-### Gene Chin ###
 def test_gc_no_initial():
     test = "ō"
     result = Penyim(test, Lang.GC)
@@ -28,7 +27,6 @@ def test_gc_syllable():
     assert normalize("NFD", result.formats[0][Lang.GC]) == normalize("NFD", "dā")
 
 
-### Stephen Li ###
 def test_sc_phrase():
     test = 'vi32 saŋ33 dzi55'
     result = Penyim(test, Lang.SL)
@@ -116,3 +114,56 @@ def test_ng_reversal():
     result = Penyim(test, Lang.UNK)
     assert unidecode(result.formats[0][Lang.HSR]) == unidecode("ngo")
 
+
+def test_variants():
+    test1 = "sha"
+    result1 = Penyim(test1, Lang.UNK)
+    assert unidecode(result1.formats[0][Lang.HSR]) == unidecode("sa")
+
+    test2 = "chee"
+    result2 = Penyim(test2, Lang.UNK)
+    assert unidecode(result2.formats[0][Lang.HSR]) == unidecode("tsi")
+
+    test3 = "wa"
+    result3 = Penyim(test3, Lang.UNK)
+    assert unidecode(result3.formats[0][Lang.HSR]) == unidecode("va")
+
+
+def test_ambiguous_results():
+    # ɛɪn (SL) and -ein (GC) is more common
+    test1 = "ben"
+    result1 = Penyim(test1, Lang.UNK)
+    assert unidecode(result1.formats[0][Lang.SL]) == unidecode("bɛɪn")
+    assert unidecode(result1.formats[0][Lang.GC]) == unidecode("bein")
+
+    # -ɛt (SL) and -eik (GC) are more common
+    test2 = "set"
+    result2 = Penyim(test2, Lang.UNK)
+    assert unidecode(result2.formats[0][Lang.SL]) == unidecode("sɛt")
+    assert unidecode(result2.formats[0][Lang.GC]) == unidecode("seik")
+
+
+def test_labial_onglide_inclusion():
+    test1 = "muo"
+    result1 = Penyim(test1, Lang.UNK)
+    assert unidecode(result1.formats[0][Lang.HSR]) == unidecode("muo")
+
+    test2 = "nguoi"
+    result2 = Penyim(test2, Lang.UNK)
+    assert unidecode(result2.formats[0][Lang.HSR]) == unidecode("ngoi")
+
+    test3 = "uon"
+    result3 = Penyim(test3, Lang.UNK)
+    assert unidecode(result3.formats[0][Lang.HSR]) == unidecode("on")
+
+    test4 = "huot"
+    result4 = Penyim(test4, Lang.UNK)
+    assert unidecode(result4.formats[0][Lang.HSR]) == unidecode("hot")
+
+
+def test_multiple_romanizations():
+    test = "ngi sib xei"
+    result = Penyim(test, Lang.UNK)
+    expected_result = ["ng(e)i", "sip", "lh(e)i"]
+    for i, word_formats in enumerate(result.formats):
+        assert unidecode(word_formats[Lang.HSR]) == unidecode(expected_result[i])

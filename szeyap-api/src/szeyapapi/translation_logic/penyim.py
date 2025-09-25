@@ -63,14 +63,25 @@ class Penyim:
         )?
     """
 
+    # Append initials to the list for edge cases
     all_initials = list(chain.from_iterable(
-      PENYIM_TABLES.initials.values())) + ["hl", "gn"]
+      PENYIM_TABLES.initials.values())) + ["hl", "gn", "sh", "w"]
+    
+    # Account for labial onglide inclusion in initials
+    for initial in all_initials:
+      if initial.startswith("o"):
+        all_initials.append("u" + initial)
     
     initials_sorted = sorted(filter(None, all_initials), key=len, reverse=True)
     initials_pattern = '|'.join([re.escape(f) for f in initials_sorted])
 
     all_finals = list(chain.from_iterable(
-      PENYIM_TABLES.finals.values()))
+      PENYIM_TABLES.finals.values())) + ["ee"]
+    
+    # Account for labial onglide inclusion in finals
+    for final in all_finals:
+      if final.startswith("o"):
+        all_finals.append("u" + final)
 
     finals_sorted = sorted(filter(None, all_finals), key=len, reverse=True)
     finals_pattern = '|'.join([re.escape(f) for f in finals_sorted])
@@ -102,6 +113,14 @@ class Penyim:
       if initial is None:
         initial = ""
       final = match.group("final")
+
+      # Normalize the labial onglide inclusion
+      if final.startswith("uo") and final != "uo":
+        final = final[1:]
+      
+      if initial.startswith("uo"):
+        initial = initial[1:]
+
       segment = initial + final
       segment = apply_penyim_rules(segment)
 
