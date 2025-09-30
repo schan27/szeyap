@@ -18,8 +18,8 @@ def apply_penyim_rules(segment: str):
         segment = segment.replace("gn", "ng")
     
     # Common variants: 'sha', 'chee', 'wa'
-    if segment == "sha":
-        segment = "sa"
+    if segment.startswith("sh"):
+        segment = segment.replace("sh", "s")
     
     if segment.endswith("ee"):
         segment = segment.replace("ee", "i")
