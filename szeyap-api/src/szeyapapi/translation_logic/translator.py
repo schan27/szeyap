@@ -3,7 +3,7 @@ import re
 import spacy
 from wordfreq import word_frequency
 from fast_langdetect import detect
-
+from hanziconv import HanziConv
 from szeyapapi.utils.enums import LanguageFormats as lang
 from szeyapapi.translation_logic.response import Response
 from szeyapapi.translation_logic.question import TranslationQuestion
@@ -42,15 +42,11 @@ class Translator:
                        for dict_entry_penyim in x["PENYIM"])
         return filter(_search_match_fn, self.data.dictionary)
 
-    def _search_dictionary_by_chinese(self, ch_phrase: str) -> Response:
+    def _search_dictionary_by_chinese(self, phrase: str) -> Response:
         """Chinese search"""
         def _search_match_fn(x):
-            for trad in x["TRAD"]:
-                if trad and ch_phrase in trad:
-                    return True
-                
             for simp in x["SIMP"]:
-                if simp and ch_phrase in simp:
+                if simp and HanziConv.toSimplified(phrase) in simp:
                     return True
         
         return filter(_search_match_fn, self.data.dictionary)
@@ -70,7 +66,6 @@ class Translator:
             return {
                 "english": defn["DEFN"],
                 "chinese": {
-                    "traditional": defn["TRAD"],
                     "simplified": defn["SIMP"],
                     "penyim": penyim_api_response
                 }
@@ -91,32 +86,31 @@ class Translator:
     # Search algorithm is simple here, just iterate the dictionary and search for 
     # matching string
     def ask(self, q: TranslationQuestion, limit: int) -> Response:
-        detected_language = detect(q.query)[0]["lang"]
-
-        parsed_penyim = Penyim(q.query, lang.UNK)
-        answers = self._search_dictionary_by_penyim(q.query)
-        is_penyim = not parsed_penyim.has_errors()
-
-        if is_penyim:
-            answers = self._search_dictionary_by_penyim(parsed_penyim)
-            q.lang = lang.UNK
-        elif detected_language == "zh":
+        detected_language = detect(q.query)[0]["lang"]        
+        if detected_language == "zh":
             answers = self._search_dictionary_by_chinese(q.query)
             q.lang = lang.CH
         elif detected_language == "en":
             q.lang = lang.EN
             answers = self._search_dictionary(q.query, "DEFN", full_match=True)
         else:
-            raise ValueError("Query could not be parsed as: English, Chinese, or Penyim")
+            parsed_penyim = Penyim(q.query, lang.UNK)
+            answers = self._search_dictionary_by_penyim(q.query)
+            is_penyim = not parsed_penyim.has_errors()
+
+            if is_penyim:
+                answers = self._search_dictionary_by_penyim(parsed_penyim)
+                q.lang = lang.UNK
+            else:
+                raise ValueError("Query could not be parsed as: English, Chinese, or Penyim")
+            
         return self._construct_answer(q, answers, limit)
     
     @staticmethod
     def rank_by_frequency(q: TranslationQuestion, results: list[dict]):
         ranked_results = []
         for result in results:
-            word = result["TRAD"][0]
-            if word is None:
-                word = result["SIMP"][0]
+            word = result["SIMP"][0]
             score = word_frequency(word, 'zh')
             ranked_results.append((result, score))
 

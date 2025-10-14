@@ -487,6 +487,12 @@ wheels = [
 ]
 
 [[package]]
+name = "hanziconv"
+version = "0.3.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/63/71/b89cb63077fd807fe31cf7c016a06e7e579a289d8a37aa24a30282d02dd2/hanziconv-0.3.2.tar.gz", hash = "sha256:208866da6ae305bca19eb98702b65c93bb3a803b496e4287ca740d68892fc4c4", size = 276775, upload-time = "2016-09-01T05:41:15.254Z" }
+
+[[package]]
 name = "httpcore"
 version = "1.0.9"
 source = { registry = "https://pypi.org/simple" }
@@ -1993,6 +1999,7 @@ dependencies = [
     { name = "fast-langdetect" },
     { name = "flask" },
     { name = "gunicorn" },
+    { name = "hanziconv" },
     { name = "jieba" },
     { name = "numpy" },
     { name = "openpyxl" },
@@ -2022,6 +2029,7 @@ requires-dist = [
     { name = "fast-langdetect", specifier = ">=0.3.2" },
     { name = "flask" },
     { name = "gunicorn" },
+    { name = "hanziconv", specifier = ">=0.3.2" },
     { name = "jieba", specifier = ">=0.42.1" },
     { name = "numpy", specifier = ">=2.3.1" },
     { name = "openpyxl", specifier = ">=3.1.5" },

@@ -5,6 +5,7 @@ from szeyapapi.translation_logic.penyim import Penyim
 
 import json
 import os 
+import logging
 
 class GeneChinDictionary(DictionaryBase):
 
@@ -42,7 +43,7 @@ class GeneChinDictionary(DictionaryBase):
             penyim_obj = Penyim(word.replace("-", " "), lang.GC)
             parsed_penyim.append(penyim_obj)
           except ValueError as e:
-            print(f"Warning: Failed to parse penyim '{word}' at entry {i}: {e}")
+            logging.debug(f"Warning: Failed to parse penyim '{word}' at entry {i}: {e}")
             parsed_penyim.append(None)
         else:
           parsed_penyim.append(None)

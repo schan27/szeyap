@@ -16,13 +16,25 @@ class StephenLiDictionary(DictionaryBase):
 
     def load_dictionary(self):
         self.load_json(STEPHEN_LI_DICTIONARY_PATH)
+        
+        def safe_transform(x):
+            try:
+                penyim_string = x["taishaneseRomanization"].replace('[', '').replace(']', '')
 
-        self.dictionary = list(map(lambda x: {
-            "SIMP": [x["taishanese"]],
-            "TRAD": [None],  # we just group everything as simplified for stephen li
-            "PENYIM": [Penyim(x["taishaneseRomanization"].replace('[', '').replace(']', '').replace("/", " "), lang.SL)],
-            "DEFN": x["english"]
-        }, self.dictionary))
+                splitted = penyim_string.split("/")
+                splitted = [s.strip() for s in splitted if not s.isdigit()]
+                penyim_string = " ".join(splitted)
+
+                return {
+                    "SIMP": [x["mandarin"]],
+                    "TRAD": None,  # we just group everything as simplified for stephen li
+                    "PENYIM": [Penyim(penyim_string, lang.SL)],
+                    "DEFN": x["english"]        
+                }
+            except:
+                pass
+        
+        self.dictionary = [item for item in map(safe_transform, self.dictionary) if item is not None]
 
 
 # Singleton instance of StephenLiDictionary
