@@ -9,7 +9,7 @@ from unicodedata import normalize
  
 
 RARE_TONES = [Tone.RARE1, Tone.RARE2, Tone.RARE3, Tone.RARE5, Tone.RARE6]
-DIACRITICS_PATTERN = re.compile("(\u0304|\u0308|\u0303|\u0300|\u0302)")
+DIACRITICS_PATTERN = re.compile("([\u0300-\u036f])")
 
 class Penyim:
 
@@ -103,7 +103,7 @@ class Penyim:
 
     # Remove diacritics 
     normalized = "".join(DIACRITICS_PATTERN.sub("", self.sample).split())
-
+    
     for (match, start, end) in match_syllables_backward(syllable_pattern, normalized):
       if start != start:
         break
@@ -163,7 +163,6 @@ class Penyim:
       return
 
     phrases, positions = self.extract_penyim_phrases()
-    print(f"{phrases=}")
     self.positions = positions
 
     if not phrases:

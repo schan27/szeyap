@@ -32,6 +32,9 @@ where = ["src"]
 include = ["szeyapapi*"]
 exclude = ["tests*"]
 
+[tool.uv.sources]
+szeyapapi = { workspace = true }
+
 [dependency-groups]
 dev = [
     "ipdb>=0.13.13",

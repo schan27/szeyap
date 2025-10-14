@@ -2,7 +2,7 @@ import re
 
 import spacy
 from wordfreq import word_frequency
-from fast_langdetect import detect_multilingual
+from fast_langdetect import detect
 
 from szeyapapi.utils.enums import LanguageFormats as lang
 from szeyapapi.translation_logic.response import Response
@@ -91,7 +91,7 @@ class Translator:
     # Search algorithm is simple here, just iterate the dictionary and search for 
     # matching string
     def ask(self, q: TranslationQuestion, limit: int) -> Response:
-        detected_language = detect_multilingual(q.query)[0]["lang"]
+        detected_language = detect(q.query)[0]["lang"]
 
         parsed_penyim = Penyim(q.query, lang.UNK)
         answers = self._search_dictionary_by_penyim(q.query)

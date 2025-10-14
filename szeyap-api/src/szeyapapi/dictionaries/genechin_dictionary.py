@@ -33,8 +33,19 @@ class GeneChinDictionary(DictionaryBase):
 
     # Adjust Jyutping format to allow for parsing
     for i, entry in enumerate(self.dictionary):
-      parsed_penyim = [Penyim(word.replace("-", " "), lang.GC) if word 
-                  else None for word in entry["PENYIM"]]
+      parsed_penyim = []
+      # FIXME: The JYUTPING key contains the PENYIM in Gene Chin dictionary 
+      # and the PENYIM key contains Mandarin pinyin
+      for word in entry["JYUTPING"]:
+        if word:
+          try:
+            penyim_obj = Penyim(word.replace("-", " "), lang.GC)
+            parsed_penyim.append(penyim_obj)
+          except ValueError as e:
+            print(f"Warning: Failed to parse penyim '{word}' at entry {i}: {e}")
+            parsed_penyim.append(None)
+        else:
+          parsed_penyim.append(None)
       entry["PENYIM"] = parsed_penyim
 
 
