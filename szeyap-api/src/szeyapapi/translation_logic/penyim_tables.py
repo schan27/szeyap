@@ -99,7 +99,7 @@ class PenyimTables:
                 j = int(col_result[0]) # row number
                 i = int(row_result[0]) # column number
 
-                print(f"Found {penyim_q} at ({j}, {i}) with tone {tone} in {table}")
+                # print(f"Found {penyim_q} at ({j}, {i}) with tone {tone} in {table}")
                 return (j, i), tone
         else:
             return (-1, -1), None
