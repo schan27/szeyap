@@ -20,7 +20,7 @@ class StephenLiDictionary(DictionaryBase):
         self.dictionary = list(map(lambda x: {
             "SIMP": [x["taishanese"]],
             "TRAD": [None],  # we just group everything as simplified for stephen li
-            "PENYIM": [Penyim(x["taishaneseRomanization"].replace('[', '').replace(']', ''), lang.SL)],
+            "PENYIM": [Penyim(x["taishaneseRomanization"].replace('[', '').replace(']', ''), lang.SL).replace("/", " ")],
             "DEFN": x["english"]
         }, self.dictionary))
 
