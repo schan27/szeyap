@@ -1,7 +1,7 @@
-from .dictionary_base import DictionaryBase
-from ..config import STEPHEN_LI_DICTIONARY_PATH
-from ..utils.enums import LanguageFormats as lang
-from ..translation_logic.penyim import Penyim
+from szeyapapi.dictionaries.dictionary_base import DictionaryBase
+from szeyapapi.config import STEPHEN_LI_DICTIONARY_PATH
+from szeyapapi.utils.enums import LanguageFormats as lang
+from szeyapapi.translation_logic.penyim import Penyim
 
 import os
 
@@ -16,6 +16,7 @@ class StephenLiDictionary(DictionaryBase):
 
     def load_dictionary(self):
         self.load_json(STEPHEN_LI_DICTIONARY_PATH)
+
         self.dictionary = list(map(lambda x: {
             "SIMP": [x["taishanese"]],
             "TRAD": [None],  # we just group everything as simplified for stephen li
