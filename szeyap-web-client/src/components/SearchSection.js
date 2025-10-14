@@ -51,15 +51,13 @@ export default function SearchSection() {
             />
             <div className="absolute right-2 sm:right-3 top-8 transform -translate-y-1/2 flex space-x-1 sm:space-x-2">
               <Tooltip>
-                <TooltipTrigger>
-                  <button
-                    onClick={handlePaste}
-                    className="p-1.5 sm:p-2 text-gray-500 hover:text-gray-700 transition-colors"
-                    title="Paste"
-                    aria-label="Paste from clipboard"
-                  >
-                    <Clipboard size={16} className="sm:w-5 sm:h-5" />
-                  </button>
+                <TooltipTrigger
+                  onClick={handlePaste}
+                  className="p-1.5 sm:p-2 text-gray-500 hover:text-gray-700 transition-colors"
+                  title="Paste"
+                  aria-label="Paste from clipboard"
+                >
+                  <Clipboard size={16} className="sm:w-5 sm:h-5" />
                 </TooltipTrigger>
                 <TooltipContent className="">Paste from clipboard</TooltipContent>
               </Tooltip>
