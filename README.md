@@ -1,5 +1,4 @@
 # Szeyap App
-Szeyap app is a ... [include description here]
 
 ## Developing locally
 1. Prerequisite: `uv` is installed
@@ -32,35 +31,15 @@ You may not want to run everything, ie if you are developing the discord bot you
 docker compose --profile with-web-client up
 ```
 
-## v0.0.1 Initial release TODO
-### API
-- [ ] Improve order of results returned in api, sorted by relevance
-- [x] Automatic language detection
-- [ ] User account creation
-- [ ] Penyim conversion
+---
 
-### Bot
-- [ ] Help pages
-- [ ] User account creation
-- [ ] Penyim conversion
+Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
-## v0.0.2 Web + Features release TODO
-### Web
-- [ ] Create search page, where users can search the dictionary
-- [ ] Add admin page, allowing editing of dictionaries + jyutping conversion table
+This work is licensed under a
+[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].
 
-### Bot
-- [ ] Server stats
-  - Use all member join date data to construct graph of historical server membership trend
-  - Start tracking server membership, push data to API onMemberJoin
-- [ ] Canto Rocks knock-off practice game
-- [ ] Stroke order command
+[![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
 
-### API
-- [ ] Server stats, store info in a csv file from now on
-
-### R&D
-- [ ] Calculate relevance of definition to query using GLoVE or Word2Vec, and maybe chinese equivalents?
-  - Hopefully allow for capturing of semantic meaning instead of merely matching words
-  - Need to clean out weird unicode data like the ref numbers, etc.
-  - Could also try using a transformer model maybe? Would definitely need to source more data though ...
+[cc-by-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/
+[cc-by-nc-sa-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
+[cc-by-nc-sa-shield]: https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
