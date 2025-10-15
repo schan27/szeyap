@@ -18,6 +18,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Link from 'next/link';
+import { socialLinks } from './SocialSidebar';
 
 // Single source of truth for menu items
 const menuItems = [
@@ -104,6 +105,33 @@ export default function Header() {
                       </li>
                     ))}
                   </ul>
+
+                  {/* Social Links in Mobile Menu */}
+                  <div className="mt-8 border-t border-gray-200 pt-6">
+                    <h3 className="px-8 text-sm font-semibold text-gray-600 uppercase tracking-wider mb-4">
+                      Connect With Us
+                    </h3>
+                    <ul className="space-y-3">
+                      {socialLinks.map((item) => (
+                        <li key={item.platform}>
+                          <a
+                            href={item.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => setIsOpen(false)}
+                            className="flex items-center px-8 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors"
+                          >
+                            <img 
+                              src={item.imgSrc} 
+                              alt={item.altText} 
+                              className={`h-5 w-5 object-contain mr-3 ${item.className || ''}`}
+                            />
+                            <span className="text-base font-medium">{item.platform}</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </nav>
               </SheetContent>
             </Sheet>

@@ -1,28 +1,35 @@
 'use client';
 
+// Social media links data
+export const socialLinks = [
+  {
+    imgSrc: "youtube_icon.svg",
+    altText: "Hoisan Sauce Profile Pic",
+    platform: "Youtube",
+    href: "https://www.youtube.com/@HoisanSauce"
+  },
+  {
+    imgSrc: "discord_logo.jpeg",
+    altText: "Hoisan Sauce Profile Pic",
+    platform: "Discord",
+    className: "h-8 rounded-lg",
+    href: "https://discord.gg/Jp8HfEEN"
+  },
+  {
+    imgSrc: "github_logo.png",
+    altText: "GitHub Repository",
+    platform: "GitHub",
+    className: "h-8 rounded-lg",
+    href: "https://github.com/schan27/szeyap"
+  }
+];
+
 export default function SocialSidebar() {
   return (
     <div className="fixed left-8 top-32 hidden md:flex flex-col gap-2">
-      <SocialItem
-        imgSrc="youtube_icon.svg"
-        altText="Hoisan Sauce Profile Pic"
-        platform="Youtube"
-        href="https://www.youtube.com/@HoisanSauce"
-      />
-      <SocialItem
-        imgSrc="discord_logo.jpeg"
-        altText="Hoisan Sauce Profile Pic"
-        platform="Discord"
-        className="h-8 rounded-lg"
-        href="https://discord.gg/Jp8HfEEN"
-      />
-      <SocialItem
-        imgSrc="github_logo.png"
-        altText="GitHub Repository"
-        platform="GitHub"
-        className="h-8 rounded-lg"
-        href="https://github.com/schan27/szeyap"
-      />
+      {socialLinks.map((link) => (
+        <SocialItem key={link.platform} {...link} />
+      ))}
     </div>
   );
 }
