@@ -2,7 +2,7 @@
 
 export default function SocialSidebar() {
   return (
-    <div className="fixed left-8 top-32 flex flex-col gap-2">
+    <div className="fixed left-8 top-32 hidden md:flex flex-col gap-2">
       <SocialItem
         imgSrc="youtube_icon.svg"
         altText="Hoisan Sauce Profile Pic"
@@ -29,9 +29,14 @@ export default function SocialSidebar() {
 
 function SocialItem({ imgSrc, altText, platform, className, href }) {
   return (
-    <a className="px-4 py-0.5 border-l-2 border-gray-400 flex items-center justify-start gap-4 hover:scale-105 transition-all duration-500 opacity-80 hover:opacity-100 cursor-pointer" href={href}>
+    <a 
+      className="group px-4 py-0.5 border-l-2 border-gray-400 flex items-center justify-start gap-4 hover:scale-105 transition-all duration-500 opacity-80 hover:opacity-100 cursor-pointer" 
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <img src={imgSrc} alt={altText} className={`h-6 object-fill ${className}`} />
-      <span className="text-gray-800 text-lg text-left">{platform}</span>
+      <span className="text-gray-800 text-lg text-left group-hover:text-gray-600">{platform}</span>
     </a>
   );
 }

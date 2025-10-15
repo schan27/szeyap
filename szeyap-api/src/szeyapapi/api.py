@@ -15,9 +15,7 @@ origins = [
     'http://184.146.144.14:3000',      # Your local development
     'https://szeyap-frontend-production.up.railway.app',  # Production frontend
     'http://localhost:3000',            # Local development
-    'http://localhost:3001',            # Local development alt port
     'http://127.0.0.1:3000',           # Local development IP
-    'http://127.0.0.1:3001',           # Local development IP alt port
 ]
 
 # In development, allow all origins
