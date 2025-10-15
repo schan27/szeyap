@@ -7,7 +7,7 @@ import { Input } from "./ui/input";
 import DictionarySettings from "./DictionarySettings";
 import HandwritingInput from "./HandwritingInput";
 
-const API_URL = "http://szeyap-backend-production.up.railway.app/api/translation";
+const API_URL = "https://szeyap-backend-production.up.railway.app/api/translation";
 
 export default function SearchSection() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -41,17 +41,24 @@ export default function SearchSection() {
       const response = await fetch(`${API_URL}?${params}`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
           'Accept': 'application/json',
+          'Origin': window.location.origin
         },
         mode: 'cors',
+        credentials: 'same-origin'
       });
       
       if (!response.ok) {
         throw new Error('Failed to fetch translation');
       }
 
-      const data = await response.json();
+                    const data = await response.json();
+              console.log('Translation response:', {
+                status: response.status,
+                headers: Object.fromEntries(response.headers.entries()),
+                data
+              });
+              console.log('First translation:', data.translations?.[0]);
       setResults(data);
     } catch (err) {
       console.error('Translation error:', err);
@@ -189,9 +196,71 @@ export default function SearchSection() {
         )}
         {results && (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <pre className="whitespace-pre-wrap text-gray-800 text-base">
-              {JSON.stringify(results, null, 2)}
-            </pre>
+            <div className="space-y-6">
+              {/* Header with the original word */}
+              <div className="border-b border-gray-200 pb-4">
+                <div className="flex items-baseline gap-3">
+                  <h2 className="text-3xl font-medium">{results.original_phrase}</h2>
+                  {results.metadata && (
+                    <span className="text-sm text-gray-500">
+                      From: <a href={results.metadata.dictionary_url} target="_blank" rel="noopener noreferrer" className="hover:underline">{results.metadata.dictionary_name}</a>
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Translations */}
+              <div className="space-y-4">
+                {results.translations && results.translations.map((translation, index) => (
+                  <div key={index} className="group">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-gray-400 font-medium w-6">{index + 1}.</span>
+                      <div className="flex-1">
+                        <div className="flex flex-col gap-2">
+                          {/* Chinese Characters and Pronunciations */}
+                          <div className="flex flex-col gap-3">
+                            {/* Character and Romanization */}
+                            <div className="flex flex-col gap-2">
+                              {/* Character */}
+                              <div className="flex items-baseline gap-3">
+                                <span className="text-2xl font-medium">
+                                  {translation.chinese?.simplified?.[0] || results.original_phrase}
+                                </span>
+                              </div>
+
+                              {/* Romanization Systems */}
+                              <div className="flex flex-wrap gap-3">
+                                {translation.chinese?.penyim?.[0] && (
+                                  <>
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">HSR</span>
+                                      <span className="text-gray-900">{translation.chinese.penyim[0].HSR}</span>
+                                    </div>
+                                    <span className="text-gray-300">·</span>
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">SL</span>
+                                      <span className="text-gray-900">{translation.chinese.penyim[0].SL}</span>
+                                    </div>
+                                    <span className="text-gray-300">·</span>
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">GC</span>
+                                      <span className="text-gray-900">{translation.chinese.penyim[0].GC}</span>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Definition */}
+                            <p className="text-gray-700">{translation.english}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
       </div>

@@ -10,17 +10,28 @@ app = AsyncApp(__name__, specification_dir=f"{os.path.dirname(os.path.realpath(_
 # Add API
 app.add_api('szeyap_api.yml', resolver=RelativeResolver('szeyapapi.resolvers'))
 
-# Configure CORS
+# Configure CORS with more permissive settings
+origins = [
+    'http://184.146.144.14:3000',      # Your local development
+    'https://szeyap-frontend-production.up.railway.app',  # Production frontend
+    'http://localhost:3000',            # Local development
+    'http://localhost:3001',            # Local development alt port
+    'http://127.0.0.1:3000',           # Local development IP
+    'http://127.0.0.1:3001',           # Local development IP alt port
+]
+
+# In development, allow all origins
+if os.getenv('ENVIRONMENT') != 'production':
+    origins.append('*')
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        'http://184.146.144.14:3000',  # Your local development
-        'https://szeyap-frontend-production.up.railway.app',  # Production frontend
-        'http://localhost:3000',  # Local development
-    ],
+    allow_origins=origins,
+    allow_origin_regex='https?://(localhost|127\.0\.0\.1)(:[0-9]+)?',  # Allow any localhost port
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["*"]
 )
 
 server_port = os.getenv('PORT', cfg.FLASK_DEFAULT_PORT)
