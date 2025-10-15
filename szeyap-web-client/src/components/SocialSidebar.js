@@ -14,7 +14,14 @@ export default function SocialSidebar() {
         altText="Hoisan Sauce Profile Pic"
         platform="Discord"
         className="h-8 rounded-lg"
-        href="https://discord.com/invite/hoisansauce"
+        href="https://discord.gg/Jp8HfEEN"
+      />
+      <SocialItem
+        imgSrc="github_logo.png"
+        altText="GitHub Repository"
+        platform="GitHub"
+        className="h-8 rounded-lg"
+        href="https://github.com/schan27/szeyap"
       />
     </div>
   );
