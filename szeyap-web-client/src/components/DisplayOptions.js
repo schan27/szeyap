@@ -77,24 +77,24 @@ function DisplayOptions({ className, settings, onSettingsChange }) {
               }
             >
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="hsr" id="hsr" />
-                <Label htmlFor="hsr">HSR (Hoisan Sauce Romanization)</Label>
-              </div>
-              <div className="flex items-center space-x-2">
                 <RadioGroupItem value="wps" id="wps" />
-                <Label htmlFor="wps">WPS (Jade Wu's Phonetic System)</Label>
+                <Label htmlFor="wps">WPS (Inspirlang)</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="sl" id="sl" />
                 <Label htmlFor="sl">SL (Stephen Li)</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="dj" id="dj" />
-                <Label htmlFor="dj">DJ (Deng Jun)</Label>
+                <RadioGroupItem value="gc" id="gc" />
+                <Label htmlFor="gc">GC (Gene Chin)</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="gc" id="gc" />
-                <Label htmlFor="gc">GC (Gene Chin's Phonetic System)</Label>
+                <RadioGroupItem value="hsr" id="hsr" />
+                <Label htmlFor="hsr">HSR (Hoisan Sauce)</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="dj" id="dj" />
+                <Label htmlFor="dj">DJ (Deng Jun)</Label>
               </div>
             </RadioGroup>
           </AnimatedTabsContent>
