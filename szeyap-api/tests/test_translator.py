@@ -13,7 +13,7 @@ class TestSearch(unittest.TestCase):
 
     # don't know a better way to point at szeyap-api root
     current_dir = Path(__file__).resolve().parent
-    dict_path = "test_dict.json"
+    dict_path = Path(current_dir, "test_dict.json")
 
     @patch("szeyapapi.config.GENE_CHIN_DICTIONARY_PATH", dict_path)
     @patch("szeyapapi.config.PROJ_ROOT", current_dir)
@@ -60,7 +60,7 @@ class TestSearch(unittest.TestCase):
     def test_english_search(self):
         question = TranslationQuestion("cats")
         matches = list(
-            self.trans._search_dictionary(question.query, "DEFN", full_match=True)
+            self.trans._search_dictionary(question.query, "LEMMA", full_match=True)
         )
 
         expected_matches = 2

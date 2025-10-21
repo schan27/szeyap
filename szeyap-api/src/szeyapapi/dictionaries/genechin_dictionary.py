@@ -25,11 +25,16 @@ class GeneChinDictionary(DictionaryBase):
     # A definition can be parsed into a list of possible translations
     # We ensure all are in a list format
     for entry in self.dictionary:
-      keys_need_join = ('TRAD', 'SIMP', 'PENYIM', 'JYUTPING')
+      keys_need_join = ('TRAD', 'SIMP', 'PENYIM', 'JYUTPING', "LEMMA")
       for key in keys_need_join:
         if isinstance(entry[key], str):
+          if key != "LEMMA":
+            value = [entry[key]]
+          else:
+            value = entry[key]
+
           entry.update({
-            key: [entry[key]]
+            key: value
           })
 
     # Adjust Jyutping format to allow for parsing

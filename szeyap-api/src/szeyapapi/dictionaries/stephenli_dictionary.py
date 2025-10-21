@@ -29,7 +29,8 @@ class StephenLiDictionary(DictionaryBase):
                     "SIMP": [x["mandarin"]],
                     "TRAD": None,  # we just group everything as simplified for stephen li
                     "PENYIM": [Penyim(penyim_string, lang.SL)],
-                    "DEFN": x["english"]        
+                    "DEFN": x["english"],
+                    "LEMMA": x["LEMMA"]
                 }
             except:
                 pass

@@ -27,7 +27,7 @@ class Translator:
         """English search"""
         parsed = self.nlp(phrase)
         lemmatized_phrase = " ".join([tok.lemma_ for tok in parsed])
-
+        
         def _search_match_fn(x):
             if full_match:
                 return re.search(rf"\b{lemmatized_phrase.lower()}\b", x[field].lower()) is not None
@@ -92,7 +92,7 @@ class Translator:
             q.lang = lang.CH
         elif detected_language == "en":
             q.lang = lang.EN
-            answers = self._search_dictionary(q.query, "DEFN", full_match=True)
+            answers = self._search_dictionary(q.query, "LEMMA", full_match=True)
         else:
             parsed_penyim = Penyim(q.query, lang.UNK)
             answers = self._search_dictionary_by_penyim(q.query)

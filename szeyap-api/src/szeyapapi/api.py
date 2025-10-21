@@ -12,7 +12,6 @@ app.add_api('szeyap_api.yml', resolver=RelativeResolver('szeyapapi.resolvers'))
 
 # Configure CORS with more permissive settings
 origins = [
-    'http://184.146.144.14:3000',      # Your local development
     'https://szeyap-frontend-production.up.railway.app',  # Production frontend
     'http://localhost:3000',            # Local development
     'http://127.0.0.1:3000',           # Local development IP
