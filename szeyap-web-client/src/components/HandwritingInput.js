@@ -11,7 +11,7 @@ export default function HandwritingInput({ onCharacterRecognized }) {
   
   // Store drawing state
   const drawingState = useRef({
-    cw: 200, // canvas width
+    cw: 400, // canvas width
     ch: 200, // canvas height
     x: [], // x coordinates for current stroke
     y: [], // y coordinates for current stroke
@@ -214,7 +214,7 @@ export default function HandwritingInput({ onCharacterRecognized }) {
       <div className="relative inline-block">
         <canvas
           ref={canvasRef}
-          width={200}
+          width={400}
           height={200}
           className="border-2 border-gray-300 rounded-lg bg-white touch-none"
           onMouseDown={startDrawing}
