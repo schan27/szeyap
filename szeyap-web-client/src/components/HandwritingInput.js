@@ -103,47 +103,6 @@ export default function HandwritingInput({ onCharacterRecognized }) {
     
     setIsDrawing(false);
     state.points = [];
-
-    // Get the drawing data
-    if (state.drawings.length === 0) return;
-
-    setIsRecognizing(true);
-    try {
-      const requestData = {
-        options: 'enable_pre_space',
-        requests: [{
-          writing_guide: {
-            writing_area_width: canvasRef.current.width,
-            writing_area_height: canvasRef.current.height
-          },
-          ink: state.drawings,
-          language: 'zh_CN'
-        }]
-      };
-
-      fetch('https://www.google.com.tw/inputtools/request?ime=handwriting&app=mobilesearch&cs=1&oe=UTF-8', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestData)
-      })
-      .then(response => response.json())
-      .then(result => {
-        if (result?.[1]?.[0]?.[1]?.[0]) {
-          setRecognizedChar(result[1][0][1][0]);
-        }
-      })
-      .catch(error => {
-        console.error('Error recognizing character:', error);
-      })
-      .finally(() => {
-        setIsRecognizing(false);
-      });
-    } catch (error) {
-      console.error('Error sending recognition request:', error);
-      setIsRecognizing(false);
-    }
   };
 
   const clearCanvas = () => {
