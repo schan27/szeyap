@@ -81,14 +81,12 @@ class PenyimTables:
             return self._get_tone_type_from_num(lang, tone_q)
 
     def search(self, penyim_q: str, tone_q: str, lang_type: Lang) -> tuple[tuple[int,int], Tone|None]:
-        tables_to_search = [lang_type] if lang_type != Lang.UNK else PENYIM_LANG_TYPES
-
-        for table in tables_to_search:
+        for table in PENYIM_LANG_TYPES:
             tone = self._answer_tone_q(tone_q, table)
             if tone:
                 break 
         
-        for table in tables_to_search:
+        for table in PENYIM_LANG_TYPES:
             table_arr = self.tables[table].to_numpy()
             result = np.where(table_arr == penyim_q)
             
