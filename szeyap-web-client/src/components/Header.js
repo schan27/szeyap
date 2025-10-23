@@ -48,7 +48,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation Menu */}
-          <NavigationMenu className="hidden md:flex">
+          <NavigationMenu className="hidden lg:flex">
             <NavigationMenuList className="flex items-center space-x-1">
               {menuItems.map((item) => (
                 <NavigationMenuItem key={item.href}>
@@ -71,7 +71,7 @@ export default function Header() {
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <button 
-                  className="p-2 text-gray-600 hover:text-gray-900 transition-colors md:hidden border border-gray-300 rounded-md bg-white hover:bg-gray-100 shadow-sm cursor-pointer"
+                  className="p-2 text-gray-600 hover:text-gray-900 transition-colors lg:hidden border border-gray-300 rounded-md bg-white hover:bg-gray-100 shadow-sm cursor-pointer"
                   aria-label="Open navigation menu"
                 >
                   <Menu size={24} />

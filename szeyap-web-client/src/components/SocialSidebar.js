@@ -26,7 +26,7 @@ export const socialLinks = [
 
 export default function SocialSidebar() {
   return (
-    <div className="fixed left-8 top-32 hidden md:flex flex-col gap-2">
+    <div className="fixed left-6 top-32 hidden lg:flex flex-col gap-2">
       {socialLinks.map((link) => (
         <SocialItem key={link.platform} {...link} />
       ))}
@@ -37,7 +37,7 @@ export default function SocialSidebar() {
 function SocialItem({ imgSrc, altText, platform, className, href }) {
   return (
     <a 
-      className="group px-4 py-0.5 border-l-2 border-gray-400 flex items-center justify-start gap-4 hover:scale-105 transition-all duration-500 opacity-80 hover:opacity-100 cursor-pointer" 
+      className="group px-3 py-0.5 border-l-2 border-gray-400 flex items-center justify-start gap-3 hover:scale-105 transition-all duration-500 opacity-80 hover:opacity-100 cursor-pointer" 
       href={href}
       target="_blank"
       rel="noopener noreferrer"

@@ -25,7 +25,7 @@ if os.getenv('ENVIRONMENT') != 'production':
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_origin_regex='https?://(localhost|127\.0\.0\.1)(:[0-9]+)?',  # Allow any localhost port
+    allow_origin_regex=r'https?://(localhost|127\.0\.0\.1)(:[0-9]+)?',  # Allow any localhost port
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
