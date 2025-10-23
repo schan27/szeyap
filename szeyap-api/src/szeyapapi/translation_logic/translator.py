@@ -1,8 +1,7 @@
 import re
-import ssl
-import certifi
 
 import spacy
+import langid
 from wordfreq import word_frequency
 from hanziconv import HanziConv
 from szeyapapi.utils.enums import LanguageFormats as lang
@@ -10,15 +9,6 @@ from szeyapapi.translation_logic.response import Response
 from szeyapapi.translation_logic.question import TranslationQuestion
 from szeyapapi.dictionaries.dictionary_base import DictionaryBase
 from szeyapapi.translation_logic.penyim import Penyim
-
-# Try to import and configure fast_langdetect with proper SSL context
-try:
-    from fast_langdetect import detect
-    # Set up SSL context for macOS compatibility
-    ssl._create_default_https_context = ssl._create_unverified_context
-except ImportError:
-    detect = None
-
 
 # A Translator receives Questions and create Responses
 #  - the Translator is created by giving it a dictionary, and it uses the dictionary to create Responses
@@ -95,7 +85,7 @@ class Translator:
     # Search algorithm is simple here, just iterate the dictionary and search for 
     # matching string
     def ask(self, q: TranslationQuestion, limit: int) -> Response:
-        detected_language = detect(q.query)[0]["lang"]        
+        detected_language = langid.classify(q.query)[0]  
         if detected_language == "zh":
             answers = self._search_dictionary_by_chinese(q.query)
             q.lang = lang.CH

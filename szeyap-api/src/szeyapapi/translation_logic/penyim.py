@@ -18,7 +18,6 @@ class Penyim:
     self.indices = []
     self.formats = []
     self.tone = []
-    self.positions = []
     self.errors = {}
     self.init_penyim(lang_type)
   
@@ -50,7 +49,6 @@ class Penyim:
   def extract_penyim_phrases(self) -> tuple[tuple]:
     
     syllables = []
-    positions = []
     
     # We should create a regex for each romanization system
     tone_pattern = r"""
@@ -139,7 +137,6 @@ class Penyim:
           tone = (diacritic,)
 
       syllables.append((segment, tone))
-      positions.append((start, end))
 
       # Update start marker to ensure no characters are lost
       start = end
@@ -147,23 +144,21 @@ class Penyim:
       if (start != len(normalized)) and (normalized[start].isspace()):
         non_whitespace_index = re.search(r'\S', normalized[start:]).start()
         start += non_whitespace_index
-
-    return syllables, positions
+    
+    return syllables
   
   def _set_as_err(self, msg):
     self.errors[0] = msg
     self.indices.append((-1, -1))
     self.formats.append(None)
     self.tone.append(None)
-    self.positions = [(0, len(self.sample))]
 
   def init_penyim(self, lang_type: Lang):
     if lang_type not in PENYIM_LANG_TYPES + [Lang.UNK]:
       self._set_as_err(f"Invalid language type '{lang_type}'")
       return
 
-    phrases, positions = self.extract_penyim_phrases()
-    self.positions = positions
+    phrases = self.extract_penyim_phrases()
 
     if not phrases:
       self._set_as_err("No penyim phrases found")
@@ -171,21 +166,20 @@ class Penyim:
     
     for i, (penyim_q, tone_q) in enumerate(phrases):
       indices, tone = PENYIM_TABLES.search(penyim_q, tone_q, lang_type)
-      
+
       if indices == (-1, -1):
         self.indices.append((-1, -1))
         self.formats.append(None)
         self.tone.append(None)
 
-        fail_start, fail_end = self.positions[i]
-        self.errors[i] = (f"Failed to parse penyim candidate '{self.sample[fail_start:fail_end]}' at position ({str(fail_start)}, {str(fail_end)})")
+        self.errors[i] = (f"Failed to parse penyim candidate '{self.sample}'")
       else:
         self.indices.append(indices)
         self.tone.append(tone)
         # Initialize format for all romanizations
         self.formats.append({lang: self._merge_initial_final_tone(indices, tone, lang) 
                              for lang in PENYIM_LANG_TYPES})
-
+      
   def _merge_initial_final_tone(self, indices: tuple[int,int], tone: Tone, lang: Lang):
     tone = PENYIM_TABLES.get_tone(lang, tone)
 
@@ -199,16 +193,9 @@ class Penyim:
     return result
 
   def render_in_original_format(self, lang: Lang) -> str:
-    curr = 0
     result = ""
-    for i, pos in enumerate(self.positions):
-      result += self.sample[curr:pos[0]]
-      if (i in self.errors):
-        result += f"[ERR:{self.sample[pos[0]:pos[1]]}]"
-      else:
-        result += self.formats[i][lang]
-      curr = pos[1]
-    result += self.sample[curr:]
+    for syllable in self.formats:
+        result += syllable[lang]
     return result
 
   def summarize_errors(self):
@@ -216,8 +203,7 @@ class Penyim:
       return None
     error_msg = "Failed to parse:"
     for i in self.errors:
-      start, end = self.positions[i]
-      error_msg += f" <{self.sample[start:end]}>"
+      error_msg += f" <{self.sample}>"
     return error_msg
 
   def has_errors(self):

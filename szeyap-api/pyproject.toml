@@ -18,12 +18,12 @@ dependencies = [
     "wordfreq>=3.1.1",
     "jieba>=0.42.1",
     "spacy>=3.8.7",
-    "fast-langdetect>=0.3.2",
     "en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl",
     "docker>=7.1.0",
     "pandas>=2.3.1",
     "openpyxl>=3.1.5",
     "hanziconv>=0.3.2",
+    "langid>=1.1.6",
 ]
 
 [project.scripts]

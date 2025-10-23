@@ -4,7 +4,8 @@
         "SIMP": "\u732b",
         "JYUTPING": "mi\u016b",
         "PENYIM": "m\u0101o",
-        "DEFN": "cat.\u2075"
+        "DEFN": "cat.\u2075",
+        "LEMMA": "cat"
     },
     {
         "TRAD": [
@@ -19,13 +20,15 @@
         "PENYIM": [
             "xi\u00f3ngm\u0101o"
         ],
-        "DEFN": "tomcat.\u2075"
+        "DEFN": "tomcat.\u2075",
+        "LEMMA": "tomcat"
     },
         {
         "TRAD": "\u72f8",
         "SIMP": "",
         "JYUTPING": "l\u0129",
         "PENYIM": "l\u00ed",
-        "DEFN": "the fox; the wild-cat; the raccoon.\u00b9\u2074 (variant: \u8c8d l\u00ee).\u00b9\u2074"
+        "DEFN": "the fox; the wild-cat; the raccoon.\u00b9\u2074 (variant: \u8c8d l\u00ee).\u00b9\u2074",
+        "LEMMA": "the fox the wild cat the raccoon variant"
     }
 ]
