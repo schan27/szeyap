@@ -42,11 +42,11 @@ class TestSearch(unittest.TestCase):
                     "chinese": {
                         "penyim": [
                             {
-                                Lang.DJ: "mao-",
-                                Lang.GC: "māo",
-                                Lang.HSR: "mau55",
-                                Lang.JW: "mao2",
-                                Lang.SL: "mau55",
+                                Lang.DJ: "miu-",
+                                Lang.GC: "mīu",
+                                Lang.HSR: "miu55",
+                                Lang.JW: "miu2",
+                                Lang.SL: "miu55",
                             }
                         ],
                         "traditional": ["\u8c93"],
@@ -70,4 +70,10 @@ class TestSearch(unittest.TestCase):
         pass
 
     def test_chinese_search(self):
-        pass
+        question = TranslationQuestion("\u732b") #猫
+        matches = list(
+            self.trans._search_dictionary_by_chinese(question.query)
+        )
+        expected_matches = 2
+        self.assertEqual(expected_matches, len(matches))
+
