@@ -80,7 +80,8 @@ class PenyimTables:
         else:
             return self._get_tone_type_from_num(lang, tone_q)
 
-    def search(self, penyim_q: str, tone_q: str, lang_type: Lang) -> tuple[tuple[int,int], Tone|None]:
+    # TODO: lang_type not used
+    def search(self, penyim_q: str, tone_q: str, lang_type: Lang = Lang.UNK) -> tuple[tuple[int,int], Tone|None]:
         for table in PENYIM_LANG_TYPES:
             tone = self._answer_tone_q(tone_q, table)
             if tone:

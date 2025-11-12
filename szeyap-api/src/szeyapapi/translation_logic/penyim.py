@@ -14,7 +14,7 @@ DIACRITICS_PATTERN = re.compile("([\u0300-\u036f])")
 class Penyim:
 
   def __init__(self, sample: str, lang_type: Lang) -> None:
-    self.sample = normalize("NFD", sample)
+    self.sample = normalize("NFD", sample).lower()
     self.indices = []
     self.formats = []
     self.tone = []
@@ -171,7 +171,6 @@ class Penyim:
         self.indices.append((-1, -1))
         self.formats.append(None)
         self.tone.append(None)
-
         self.errors[i] = (f"Failed to parse penyim candidate '{self.sample}'")
       else:
         self.indices.append(indices)

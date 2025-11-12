@@ -6,7 +6,8 @@ def apply_penyim_rules(segment: str):
         segment = "ci"
 
     # Convert to bracketed format
-    if segment.endswith("ei"):
+    if segment.endswith("ei") and not any(segment.startswith(onset) for onset in 
+                                          ["dz", "ts", "s", "y", "j", "c", "ch", "q", "x"]):
         segment = segment.replace("ei", "(e)i")
 
     # LH reversal
