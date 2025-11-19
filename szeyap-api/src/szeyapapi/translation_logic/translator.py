@@ -2,7 +2,7 @@ import re
 
 import spacy
 import langid
-from wordfreq import word_frequency
+from wordfreq import zipf_frequency
 from hanziconv import HanziConv
 from szeyapapi.utils.enums import LanguageFormats as lang
 from szeyapapi.translation_logic.response import Response
@@ -14,6 +14,7 @@ from szeyapapi.translation_logic.penyim import Penyim
 #  - the Translator is created by giving it a dictionary, and it uses the dictionary to create Responses
 #  - like 3D printer, it takes in different colour filaments (different dictionaries) and prints designs (response objects)
 
+langid.set_languages(["en", "zh"])
 
 class Translator:
     nlp = spacy.load("en_core_web_sm")
@@ -85,9 +86,8 @@ class Translator:
     # Search algorithm is simple here, just iterate the dictionary and search for 
     # matching string
     def ask(self, q: TranslationQuestion, limit: int) -> Response:
-        hanzi_characters = re.findall(r'[\u4e00-\u9fff]+', q.query)
         detected_lang = langid.classify(q.query)[0]
-        if hanzi_characters:
+        if detected_lang == "zh":
             answers = self._search_dictionary_by_chinese(q.query)
             q.lang = lang.CH
         elif detected_lang == "en":
@@ -111,15 +111,8 @@ class Translator:
         ranked_results = []
         for result in results:
             word = result["SIMP"][0]
-            score = word_frequency(word, 'zh')
+            score = zipf_frequency(word, 'zh')
             ranked_results.append((result, score))
 
         ranked_results.sort(key=lambda item: item[1], reverse=True)
         return [item[0] for item in ranked_results]
-
-
-if __name__ == "__main__":
-    from szeyapapi.dictionaries.genechin_dictionary import GC
-    from szeyapapi.dictionaries.stephenli_dictionary import SL
-
-    translator = Translator("Gene Chin Translator", GC)
