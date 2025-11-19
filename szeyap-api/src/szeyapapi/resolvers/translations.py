@@ -15,7 +15,26 @@ def hello_world():
 def get(phrase: str, dictionary: str, limit=10):
     # construct Question using phrase
     q = TranslationQuestion(phrase)
+    if dictionary == "GC_DICT" or dictionary == "ALL_DICT":
+        gc_responses = gc_translator.ask(q, limit).as_api_resp()
+        for item in gc_responses["translations"]:
+            item["source"] = "Gene Chin"
 
-    responses = gc_translator.ask(q, limit) if dictionary == "GC_DICT" else sl_translator.ask(q, limit)
+    if dictionary == "SL_DICT" or dictionary == "ALL_DICT":
+        sl_responses = sl_translator.ask(q, limit).as_api_resp()
+        for item in sl_responses["translations"]:
+            item["source"] = "Stephen Li"
 
-    return responses.as_api_resp()
+    if dictionary == "ALL_DICT":
+        responses = dict(
+            original_phrase=gc_responses["original_phrase"],
+            detected_language=gc_responses["detected_language"],
+            translations=sl_responses["translations"] \
+                + gc_responses["translations"],
+        )
+    elif dictionary == "GC_DICT":
+        responses = gc_responses
+    else:
+        responses = sl_responses
+        
+    return responses
