@@ -19,6 +19,7 @@ class Penyim:
     self.formats = []
     self.tone = []
     self.errors = {}
+    self.lang_type = lang_type
     self.init_penyim(lang_type)
   
   def _repr_format(self, format_index: int) -> str:
@@ -61,9 +62,17 @@ class Penyim:
         )?
     """
 
+    if self.lang_type == Lang.UNK:
+      all_initials = list(
+        chain.from_iterable(PENYIM_TABLES.initials.values()))
+      all_finals = list(
+        chain.from_iterable(PENYIM_TABLES.finals.values()))
+    else:
+      all_initials = PENYIM_TABLES.initials[self.lang_type]
+      all_finals = PENYIM_TABLES.finals[self.lang_type]
+
     # Append initials to the list for edge cases
-    all_initials = list(chain.from_iterable(
-      PENYIM_TABLES.initials.values())) + ["hl", "gn", "sh", "w"]
+    all_initials = all_initials + ["hl", "gn", "sh", "w"]
     
     # Account for labial onglide inclusion in initials
     for initial in all_initials:
@@ -73,8 +82,7 @@ class Penyim:
     initials_sorted = sorted(filter(None, all_initials), key=len, reverse=True)
     initials_pattern = '|'.join([re.escape(f) for f in initials_sorted])
 
-    all_finals = list(chain.from_iterable(
-      PENYIM_TABLES.finals.values())) + ["ee"]
+    all_finals = all_finals + ["ee"]
     
     # Account for labial onglide inclusion in finals
     for final in all_finals:
@@ -145,6 +153,8 @@ class Penyim:
         non_whitespace_index = re.search(r'\S', normalized[start:]).start()
         start += non_whitespace_index
     
+    if syllables == [('sei', ('̈',)), ('nia', ''), ('go', ('̀',))]:
+      import ipdb; ipdb.set_trace()
     return syllables
   
   def _set_as_err(self, msg):
@@ -194,6 +204,9 @@ class Penyim:
   def render_in_original_format(self, lang: Lang) -> str:
     result = ""
     for syllable in self.formats:
+        if syllable is None:
+          # There was an error in the penyim parsing
+          return ""
         result += syllable[lang]
     return result
 
