@@ -19,13 +19,13 @@ class GeneChinDictionary(DictionaryBase):
       self.dictionary = json.load(file)
     
     # remove header if exists
-    if self.dictionary[0]['JYUTPING'] == 'GPS':
+    if self.dictionary[0]['PENYIM'] == 'GPS':
       self.dictionary = self.dictionary[1:]
     
     # A definition can be parsed into a list of possible translations
     # We ensure all are in a list format
     for entry in self.dictionary:
-      keys_need_join = ('TRAD', 'SIMP', 'PENYIM', 'JYUTPING', "LEMMA")
+      keys_need_join = ('TRAD', 'SIMP', 'PENYIM', 'PINYIN', "LEMMA")
       for key in keys_need_join:
         if isinstance(entry[key], str):
           if key != "LEMMA":
@@ -37,12 +37,9 @@ class GeneChinDictionary(DictionaryBase):
             key: value
           })
 
-    # Adjust Jyutping format to allow for parsing
     for i, entry in enumerate(self.dictionary):
       parsed_penyim = []
-      # FIXME: The JYUTPING key contains the PENYIM in Gene Chin dictionary 
-      # and the PENYIM key contains Mandarin pinyin
-      for word in entry["JYUTPING"]:
+      for word in entry["PENYIM"]:
         if word:
           try:
             penyim_obj = Penyim(word.replace("-", " "), lang.GC)

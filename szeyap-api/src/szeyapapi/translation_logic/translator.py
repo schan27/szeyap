@@ -85,11 +85,12 @@ class Translator:
     # Search algorithm is simple here, just iterate the dictionary and search for 
     # matching string
     def ask(self, q: TranslationQuestion, limit: int) -> Response:
-        detected_language = langid.classify(q.query)[0]  
-        if detected_language == "zh":
+        hanzi_characters = re.findall(r'[\u4e00-\u9fff]+', q.query)
+        detected_lang = langid.classify(q.query)[0]
+        if hanzi_characters:
             answers = self._search_dictionary_by_chinese(q.query)
             q.lang = lang.CH
-        elif detected_language == "en":
+        elif detected_lang == "en":
             q.lang = lang.EN
             answers = self._search_dictionary(q.query, "LEMMA", full_match=True)
         else:

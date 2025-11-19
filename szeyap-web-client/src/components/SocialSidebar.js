@@ -5,7 +5,7 @@ export const socialLinks = [
   {
     imgSrc: "youtube_icon.svg",
     altText: "Hoisan Sauce Profile Pic",
-    platform: "Youtube",
+    platform: "YouTube",
     href: "https://www.youtube.com/@HoisanSauce"
   },
   {
@@ -13,7 +13,7 @@ export const socialLinks = [
     altText: "Hoisan Sauce Profile Pic",
     platform: "Discord",
     className: "h-8 rounded-lg",
-    href: "https://discord.gg/Jp8HfEEN"
+    href: "https://discord.gg/TtU2v3S"
   },
   {
     imgSrc: "github_logo.png",
