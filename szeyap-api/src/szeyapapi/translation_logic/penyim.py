@@ -152,9 +152,6 @@ class Penyim:
       if (start != len(normalized)) and (normalized[start].isspace()):
         non_whitespace_index = re.search(r'\S', normalized[start:]).start()
         start += non_whitespace_index
-    
-    if syllables == [('sei', ('̈',)), ('nia', ''), ('go', ('̀',))]:
-      import ipdb; ipdb.set_trace()
     return syllables
   
   def _set_as_err(self, msg):
