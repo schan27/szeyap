@@ -232,7 +232,7 @@ export default function SearchSection() {
                         onSettingsChange={setDictionarySettings}
                       />
                   </div>
-
+                  
                   {/* Translations */}
                   <div className="space-y-4">
                     {results.translations &&
@@ -256,18 +256,25 @@ export default function SearchSection() {
                                       </span>
                                     </div>
 
+                                    {/* Source */}
+                                    <div className="flex items-center gap-4">
+                                      <span className="text-sm text-gray-500">
+                                        Source: {translation.source}
+                                      </span>
+                                    </div>
+
                                     {/* Romanization Systems */}
                                     <div className="flex flex-wrap gap-3">
                                       {translation.chinese?.penyim?.[0] && (
                                         <>
                                           <div className="flex items-center gap-2">
                                             <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
-                                              HSR
+                                              WPS
                                             </span>
                                             <span className="text-gray-900">
                                               {
                                                 translation.chinese.penyim[0]
-                                                  .HSR
+                                                  .JW
                                               }
                                             </span>
                                           </div>
@@ -291,6 +298,28 @@ export default function SearchSection() {
                                             </span>
                                             <span className="text-gray-900">
                                               {translation.chinese.penyim[0].GC}
+                                            </span>
+                                          </div>
+                                          <span className="text-gray-300">
+                                            ·
+                                          </span>
+                                          <div className="flex items-center gap-2">
+                                            <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
+                                              HSR
+                                            </span>
+                                            <span className="text-gray-900">
+                                              {translation.chinese.penyim[0].HSR}
+                                            </span>
+                                          </div>
+                                          <span className="text-gray-300">
+                                            ·
+                                          </span>
+                                          <div className="flex items-center gap-2">
+                                            <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
+                                              DJ
+                                            </span>
+                                            <span className="text-gray-900">
+                                              {translation.chinese.penyim[0].DJ}
                                             </span>
                                           </div>
                                         </>

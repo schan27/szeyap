@@ -39,7 +39,7 @@ paths:
           required: true
           schema:
             type: string
-            enum: [GC_DICT, SL_DICT]
+            enum: [GC_DICT, SL_DICT, ALL_DICT]
       responses:
         '200':
           description: A response with metadata and a list of translations
