@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Search, Clipboard, Loader2, Edit2, Keyboard } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent } from "./ui/tooltip";
 import { Input } from "./ui/input";
@@ -18,16 +18,38 @@ export default function SearchSection() {
   const [error, setError] = useState(null);
   const [results, setResults] = useState(null);
   const [inputMode, setInputMode] = useState("keyboard"); // "keyboard" or "handwriting"
-  const [dictionarySettings, setDictionarySettings] = useState({
-    dictionary: "ALL_DICT", // ALL_DICT, GC_DICT, SL_DICT or HS_DICT
-    script: "traditional", // traditional or simplified
-    romanization: "hsr", // hsr, wps, sl, gps, dj
-    accent: {
-      ing_en: false,
-      s_lh: false,
-      i_ei: true,
-    },
+  
+  // Load initial settings from localStorage or use defaults
+  const [dictionarySettings, setDictionarySettings] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedSettings = localStorage.getItem('dictionarySettings');
+      if (savedSettings) {
+        try {
+          return JSON.parse(savedSettings);
+        } catch (e) {
+          console.error('Failed to parse saved settings:', e);
+        }
+      }
+    }
+    // Default settings
+    return {
+      dictionary: "ALL_DICT", // ALL_DICT, GC_DICT, SL_DICT or HS_DICT
+      script: "traditional", // traditional or simplified
+      romanization: "hsr", // hsr, wps, sl, gps, dj
+      accent: {
+        ing_en: false,
+        s_lh: false,
+        i_ei: true,
+      },
+    };
   });
+
+  // Save settings to localStorage whenever they change
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('dictionarySettings', JSON.stringify(dictionarySettings));
+    }
+  }, [dictionarySettings]);
 
   const handleSearch = async () => {
     if (!searchTerm.trim()) return;
@@ -280,65 +302,47 @@ export default function SearchSection() {
 
                                     {/* Romanization Systems */}
                                     <div className="flex flex-wrap gap-3">
-                                      {translation.chinese?.penyim?.[0] && (
-                                        <>
-                                          <div className="flex items-center gap-2">
-                                            <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
-                                              WPS
-                                            </span>
-                                            <span className="text-gray-900">
-                                              {
-                                                translation.chinese.penyim[0]
-                                                  .JW
-                                              }
-                                            </span>
-                                          </div>
-                                          <span className="text-gray-300">
-                                            ·
-                                          </span>
-                                          <div className="flex items-center gap-2">
-                                            <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
-                                              SL
-                                            </span>
-                                            <span className="text-gray-900">
-                                              {translation.chinese.penyim[0].SL}
-                                            </span>
-                                          </div>
-                                          <span className="text-gray-300">
-                                            ·
-                                          </span>
-                                          <div className="flex items-center gap-2">
-                                            <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
-                                              GC
-                                            </span>
-                                            <span className="text-gray-900">
-                                              {translation.chinese.penyim[0].GC}
-                                            </span>
-                                          </div>
-                                          <span className="text-gray-300">
-                                            ·
-                                          </span>
-                                          <div className="flex items-center gap-2">
-                                            <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
-                                              HSR
-                                            </span>
-                                            <span className="text-gray-900">
-                                              {translation.chinese.penyim[0].HSR}
-                                            </span>
-                                          </div>
-                                          <span className="text-gray-300">
-                                            ·
-                                          </span>
-                                          <div className="flex items-center gap-2">
-                                            <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
-                                              DJ
-                                            </span>
-                                            <span className="text-gray-900">
-                                              {translation.chinese.penyim[0].DJ}
-                                            </span>
-                                          </div>
-                                        </>
-                                      )}
+                                      {translation.chinese?.penyim?.[0] && (() => {
+                                        const penyim = translation.chinese.penyim[0];
+                                        const romanizationMap = {
+                                          wps: { key: 'JW', label: 'WPS' },
+                                          sl: { key: 'SL', label: 'SL' },
+                                          gc: { key: 'GC', label: 'GC' },
+                                          hsr: { key: 'HSR', label: 'HSR' },
+                                          dj: { key: 'DJ', label: 'DJ' }
+                                        };
+                                        
+                                        // Get selected romanizations (handle both array and string)
+                                        const selectedRomanizations = Array.isArray(dictionarySettings.romanization)
+                                          ? dictionarySettings.romanization
+                                          : dictionarySettings.romanization ? [dictionarySettings.romanization] : [];
+                                        
+                                        // If no romanizations selected, show all
+                                        const romanizationsToShow = selectedRomanizations.length > 0
+                                          ? selectedRomanizations
+                                          : Object.keys(romanizationMap);
+                                        
+                                        return romanizationsToShow.map((romCode, index) => {
+                                          const rom = romanizationMap[romCode];
+                                          if (!rom || !penyim[rom.key]) return null;
+                                          
+                                          return (
+                                            <React.Fragment key={romCode}>
+                                              {index > 0 && (
+                                                <span className="text-gray-300">·</span>
+                                              )}
+                                              <div className="flex items-center gap-2">
+                                                <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
+                                                  {rom.label}
+                                                </span>
+                                                <span className="text-gray-900">
+                                                  {penyim[rom.key]}
+                                                </span>
+                                              </div>
+                                            </React.Fragment>
+                                          );
+                                        }).filter(Boolean);
+                                      })()}
                                     </div>
                                   </div>
 

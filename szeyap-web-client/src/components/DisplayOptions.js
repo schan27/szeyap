@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/animated-tabs";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import {
   Popover,
@@ -66,36 +67,113 @@ function DisplayOptions({ buttonClassName, settings, onSettingsChange }) {
             value="romanization"
             className="border-2 p-4 rounded-lg bg-sidebar-primary-foreground mt-6"
           >
-            <RadioGroup
-              value={settings.romanization}
-              onValueChange={(value) =>
-                onSettingsChange({
-                  ...settings,
-                  romanization: value,
-                })
-              }
-            >
+            <div className="flex flex-col gap-3">
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="wps" id="wps" />
+                <Checkbox
+                  id="wps"
+                  checked={settings.romanization?.includes?.("wps") || settings.romanization === "wps"}
+                  onCheckedChange={(checked) => {
+                    const currentRomanizations = Array.isArray(settings.romanization)
+                      ? settings.romanization
+                      : settings.romanization ? [settings.romanization] : [];
+                    
+                    const newRomanizations = checked
+                      ? [...currentRomanizations, "wps"]
+                      : currentRomanizations.filter((r) => r !== "wps");
+                    
+                    onSettingsChange({
+                      ...settings,
+                      romanization: newRomanizations,
+                    });
+                  }}
+                />
                 <Label htmlFor="wps">WPS (Inspirlang)</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="sl" id="sl" />
+                <Checkbox
+                  id="sl"
+                  checked={settings.romanization?.includes?.("sl") || settings.romanization === "sl"}
+                  onCheckedChange={(checked) => {
+                    const currentRomanizations = Array.isArray(settings.romanization)
+                      ? settings.romanization
+                      : settings.romanization ? [settings.romanization] : [];
+                    
+                    const newRomanizations = checked
+                      ? [...currentRomanizations, "sl"]
+                      : currentRomanizations.filter((r) => r !== "sl");
+                    
+                    onSettingsChange({
+                      ...settings,
+                      romanization: newRomanizations,
+                    });
+                  }}
+                />
                 <Label htmlFor="sl">SL (Stephen Li)</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="gc" id="gc" />
+                <Checkbox
+                  id="gc"
+                  checked={settings.romanization?.includes?.("gc") || settings.romanization === "gc"}
+                  onCheckedChange={(checked) => {
+                    const currentRomanizations = Array.isArray(settings.romanization)
+                      ? settings.romanization
+                      : settings.romanization ? [settings.romanization] : [];
+                    
+                    const newRomanizations = checked
+                      ? [...currentRomanizations, "gc"]
+                      : currentRomanizations.filter((r) => r !== "gc");
+                    
+                    onSettingsChange({
+                      ...settings,
+                      romanization: newRomanizations,
+                    });
+                  }}
+                />
                 <Label htmlFor="gc">GC (Gene Chin)</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="hsr" id="hsr" />
+                <Checkbox
+                  id="hsr"
+                  checked={settings.romanization?.includes?.("hsr") || settings.romanization === "hsr"}
+                  onCheckedChange={(checked) => {
+                    const currentRomanizations = Array.isArray(settings.romanization)
+                      ? settings.romanization
+                      : settings.romanization ? [settings.romanization] : [];
+                    
+                    const newRomanizations = checked
+                      ? [...currentRomanizations, "hsr"]
+                      : currentRomanizations.filter((r) => r !== "hsr");
+                    
+                    onSettingsChange({
+                      ...settings,
+                      romanization: newRomanizations,
+                    });
+                  }}
+                />
                 <Label htmlFor="hsr">HSR (Hoisan Sauce)</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="dj" id="dj" />
+                <Checkbox
+                  id="dj"
+                  checked={settings.romanization?.includes?.("dj") || settings.romanization === "dj"}
+                  onCheckedChange={(checked) => {
+                    const currentRomanizations = Array.isArray(settings.romanization)
+                      ? settings.romanization
+                      : settings.romanization ? [settings.romanization] : [];
+                    
+                    const newRomanizations = checked
+                      ? [...currentRomanizations, "dj"]
+                      : currentRomanizations.filter((r) => r !== "dj");
+                    
+                    onSettingsChange({
+                      ...settings,
+                      romanization: newRomanizations,
+                    });
+                  }}
+                />
                 <Label htmlFor="dj">DJ (Deng Jun)</Label>
               </div>
-            </RadioGroup>
+            </div>
           </AnimatedTabsContent>
 
           <AnimatedTabsContent
