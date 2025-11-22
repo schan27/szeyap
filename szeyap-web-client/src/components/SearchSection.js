@@ -36,6 +36,7 @@ export default function SearchSection() {
     setIsLoading(true);
     setError(null);
     setResults(null);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     try {
       const params = new URLSearchParams({
@@ -106,24 +107,29 @@ export default function SearchSection() {
       </div>
 
       {/* Search Input */}
-      <div className="w-5/6 mx-auto flex flex-col gap-2" id="search-section">
+      <div className="w-5/6 mx-auto flex flex-col" id="search-section">
         <div className="flex justify-end">
-          {/* Clipboard Paste and Search Buttons */}
-          <div className="flex items-center justify-end">
-            <button
-              onClick={() => {
-                inputMode === "handwriting"
-                  ? setInputMode("keyboard")
-                  : setInputMode("handwriting");
-              }}
-              className={`p-1.5 rounded-md transition-colors cursor-pointer ${
-                inputMode === "handwriting"
-                  ? "bg-gray-100 text-gray-900"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              <Edit2 className="w-5 h-5" />
-            </button>
+          {/* Clipboard Paste and Handwriting Buttons */}
+          <div className="flex items-center gap-1 rounded-md">
+            <Tooltip>
+              <TooltipTrigger
+                onClick={() => {
+                  inputMode === "handwriting"
+                    ? setInputMode("keyboard")
+                    : setInputMode("handwriting");
+                }}
+                className={`p-1.5 rounded-md transition-colors cursor-pointer ${
+                  inputMode === "handwriting"
+                    ? "bg-gray-100 text-gray-900"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                <Edit2 className="w-5 h-5" />
+              </TooltipTrigger>
+              <TooltipContent>
+                {inputMode === "handwriting" ? "Switch to keyboard" : "Switch to handwriting"}
+              </TooltipContent>
+            </Tooltip>
             <Tooltip>
               <TooltipTrigger
                 onClick={handlePaste}
@@ -135,36 +141,49 @@ export default function SearchSection() {
               </TooltipTrigger>
               <TooltipContent className="">Paste from clipboard</TooltipContent>
             </Tooltip>
-            <button
-              onClick={handleSearch}
-              disabled={isLoading}
-              className="p-1.5 sm:p-2 text-gray-500 hover:text-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              aria-label="Search"
-            >
-              {isLoading ? (
-                <Loader2 size={16} className="sm:w-5 sm:h-5 animate-spin" />
-              ) : (
-                <Search size={16} className="sm:w-5 sm:h-5" />
-              )}
-            </button>
           </div>
         </div>
 
         {/* Input Field */}
         <div className="flex gap-0 group">
-          <Input
-            type="text"
-            value={searchTerm}
-            onKeyPress={handleKeyPress}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="INPUT/輸入: 中文/English/penyim"
-            className="flex-1 px-4 h-16 sm:px-6 py-3 sm:py-4 lg:py-5 text-base sm:text-lg lg:text-xl border-2 border-gray-300 rounded-l-lg rounded-r-none sm:rounded-l-xl border-r-0 transition-colors focus-visible:ring-0 group-focus-within:border-gray-400"
-          />
           <DictionarySettings
             settings={dictionarySettings}
             onSettingsChange={setDictionarySettings}
           />
-          <div className="absolute right-36 top-8 transform -translate-y-1/2 flex space-x-1 sm:space-x-2 z-10"></div>
+          <div className="relative flex-1">
+            <Input
+              type="text"
+              value={searchTerm}
+              onKeyPress={handleKeyPress}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="INPUT/輸入: 中文/English/penyim"
+              className="w-full px-4 h-16 sm:px-6 py-3 sm:py-4 lg:py-5 pr-12 text-base sm:text-lg lg:text-xl border-2 border-gray-300 rounded-r-lg rounded-l-none border-l-0 transition-colors focus-visible:ring-0 group-focus-within:border-gray-400"
+            />
+            <Tooltip>
+              <TooltipTrigger
+                onClick={handleSearch}
+                disabled={isLoading}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 sm:p-2 text-gray-500 hover:text-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                aria-label="Search"
+              >
+                {isLoading ? (
+                  <Loader2 size={20} className="sm:w-6 sm:h-6 animate-spin" />
+                ) : (
+                  <Search size={20} className="sm:w-6 sm:h-6" />
+                )}
+              </TooltipTrigger>
+              <TooltipContent>
+                {isLoading ? "Searching..." : "Search"}
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </div>
+        <div className="flex ml-auto py-0.5 mt-0.5 items-center justify-between">
+          <DisplayOptions
+            settings={dictionarySettings}
+            onSettingsChange={setDictionarySettings}
+            buttonClassName=""
+          />
         </div>
         {inputMode === "handwriting" && (
           <div className="flex flex-col items-center">
@@ -197,7 +216,7 @@ export default function SearchSection() {
       </div>
 
       {/* Results Section */}
-      <div ref={resultsRef} className="max-w-7xl mt-8">
+      <div ref={resultsRef} className="max-w-7xl mt-4">
         <div className="flex flex-col gap-6 items-center">
           {/* Main Results */}
           <div className="w-5/6">
@@ -227,10 +246,6 @@ export default function SearchSection() {
                         </span>
                       )}
                     </div>
-                      <DisplayOptions
-                        settings={dictionarySettings}
-                        onSettingsChange={setDictionarySettings}
-                      />
                   </div>
                   
                   {/* Translations */}

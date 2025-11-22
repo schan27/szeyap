@@ -19,7 +19,8 @@
 
 /* Custom scrollbar styling */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 0px;
+  display: none;
 }
 
 ::-webkit-scrollbar-track {
@@ -33,6 +34,16 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(156, 163, 175, 0.7);
+}
+
+/* Hide scrollbar for Firefox */
+* {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for IE/Edge */
+* {
+  -ms-overflow-style: none;
 }
 
 /* Focus styles */

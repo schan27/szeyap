@@ -15,17 +15,16 @@ import {
 } from "@/components/ui/popover";
 import { Settings } from "lucide-react";
 
-function DisplayOptions({ className, settings, onSettingsChange }) {
+function DisplayOptions({ buttonClassName, settings, onSettingsChange }) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button className="px-4 py-2 bg-gray-100 text-gray-900 font-normal rounded-md hover:bg-gray-200 transition-color cursor-pointer flex items-center">
-          Display Options
+        <button className={`h-8 px-3 py-2 bg-gray-100 text-gray-900 font-normal rounded-md hover:bg-gray-200 transition-color cursor-pointer flex items-center ${buttonClassName}`}>
+          Display
           <Settings className="w-4 h-4 ml-2" />
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-96" align="end">
-        <h3 className="font-semibold text-lg mb-4">Display Options</h3>
         <AnimatedTabs defaultValue="script" className="w-full">
           <AnimatedTabsList className="cursor-pointer w-full grid grid-cols-3">
             <AnimatedTabsTrigger value="script" className="text-sm">
@@ -65,7 +64,7 @@ function DisplayOptions({ className, settings, onSettingsChange }) {
 
           <AnimatedTabsContent
             value="romanization"
-            className="border-2 p-4 rounded-lg bg-sidebar-primary-foreground mt-4"
+            className="border-2 p-4 rounded-lg bg-sidebar-primary-foreground mt-6"
           >
             <RadioGroup
               value={settings.romanization}
