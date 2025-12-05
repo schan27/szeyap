@@ -109,8 +109,31 @@ class Penyim:
 
     # Remove diacritics 
     normalized = "".join(DIACRITICS_PATTERN.sub("", self.sample).split())
+
+    already_parsed = False
+    if "-" in normalized:
+      syllable_list = []
+      for i, syllable in enumerate(normalized.split("-")):
+        result = match_syllables_backward(syllable_pattern, syllable)      
+        if len(result) != 1:
+          break
+          
+        result = list(result.pop())
+        if i > 0:
+          prev_syllable = syllable_list[i-1][0].group(0)
+          result[1] += len(prev_syllable)
+          result[2] += len(prev_syllable)
+
+        syllable_list.append(result)
+
+      already_parsed = True
     
-    for (match, start, end) in match_syllables_backward(syllable_pattern, normalized):
+    if not already_parsed:
+      syllable_list = match_syllables_backward(syllable_pattern, normalized)
+    
+    # Remove dashes between each syllable for processing
+    normalized = normalized.replace("-", "")
+    for (match, start, end) in syllable_list:
       if start != start:
         break
   
