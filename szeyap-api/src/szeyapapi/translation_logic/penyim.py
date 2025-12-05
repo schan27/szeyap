@@ -127,16 +127,19 @@ class Penyim:
         syllable_list.append(result)
 
       already_parsed = True
+      # Remove dashes between each syllable for processing
+      normalized = normalized.replace("-", "")
+      self.sample = self.sample.replace("-", "")
     
     if not already_parsed:
       syllable_list = match_syllables_backward(syllable_pattern, normalized)
-    
-    # Remove dashes between each syllable for processing
-    normalized = normalized.replace("-", "")
+
     for (match, start, end) in syllable_list:
-      if start != start:
-        break
-  
+      # Find the next non-whitespace character
+      if (start != len(normalized)) and (normalized[start].isspace()):
+        non_whitespace_index = re.search(r'\S', normalized[start:]).start()
+        start += non_whitespace_index
+      
       # Step one: Deal with the segment
       initial = match.group("initial")
       if initial is None:
@@ -154,9 +157,12 @@ class Penyim:
       segment = apply_penyim_rules(segment)
 
       # Step two: Deal with the tone
-      diacritic_match = DIACRITICS_PATTERN.search(
-        self.sample[start:end+1]
-      ) # Add one to the segment span as the diacritic is one character long
+      # Add one to the segment span as the diacritic is one character long
+      if start > 0:
+        start += 1
+        end += 1
+      orig_segment = self.sample[start:end+1]
+      diacritic_match = DIACRITICS_PATTERN.search(orig_segment) 
       tone = match.group("tone")
       
       if diacritic_match is not None:
@@ -166,15 +172,9 @@ class Penyim:
           tone = (diacritic, "/")
         else:
           tone = (diacritic,)
-
+      
       syllables.append((segment, tone))
 
-      # Update start marker to ensure no characters are lost
-      start = end
-      # Find the next non-whitespace character
-      if (start != len(normalized)) and (normalized[start].isspace()):
-        non_whitespace_index = re.search(r'\S', normalized[start:]).start()
-        start += non_whitespace_index
     return syllables
   
   def _set_as_err(self, msg):
