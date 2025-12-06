@@ -167,3 +167,17 @@ def test_multiple_romanizations():
     expected_result = ["ng(e)i", "sip", "lh(e)i"]
     for i, word_formats in enumerate(result.formats):
         assert unidecode(word_formats[Lang.HSR]) == unidecode(expected_result[i])
+    
+
+def test_missing_final_tone():
+    test = "fān-uï"
+    result = Penyim(test, Lang.UNK)
+    assert unidecode(result.formats[0][Lang.HSR]) == unidecode("fan55")
+    assert unidecode(result.formats[1][Lang.HSR]) == unidecode("ui33")
+
+
+def test_nan_segment():
+    test = "nãn-häm"
+    result = Penyim(test, Lang.GC)
+    assert unidecode(result.formats[0][Lang.GC]) == unidecode("nãn")
+    assert unidecode(result.formats[1][Lang.GC]) == unidecode("häm")
