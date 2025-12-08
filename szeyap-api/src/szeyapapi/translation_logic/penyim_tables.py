@@ -29,7 +29,11 @@ class PenyimTables:
         self.load_allowed_segments()
 
     def load_tables(self):
-        df_dict = pd.read_excel(Path(PROJECT_ROOT_PATH, cfg.PENYIM_TABLES_PATH), sheet_name=None, index_col=0)
+        df_dict = pd.read_excel(
+            Path(PROJECT_ROOT_PATH, cfg.PENYIM_TABLES_PATH), 
+            sheet_name=None, index_col=0,
+            keep_default_na=False, 
+            na_values=[""])   # Important for keeping "nan" cell 
 
         def clean_df(df: pd.DataFrame):
             last_col = df.columns.get_loc("y")
@@ -100,8 +104,8 @@ class PenyimTables:
 
                 # print(f"Found {penyim_q} at ({j}, {i}) with tone {tone} in {table}")
                 return (j, i), tone
-        else:
-            return (-1, -1), None
+            
+        return (-1, -1), None
         
     def get_tone(self, lang_type: Lang, tone: Tone) -> dict:
         return self.tones[lang_type].get(tone, "")

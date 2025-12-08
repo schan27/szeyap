@@ -42,7 +42,7 @@ class GeneChinDictionary(DictionaryBase):
       for word in entry["PENYIM"]:
         if word:
           try:
-            penyim_obj = Penyim(word.replace("-", " "), lang.GC)
+            penyim_obj = Penyim(word, lang.GC)
             parsed_penyim.append(penyim_obj)
           except ValueError as e:
             logging.debug(f"Warning: Failed to parse penyim '{word}' at entry {i}: {e}")
