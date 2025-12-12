@@ -85,25 +85,21 @@ class Translator:
     # based on the src language format, we search the dictionaries accordingly
     # Search algorithm is simple here, just iterate the dictionary and search for 
     # matching string
-    def ask(self, q: TranslationQuestion, limit: int) -> Response:
-        detected_lang = langid.classify(q.query)[0]
-        if detected_lang == "zh":
-            answers = self._search_dictionary_by_chinese(q.query)
-            q.lang = lang.CH
-        elif detected_lang == "en":
-            q.lang = lang.EN
-            answers = self._search_dictionary(q.query, "LEMMA", full_match=True)
+    def ask(self, q: TranslationQuestion, limit: int, penyim: bool = False) -> Response:
+        answers = None 
+        if penyim:
+            answers = self._search_dictionary_by_penyim(Penyim(q.query, lang_type=lang.UNK))
         else:
-            parsed_penyim = Penyim(q.query, lang.UNK)
-            answers = self._search_dictionary_by_penyim(q.query)
-            is_penyim = not parsed_penyim.has_errors()
-
-            if is_penyim:
-                answers = self._search_dictionary_by_penyim(parsed_penyim)
-                q.lang = lang.UNK
-            else:
-                raise ValueError("Query could not be parsed as: English, Chinese, or Penyim")
-            
+            detected_lang = langid.classify(q.query)[0]
+            if detected_lang == "zh":
+                answers = self._search_dictionary_by_chinese(q.query)
+                q.lang = lang.CH
+            elif detected_lang == "en":
+                q.lang = lang.EN
+                answers = self._search_dictionary(q.query, "LEMMA", full_match=True)
+        
+        if answers is None:
+            raise ValueError("Could not determine if query is English, Chinese, or Penyim.")
         return self._construct_answer(q, answers, limit)
     
     @staticmethod

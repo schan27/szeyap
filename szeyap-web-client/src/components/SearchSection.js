@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Search, Clipboard, Loader2, Edit2, Keyboard } from "lucide-react";
+import { Search, Clipboard, Loader2, Edit2, Check } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent } from "./ui/tooltip";
 import { Input } from "./ui/input";
 import DictionarySettings from "./DictionarySettings";
 import DisplayOptions from "./DisplayOptions";
 import HandwritingInput from "./HandwritingInput";
+import { Checkbox } from "radix-ui";
+
 
 const API_URL = "https://szeyap-backend-production.up.railway.app/api/translation";
 // const API_URL = "http://localhost:8000/api/translation";
@@ -18,6 +20,7 @@ export default function SearchSection() {
   const [error, setError] = useState(null);
   const [results, setResults] = useState(null);
   const [inputMode, setInputMode] = useState("keyboard"); // "keyboard" or "handwriting"
+  const [searchByPenyim, setSearchByPenyim] = useState(false);
   const [dictionarySettings, setDictionarySettings] = useState({
     dictionary: "ALL_DICT", // ALL_DICT, GC_DICT, SL_DICT or HS_DICT
     script: "traditional", // traditional or simplified
@@ -42,6 +45,10 @@ export default function SearchSection() {
         phrase: searchTerm.trim(),
         dictionary: dictionarySettings.dictionary,
       });
+
+      if (searchByPenyim) {
+        params.append('penyim', 'true');
+      }
 
       const response = await fetch(`${API_URL}?${params}`, {
         method: "GET",
@@ -107,8 +114,28 @@ export default function SearchSection() {
 
       {/* Search Input */}
       <div className="w-5/6 mx-auto flex flex-col gap-2" id="search-section">
-        <div className="flex justify-end">
-          {/* Clipboard Paste and Search Buttons */}
+        <div className="flex justify-between">
+
+          {/* Handwriting, Clipboard Paste, and Search Buttons */}
+
+            <div className="flex items-center justify-start ml-1">
+             <Checkbox.Root
+            className="flex size-[20px] appearance-none rounded bg-white shadow-[0_0_0_2px_black] shadow-blackA4 outline-none focus:shadow-[0_0_0_2px_black]"
+            id="c1"
+            checked={searchByPenyim}
+            onCheckedChange={setSearchByPenyim}
+          >
+      			<Checkbox.Indicator>
+					  <Check size={16} className="sm:w-5 sm:h-5" />
+          </Checkbox.Indicator>
+          </Checkbox.Root>
+
+          <label
+            className="pl-[10px] text-[15px] leading-none"
+            htmlFor="c1"
+          >Search Penyim</label>
+          </div>
+
           <div className="flex items-center justify-end">
             <button
               onClick={() => {
@@ -344,18 +371,6 @@ export default function SearchSection() {
           </div>
         </div>
       </div>
-
-      {/* Suggestions */}
-      {/* <div className="text-center sm:text-right">
-        <div className="inline-block">
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-medium text-gray-800 mb-1 sm:mb-2">
-            Suggestions?
-          </h2>
-          <p className="text-xl sm:text-2xl lg:text-3xl text-gray-600">
-            有意見？
-          </p>
-        </div>
-      </div> */}
     </div>
   );
 }
