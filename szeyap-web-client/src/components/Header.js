@@ -25,8 +25,7 @@ const menuItems = [
   { title: "HOME", href: "/" },
   { title: "ABOUT", href: "/about" },
   { title: "RESOURCES", href: "/resources" },
-  // { title: "MAP", href: "/map" },
-  // { title: "STORE", href: "/store" },
+  { title: "CONTACT US", href: "/contact" },
 ];
 
 export default function Header() {
