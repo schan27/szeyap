@@ -118,22 +118,22 @@ export default function SearchSection() {
 
           {/* Handwriting, Clipboard Paste, and Search Buttons */}
 
-            <div className="flex items-center justify-start ml-1">
-             <Checkbox.Root
-            className="flex size-[20px] appearance-none rounded bg-white shadow-[0_0_0_2px_black] shadow-blackA4 outline-none focus:shadow-[0_0_0_2px_black]"
-            id="c1"
-            checked={searchByPenyim}
-            onCheckedChange={setSearchByPenyim}
-          >
-      			<Checkbox.Indicator>
-					  <Check size={16} className="sm:w-5 sm:h-5" />
-          </Checkbox.Indicator>
-          </Checkbox.Root>
+          <div className="flex items-center justify-start ml-1">
+            <Checkbox.Root
+              className="flex size-[20px] appearance-none rounded bg-white shadow-[0_0_0_2px_black] shadow-blackA4 outline-none focus:shadow-[0_0_0_2px_black]"
+              id="c1"
+              checked={searchByPenyim}
+              onCheckedChange={setSearchByPenyim}
+            >
+              <Checkbox.Indicator>
+                <Check size={16} className="sm:w-5 sm:h-5" />
+              </Checkbox.Indicator>
+            </Checkbox.Root>
 
-          <label
-            className="pl-[10px] text-[15px] leading-none"
-            htmlFor="c1"
-          >Search Penyim</label>
+            <label
+              className="pl-[10px] text-[15px] leading-none"
+              htmlFor="c1"
+            >Search Penyim</label>
           </div>
 
           <div className="flex items-center justify-end">
@@ -143,11 +143,10 @@ export default function SearchSection() {
                   ? setInputMode("keyboard")
                   : setInputMode("handwriting");
               }}
-              className={`p-1.5 rounded-md transition-colors cursor-pointer ${
-                inputMode === "handwriting"
+              className={`p-1.5 rounded-md transition-colors cursor-pointer ${inputMode === "handwriting"
                   ? "bg-gray-100 text-gray-900"
                   : "text-gray-500 hover:text-gray-700"
-              }`}
+                }`}
             >
               <Edit2 className="w-5 h-5" />
             </button>
@@ -254,12 +253,12 @@ export default function SearchSection() {
                         </span>
                       )}
                     </div>
-                      <DisplayOptions
-                        settings={dictionarySettings}
-                        onSettingsChange={setDictionarySettings}
-                      />
+                    <DisplayOptions
+                      settings={dictionarySettings}
+                      onSettingsChange={setDictionarySettings}
+                    />
                   </div>
-                  
+
                   {/* Translations */}
                   <div className="space-y-4">
                     {results.translations &&
