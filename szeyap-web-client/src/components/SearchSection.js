@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Search, Clipboard, Loader2, Edit2, Keyboard } from "lucide-react";
+import { Search, Clipboard, Loader2, Edit2, Check } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent } from "./ui/tooltip";
 import { Input } from "./ui/input";
 import DictionarySettings from "./DictionarySettings";
 import DisplayOptions from "./DisplayOptions";
 import HandwritingInput from "./HandwritingInput";
+import { Checkbox } from "radix-ui";
+
 
 const API_URL = "https://szeyap-backend-production.up.railway.app/api/translation";
 // const API_URL = "http://localhost:8000/api/translation";
@@ -107,8 +109,26 @@ export default function SearchSection() {
 
       {/* Search Input */}
       <div className="w-5/6 mx-auto flex flex-col gap-2" id="search-section">
-        <div className="flex justify-end">
-          {/* Clipboard Paste and Search Buttons */}
+        <div className="flex justify-between">
+
+          {/* Handwriting, Clipboard Paste, and Search Buttons */}
+
+            <div className="flex items-center justify-start ml-1">
+             <Checkbox.Root
+            className="flex size-[20px] appearance-none rounded bg-white shadow-[0_0_0_2px_black] shadow-blackA4 outline-none focus:shadow-[0_0_0_2px_black]"
+            id="c1"
+          >
+      			<Checkbox.Indicator>
+					  <Check size={16} className="sm:w-5 sm:h-5" />
+          </Checkbox.Indicator>
+          </Checkbox.Root>
+
+          <label
+            className="pl-[10px] text-[15px] leading-none"
+            htmlFor="c1"
+          >Search Penyim</label>
+          </div>
+
           <div className="flex items-center justify-end">
             <button
               onClick={() => {
