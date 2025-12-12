@@ -12,16 +12,16 @@ def hello_world():
     return "Hello, World!"
 
 
-def get(phrase: str, dictionary: str, limit=10):
+def get(phrase: str, dictionary: str, penyim: bool, limit=10):
     # construct Question using phrase
     q = TranslationQuestion(phrase)
     if dictionary == "GC_DICT" or dictionary == "ALL_DICT":
-        gc_responses = gc_translator.ask(q, limit).as_api_resp()
+        gc_responses = gc_translator.ask(q, limit, penyim).as_api_resp()
         for item in gc_responses["translations"]:
             item["source"] = "Gene Chin"
 
     if dictionary == "SL_DICT" or dictionary == "ALL_DICT":
-        sl_responses = sl_translator.ask(q, limit).as_api_resp()
+        sl_responses = sl_translator.ask(q, limit, penyim).as_api_resp()
         for item in sl_responses["translations"]:
             item["source"] = "Stephen Li"
 

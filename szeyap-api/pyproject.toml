@@ -37,6 +37,14 @@ exclude = ["tests*"]
 [tool.uv.sources]
 szeyapapi = { workspace = true }
 
+[tool.uv.workspace]
+members = [
+    ".",
+    ".",
+    ".",
+    ".",
+]
+
 [dependency-groups]
 dev = [
     "ipdb>=0.13.13",

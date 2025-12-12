@@ -1,16 +1,14 @@
 openapi: 3.0.0
 info:
-  title: Sample API
-  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
-  version: 0.1.9
+  title: Szeyap Search API
+  description: Query dictionary data using English, Chinese, or Penyim input.
+  version: 0.1.0
 servers:
   - url: /api
-    description: Optional server description, e.g. Main (production) server
 paths:
   /translation:
     get:
       summary: Returns a list of translations
-      description: Optional extended description in CommonMark or HTML.
       operationId: translations.get
       parameters:
         - in: query
@@ -40,6 +38,12 @@ paths:
           schema:
             type: string
             enum: [GC_DICT, SL_DICT, ALL_DICT]
+        - in: query
+          name: penyim
+          required: false
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: A response with metadata and a list of translations
