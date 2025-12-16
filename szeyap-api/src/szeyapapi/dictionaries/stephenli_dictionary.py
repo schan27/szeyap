@@ -7,8 +7,8 @@ import os
 
 FILE_DIR = os.path.dirname(os.path.realpath(__file__))
 
-class StephenLiDictionary(DictionaryBase):
 
+class StephenLiDictionary(DictionaryBase):
     def __init__(self, name, src_url):
         super().__init__(name)
         self.penyim_lang_type = lang.SL
@@ -16,10 +16,12 @@ class StephenLiDictionary(DictionaryBase):
 
     def load_dictionary(self):
         self.load_json(STEPHEN_LI_DICTIONARY_PATH)
-        
+
         def safe_transform(x):
             try:
-                penyim_string = x["taishaneseRomanization"].replace('[', '').replace(']', '')
+                penyim_string = (
+                    x["taishaneseRomanization"].replace("[", "").replace("]", "")
+                )
 
                 splitted = penyim_string.split("/")
                 splitted = [s.strip() for s in splitted if not s.isdigit()]
@@ -30,12 +32,14 @@ class StephenLiDictionary(DictionaryBase):
                     "TRAD": None,  # we just group everything as simplified for stephen li
                     "PENYIM": [Penyim(penyim_string, lang.SL)],
                     "DEFN": x["english"],
-                    "LEMMA": x["LEMMA"]
+                    "LEMMA": x["LEMMA"],
                 }
-            except:
+            except Exception:
                 pass
-        
-        self.dictionary = [item for item in map(safe_transform, self.dictionary) if item is not None]
+
+        self.dictionary = [
+            item for item in map(safe_transform, self.dictionary) if item is not None
+        ]
 
 
 # Singleton instance of StephenLiDictionary

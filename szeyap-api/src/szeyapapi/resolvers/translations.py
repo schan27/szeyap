@@ -29,12 +29,11 @@ def get(phrase: str, dictionary: str, penyim: bool, limit=10):
         responses = dict(
             original_phrase=gc_responses["original_phrase"],
             detected_language=gc_responses["detected_language"],
-            translations=sl_responses["translations"] \
-                + gc_responses["translations"],
+            translations=sl_responses["translations"] + gc_responses["translations"],
         )
     elif dictionary == "GC_DICT":
         responses = gc_responses
     else:
         responses = sl_responses
-        
+
     return responses

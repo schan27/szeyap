@@ -1,5 +1,6 @@
 from sentence_transformers import SentenceTransformer
 import logging
+
 logger = logging.getLogger("szeyapapi")
 
 
@@ -33,7 +34,5 @@ LANG_MODEL = Comparison("paraphrase-multilingual-MiniLM-L12-v2")
 
 
 if __name__ == "__main__":
-    result = LANG_MODEL.compare(
-        "cat", "貓"
-    )
+    result = LANG_MODEL.compare("cat", "貓")
     print(result)
