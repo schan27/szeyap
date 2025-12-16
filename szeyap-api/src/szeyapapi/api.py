@@ -1,8 +1,10 @@
 import os
+from pathlib import Path
+
 from connexion import AsyncApp
 from connexion.resolver import RelativeResolver
-from pathlib import Path
 from starlette.middleware.cors import CORSMiddleware
+
 import szeyapapi.config as cfg
 
 app = AsyncApp(

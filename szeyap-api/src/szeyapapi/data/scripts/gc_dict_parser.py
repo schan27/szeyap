@@ -1,6 +1,6 @@
-import re
 import csv
 import json
+import re
 
 from szeyapapi.data.scripts.phrase_definition import PhraseDefinition
 

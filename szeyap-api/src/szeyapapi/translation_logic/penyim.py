@@ -1,12 +1,11 @@
-from ..utils.enums import LanguageFormats as Lang
-from ..utils.enums import Tones as Tone
-from .penyim_tables import PENYIM_TABLES, PENYIM_LANG_TYPES
-from .penyim_rules import apply_penyim_rules, match_syllables_backward
-
 import re
 from itertools import chain
 from unicodedata import normalize
 
+from ..utils.enums import LanguageFormats as Lang
+from ..utils.enums import Tones as Tone
+from .penyim_rules import apply_penyim_rules, match_syllables_backward
+from .penyim_tables import PENYIM_LANG_TYPES, PENYIM_TABLES
 
 RARE_TONES = [Tone.RARE1, Tone.RARE2, Tone.RARE3, Tone.RARE5, Tone.RARE6]
 DIACRITICS_PATTERN = re.compile("([\u0300-\u036f])")

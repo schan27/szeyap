@@ -1,12 +1,11 @@
 # TODO: All the tests are being compared against the parsed result for HSR, we should also test for the other systems
 from pathlib import Path
+from unicodedata import normalize
 
 import pandas as pd
-from unidecode import unidecode
-from unicodedata import normalize
 from szeyapapi.translation_logic.penyim import Penyim
 from szeyapapi.utils.enums import LanguageFormats as Lang
-
+from unidecode import unidecode
 
 current_dir = Path(__file__).resolve().parent
 penyim_data_path = Path(current_dir, "..", "src/szeyapapi/data/initials_finals.xlsx")

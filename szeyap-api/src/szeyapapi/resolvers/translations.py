@@ -1,8 +1,7 @@
-from ..translation_logic.translator import Translator
-from ..translation_logic.question import TranslationQuestion
-
 from ..dictionaries.genechin_dictionary import GC
 from ..dictionaries.stephenli_dictionary import SL
+from ..translation_logic.question import TranslationQuestion
+from ..translation_logic.translator import Translator
 
 gc_translator = Translator("Gene Chin Translator", GC)
 sl_translator = Translator("Stephen Li Translator", SL)

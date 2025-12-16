@@ -1,5 +1,6 @@
 import json
 import os
+
 from ..config import PROJ_ROOT
 
 # A base class for all dictionaries

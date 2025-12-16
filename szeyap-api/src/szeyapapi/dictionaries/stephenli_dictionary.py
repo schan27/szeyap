@@ -1,9 +1,9 @@
-from szeyapapi.dictionaries.dictionary_base import DictionaryBase
-from szeyapapi.config import STEPHEN_LI_DICTIONARY_PATH
-from szeyapapi.utils.enums import LanguageFormats as lang
-from szeyapapi.translation_logic.penyim import Penyim
-
 import os
+
+from szeyapapi.config import STEPHEN_LI_DICTIONARY_PATH
+from szeyapapi.dictionaries.dictionary_base import DictionaryBase
+from szeyapapi.translation_logic.penyim import Penyim
+from szeyapapi.utils.enums import LanguageFormats as lang
 
 FILE_DIR = os.path.dirname(os.path.realpath(__file__))
 

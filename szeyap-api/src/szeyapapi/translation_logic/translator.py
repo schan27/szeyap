@@ -1,14 +1,15 @@
 import re
 
-import spacy
 import langid
-from wordfreq import zipf_frequency
+import spacy
 from hanziconv import HanziConv
-from szeyapapi.utils.enums import LanguageFormats as lang
-from szeyapapi.translation_logic.response import Response
-from szeyapapi.translation_logic.question import TranslationQuestion
+from wordfreq import zipf_frequency
+
 from szeyapapi.dictionaries.dictionary_base import DictionaryBase
 from szeyapapi.translation_logic.penyim import Penyim
+from szeyapapi.translation_logic.question import TranslationQuestion
+from szeyapapi.translation_logic.response import Response
+from szeyapapi.utils.enums import LanguageFormats as lang
 
 # A Translator receives Questions and create Responses
 #  - the Translator is created by giving it a dictionary, and it uses the dictionary to create Responses

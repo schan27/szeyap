@@ -1,5 +1,5 @@
-from ..utils.enums import LanguageFormats as Lang
 from ..translation_logic.penyim import Penyim
+from ..utils.enums import LanguageFormats as Lang
 
 
 def get(phrase: str, src_lang: str = "UNK"):

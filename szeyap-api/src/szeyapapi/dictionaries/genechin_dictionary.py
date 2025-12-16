@@ -1,11 +1,11 @@
-from szeyapapi.dictionaries.dictionary_base import DictionaryBase
-from szeyapapi.config import GENE_CHIN_DICTIONARY_PATH, PROJ_ROOT
-from szeyapapi.utils.enums import LanguageFormats as lang
-from szeyapapi.translation_logic.penyim import Penyim
-
 import json
-import os
 import logging
+import os
+
+from szeyapapi.config import GENE_CHIN_DICTIONARY_PATH, PROJ_ROOT
+from szeyapapi.dictionaries.dictionary_base import DictionaryBase
+from szeyapapi.translation_logic.penyim import Penyim
+from szeyapapi.utils.enums import LanguageFormats as lang
 
 
 class GeneChinDictionary(DictionaryBase):
