@@ -70,10 +70,7 @@ class TestSearch(unittest.TestCase):
         pass
 
     def test_chinese_search(self):
-        question = TranslationQuestion("\u732b") #猫
-        matches = list(
-            self.trans._search_dictionary_by_chinese(question.query)
-        )
+        question = TranslationQuestion("\u732b")  # 猫
+        matches = list(self.trans._search_dictionary_by_chinese(question.query))
         expected_matches = 2
         self.assertEqual(expected_matches, len(matches))
-

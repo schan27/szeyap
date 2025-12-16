@@ -1,19 +1,17 @@
 # TODO: All the tests are being compared against the parsed result for HSR, we should also test for the other systems
-from pathlib import Path 
-
-import pandas as pd 
-from unidecode import unidecode
+from pathlib import Path
 from unicodedata import normalize
+
+import pandas as pd
 from szeyapapi.translation_logic.penyim import Penyim
 from szeyapapi.utils.enums import LanguageFormats as Lang
-
+from unidecode import unidecode
 
 current_dir = Path(__file__).resolve().parent
-penyim_data_path = Path(
-    current_dir, "..", 
-    "src/szeyapapi/data/initials_finals.xlsx")
+penyim_data_path = Path(current_dir, "..", "src/szeyapapi/data/initials_finals.xlsx")
 
 df = pd.read_excel(penyim_data_path, sheet_name=None, index_col=0)
+
 
 def test_gc_no_initial():
     test = "ō"
@@ -28,7 +26,7 @@ def test_gc_syllable():
 
 
 def test_sc_phrase():
-    test = 'vi32 saŋ33 dzi55'
+    test = "vi32 saŋ33 dzi55"
     result = Penyim(test, Lang.SL)
     expected_result = ["vi32", "saŋ33", "dzi55"]
     for i, word_formats in enumerate(result.formats):
@@ -36,7 +34,7 @@ def test_sc_phrase():
 
 
 def test_basic_no_tone():
-    test = 'ni'
+    test = "ni"
     result = Penyim(test, Lang.UNK)
     assert unidecode(result.formats[0][Lang.HSR]) == unidecode("n(e)i")
     assert unidecode(result.formats[0][Lang.GC]) == unidecode("ni")
@@ -167,7 +165,7 @@ def test_multiple_romanizations():
     expected_result = ["ng(e)i", "sip", "lh(e)i"]
     for i, word_formats in enumerate(result.formats):
         assert unidecode(word_formats[Lang.HSR]) == unidecode(expected_result[i])
-    
+
 
 def test_missing_final_tone():
     test = "fān-uï"

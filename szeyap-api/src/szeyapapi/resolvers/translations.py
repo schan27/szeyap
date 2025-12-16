@@ -1,8 +1,7 @@
-from ..translation_logic.translator import Translator
-from ..translation_logic.question import TranslationQuestion
-
 from ..dictionaries.genechin_dictionary import GC
 from ..dictionaries.stephenli_dictionary import SL
+from ..translation_logic.question import TranslationQuestion
+from ..translation_logic.translator import Translator
 
 gc_translator = Translator("Gene Chin Translator", GC)
 sl_translator = Translator("Stephen Li Translator", SL)
@@ -29,12 +28,11 @@ def get(phrase: str, dictionary: str, penyim: bool, limit=10):
         responses = dict(
             original_phrase=gc_responses["original_phrase"],
             detected_language=gc_responses["detected_language"],
-            translations=sl_responses["translations"] \
-                + gc_responses["translations"],
+            translations=sl_responses["translations"] + gc_responses["translations"],
         )
     elif dictionary == "GC_DICT":
         responses = gc_responses
     else:
         responses = sl_responses
-        
+
     return responses

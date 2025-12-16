@@ -40,6 +40,7 @@ szeyapapi = { workspace = true }
 [dependency-groups]
 dev = [
     "ipdb>=0.13.13",
+    "pre-commit>=4.5.0",
     "pyppeteer>=2.0.0",
     "pytest>=9.0.1",
     "ruff>=0.12.12",
