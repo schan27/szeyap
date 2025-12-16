@@ -64,7 +64,7 @@ export default function Contact() {
                                 Name
                             </label>
                             <input
-                                className="h-10 w-100 appearance-none rounded-md border-1 px-3 text-[--color-text-default] outline-none ring-1 ring-inset ring-[--color-border-default] placeholder:text-[--color-text-muted] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-0 focus-visible:outline-[--color-highlight] focus-visible:ring-[1.5px] focus-visible:ring-inset focus-visible:ring-[--color-border-active]"
+                                className="h-[2.5rem] sm:h-[2.75rem] md:h-[3rem] sm:w-[20rem] md:w-[24rem] lg:w-[28rem] appearance-none rounded-md border-1 px-3 text-[--color-text-default] outline-none ring-1 ring-inset ring-[--color-border-default] placeholder:text-[--color-text-muted] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-0 focus-visible:outline-[--color-highlight] focus-visible:ring-[1.5px] focus-visible:ring-inset focus-visible:ring-[--color-border-active]"
                                 id="name"
                                 name="name"
                             />
@@ -77,7 +77,7 @@ export default function Contact() {
                                 Email
                             </label>
                             <input
-                                className="h-10 w-100 font-normal appearance-none rounded-md border-1 px-3 text-[--color-text-default] outline-none ring-1 ring-inset ring-[--color-border-default] placeholder:text-[--color-text-muted] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-0 focus-visible:outline-[--color-highlight] focus-visible:ring-[1.5px] focus-visible:ring-inset focus-visible:ring-[--color-border-active]"
+                                className="h-[2.5rem] sm:h-[2.75rem] md:h-[3rem] sm:w-[20rem] md:w-[24rem] lg:w-[28rem] font-normal appearance-none rounded-md border-1 px-3 text-[--color-text-default] outline-none ring-1 ring-inset ring-[--color-border-default] placeholder:text-[--color-text-muted] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-0 focus-visible:outline-[--color-highlight] focus-visible:ring-[1.5px] focus-visible:ring-inset focus-visible:ring-[--color-border-active]"
                                 id="email"
                                 name="email"
                                 required
@@ -91,7 +91,7 @@ export default function Contact() {
                                 Message
                             </label>
                             <textarea
-                                className="h-50 w-100 appearance-none rounded-md border-1 px-3 py-2 text-[--color-text-default] outline-none ring-1 ring-inset ring-[--color-border-default] placeholder:text-[--color-text-muted] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-0 focus-visible:outline-[--color-highlight] focus-visible:ring-[1.5px] focus-visible:ring-inset focus-visible:ring-[--color-border-active]"
+                                className="hh-[10rem] sm:h-[11rem] md:h-[12rem] sm:w-[20rem] md:w-[24rem] lg:w-[28rem] appearance-none rounded-md border-1 px-3 py-2 text-[--color-text-default] outline-none ring-1 ring-inset ring-[--color-border-default] placeholder:text-[--color-text-muted] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-0 focus-visible:outline-[--color-highlight] focus-visible:ring-[1.5px] focus-visible:ring-inset focus-visible:ring-[--color-border-active]"
                                 id="message"
                                 name="message"
                             ></textarea>

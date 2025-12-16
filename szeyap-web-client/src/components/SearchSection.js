@@ -120,13 +120,13 @@ export default function SearchSection() {
 
           <div className="flex items-center justify-start ml-1">
             <Checkbox.Root
-              className="flex size-[20px] appearance-none rounded bg-white shadow-[0_0_0_2px_black] shadow-blackA4 outline-none focus:shadow-[0_0_0_2px_black]"
+              className="flex size-[1.2rem] appearance-none rounded bg-white shadow-[0_0_0_2px_black] shadow-blackA4 outline-none focus:shadow-[0_0_0_2px_black]"
               id="c1"
               checked={searchByPenyim}
               onCheckedChange={setSearchByPenyim}
             >
               <Checkbox.Indicator>
-                <Check size={16} className="sm:w-5 sm:h-5" />
+                <Check className="w-5 h-5 sm:w-5 sm:h-5" />
               </Checkbox.Indicator>
             </Checkbox.Root>
 
@@ -148,7 +148,7 @@ export default function SearchSection() {
                   : "text-gray-500 hover:text-gray-700"
                 }`}
             >
-              <Edit2 className="w-5 h-5" />
+              <Edit2 className="w-5 h-5 sm:w-5 sm:h-5" />
             </button>
             <Tooltip>
               <TooltipTrigger
@@ -157,7 +157,7 @@ export default function SearchSection() {
                 title="Paste"
                 aria-label="Paste from clipboard"
               >
-                <Clipboard size={16} className="sm:w-5 sm:h-5" />
+                <Clipboard size={16} className="w-5 h-5 sm:w-5 sm:h-5" />
               </TooltipTrigger>
               <TooltipContent className="">Paste from clipboard</TooltipContent>
             </Tooltip>
@@ -170,7 +170,7 @@ export default function SearchSection() {
               {isLoading ? (
                 <Loader2 size={16} className="sm:w-5 sm:h-5 animate-spin" />
               ) : (
-                <Search size={16} className="sm:w-5 sm:h-5" />
+                <Search size={16} className="w-5 h-5 sm:w-5 sm:h-5" />
               )}
             </button>
           </div>
