@@ -2,6 +2,8 @@ uv.lock
 .vscode/
 __pycache__/
 env/
+build/
+*.sh
 
 node_modules/
 
