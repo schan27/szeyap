@@ -9,6 +9,15 @@ from .penyim_tables import PENYIM_LANG_TYPES, PENYIM_TABLES
 
 RARE_TONES = [Tone.RARE1, Tone.RARE2, Tone.RARE3, Tone.RARE5, Tone.RARE6]
 DIACRITICS_PATTERN = re.compile("([\u0300-\u036f])")
+TONE_PATTERN = r"""
+    (?:                                      # Non-capturing group for alternation
+        [1-6]{1,3}(?![a-z0-9])               # 1–3 digit tone numbers (with lookahead guard)
+        |
+        /                                    # Slash for rising tone
+        |
+        [-`*‘’〉]+                            # One or more characters from your symbol set
+    )?
+"""
 
 
 class Penyim:
@@ -54,18 +63,6 @@ class Penyim:
     # recognize penyim looking phrases and separate tone from initial_final
     def extract_penyim_phrases(self) -> tuple[tuple]:
         syllables = []
-
-        # We should create a regex for each romanization system
-        tone_pattern = r"""
-        (?:                                      # Non-capturing group for alternation
-            [1-6]{1,3}(?![a-z0-9])               # 1–3 digit tone numbers (with lookahead guard)
-            |
-            /                                    # Slash for rising tone
-            |
-            [-`*‘’〉]+                            # One or more characters from your symbol set
-        )?
-    """
-
         if self.lang_type == Lang.UNK:
             all_initials = list(chain.from_iterable(PENYIM_TABLES.initials.values()))
             all_finals = list(chain.from_iterable(PENYIM_TABLES.finals.values()))
@@ -99,7 +96,7 @@ class Penyim:
       (?P<syllable>
           (?P<initial>{initials_pattern})?   # optional initial
           (?P<final>{finals_pattern})        # required final 
-          (?P<tone>{tone_pattern})?          # optional tone
+          (?P<tone>{TONE_PATTERN})?          # optional tone
       )
       """
         )
