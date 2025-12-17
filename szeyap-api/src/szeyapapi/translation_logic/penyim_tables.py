@@ -40,20 +40,10 @@ class PenyimTables:
             df = df[df.columns[: last_col + 1]]
             return df
 
-        # HSR
-        self.tables[Lang.HSR] = clean_df(df_dict["HSR"])
-
-        # SL
-        self.tables[Lang.SL] = clean_df(df_dict["SL"])
-
-        # GC
-        self.tables[Lang.GC] = clean_df(df_dict["GPS"])
-
-        # DJ
-        self.tables[Lang.DJ] = clean_df(df_dict["DJ"])
-
-        # JW
-        self.tables[Lang.JW] = clean_df(df_dict["WPS"])
+        for lang, lang_string in zip(
+            PENYIM_LANG_TYPES, ["HSR", "GPS", "SL", "DJ", "WPS"]
+        ):
+            self.tables[lang] = clean_df(df_dict[lang_string])
 
     def load_tones(self):
         tone_dict = json.loads(
@@ -88,10 +78,7 @@ class PenyimTables:
         else:
             return self._get_tone_type_from_num(lang, tone_q)
 
-    # TODO: lang_type not used
-    def search(
-        self, penyim_q: str, tone_q: str, lang_type: Lang = Lang.UNK
-    ) -> tuple[tuple[int, int], Tone | None]:
+    def search(self, penyim_q: str, tone_q: str) -> tuple[tuple[int, int], Tone | None]:
         for table in PENYIM_LANG_TYPES:
             tone = self._answer_tone_q(tone_q, table)
             if tone:
@@ -119,12 +106,6 @@ class PenyimTables:
     def get_initial_final(self, indices: tuple, lang_type: Lang) -> tuple[str, str]:
         initial_i, final_i = indices
         return self.initials[lang_type][initial_i], self.finals[lang_type][final_i]
-
-    def get_transdimensional_matches(self, indices: tuple) -> dict:
-        initial_i, final_i = indices
-        return {
-            type: self.tables[type][final_i][initial_i] for type in PENYIM_LANG_TYPES
-        }
 
     def get_transdimensional_match(self, indices: tuple, lang_type: Lang) -> str:
         initial_i, final_i = indices

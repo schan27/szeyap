@@ -55,7 +55,8 @@ class TestSearch(unittest.TestCase):
                 }
             ],
         }
-        self.assertEqual(expected_res, res)
+
+        self.assertDictEqual(expected_res, res)
 
     def test_english_search(self):
         question = TranslationQuestion("cats")

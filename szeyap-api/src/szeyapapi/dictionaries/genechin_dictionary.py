@@ -27,11 +27,11 @@ class GeneChinDictionary(DictionaryBase):
         for entry in self.dictionary:
             keys_need_join = ("TRAD", "SIMP", "PENYIM", "PINYIN", "LEMMA")
             for key in keys_need_join:
-                if isinstance(entry[key], str):
+                if (key in entry) and (isinstance(entry[key], str)):
                     if key != "LEMMA":
-                        value = [entry[key]]
+                        value = [entry.get(key, "")]
                     else:
-                        value = entry[key]
+                        value = entry.get(key, "")
 
                     entry.update({key: value})
 

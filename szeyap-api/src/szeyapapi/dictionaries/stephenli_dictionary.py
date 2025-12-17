@@ -17,10 +17,12 @@ class StephenLiDictionary(DictionaryBase):
     def load_dictionary(self):
         self.load_json(STEPHEN_LI_DICTIONARY_PATH)
 
-        def safe_transform(x):
+        def safe_transform(dict_entry: dict[str, str]):
             try:
                 penyim_string = (
-                    x["taishaneseRomanization"].replace("[", "").replace("]", "")
+                    dict_entry["taishaneseRomanization"]
+                    .replace("[", "")
+                    .replace("]", "")
                 )
 
                 splitted = penyim_string.split("/")
@@ -28,11 +30,11 @@ class StephenLiDictionary(DictionaryBase):
                 penyim_string = " ".join(splitted)
 
                 return {
-                    "SIMP": [x["mandarin"]],
+                    "SIMP": [dict_entry["mandarin"]],
                     "TRAD": None,  # we just group everything as simplified for stephen li
                     "PENYIM": [Penyim(penyim_string, lang.SL)],
-                    "DEFN": x["english"],
-                    "LEMMA": x["LEMMA"],
+                    "DEFN": dict_entry["english"],
+                    "LEMMA": dict_entry["LEMMA"],
                 }
             except Exception:
                 pass

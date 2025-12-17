@@ -6,9 +6,9 @@
 3. Create the environment `uv venv venv` 
 4. Activate it `source venv/bin/activate` and sync it `uv sync`
 5. Download the spaCy model `uv run --with spacy spacy download en_core_web_sm`
-6. Start the server: `uv run src/szeyapapi/api.py --reload`
+6. Start the server `uv run src/szeyapapi/api.py --reload`
 7. Access Swagger UI at `http://localhost:8000/api/ui`
-
+8. Apply pre-commit hooks before commits `pre-commit run --all`
 
 ## Steps to run
 Each service exists as a separate Docker container, so you can run each separately or run using `docker compose` which will *glue* all the containers together and allow your client to communicate with your api, for example.
