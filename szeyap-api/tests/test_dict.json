@@ -2,8 +2,8 @@
         {
         "TRAD": "\u8c93",
         "SIMP": "\u732b",
-        "JYUTPING": "mi\u016b",
-        "PENYIM": "m\u0101o",
+        "PENYIM": "mi\u016b",
+        "PINYIN": "m\u0101o",
         "DEFN": "cat.\u2075",
         "LEMMA": "cat"
     },
@@ -14,10 +14,10 @@
         "SIMP": [
             "\u96c4\u732b"
         ],
-        "JYUTPING": [
+        "PENYIM": [
             "h\u0169ng-mi\u016b"
         ],
-        "PENYIM": [
+        "JYUTPING": [
             "xi\u00f3ngm\u0101o"
         ],
         "DEFN": "tomcat.\u2075",
@@ -26,8 +26,8 @@
         {
         "TRAD": "\u72f8",
         "SIMP": "",
-        "JYUTPING": "l\u0129",
-        "PENYIM": "l\u00ed",
+        "PENYIM": "l\u0129",
+        "JYUTPING": "l\u00ed",
         "DEFN": "the fox; the wild-cat; the raccoon.\u00b9\u2074 (variant: \u8c8d l\u00ee).\u00b9\u2074",
         "LEMMA": "the fox the wild cat the raccoon variant"
     }

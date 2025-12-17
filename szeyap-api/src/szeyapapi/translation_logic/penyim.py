@@ -197,7 +197,7 @@ class Penyim:
             return
 
         for i, (penyim_q, tone_q) in enumerate(phrases):
-            indices, tone = PENYIM_TABLES.search(penyim_q, tone_q, lang_type)
+            indices, tone = PENYIM_TABLES.search(penyim_q, tone_q)
 
             if indices == (-1, -1):
                 self.indices.append((-1, -1))
