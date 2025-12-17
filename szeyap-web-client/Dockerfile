@@ -9,7 +9,6 @@ WORKDIR /app
 
 # Copy package files
 RUN npm ci --only=production
-RUN npm install @formspree/react
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -19,11 +18,6 @@ COPY package.json package-lock.json* ./
 RUN npm ci
 COPY . .
 
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry during the build.
-# ENV NEXT_TELEMETRY_DISABLED 1
-
 RUN npm run build
 
 # Production image, copy all the files and run next
@@ -32,7 +26,7 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
