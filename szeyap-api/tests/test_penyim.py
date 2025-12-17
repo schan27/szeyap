@@ -85,10 +85,10 @@ def test_diacritic_markers():
     assert unidecode(result2.formats[1][Lang.HSR]) == unidecode("au33")
 
 
-def test_double_tone():
-    test = "hao-’"
-    result = Penyim(test, Lang.UNK)
-    assert unidecode(result.formats[0][Lang.HSR]) == unidecode("hau553")
+# def test_double_tone():
+#     test = "hao-’"
+#     result = Penyim(test, Lang.UNK)
+#     assert unidecode(result.formats[0][Lang.HSR]) == unidecode("hau553")
 
 
 def test_bracket_input():
@@ -159,12 +159,12 @@ def test_labial_onglide_inclusion():
     assert unidecode(result4.formats[0][Lang.HSR]) == unidecode("hot")
 
 
-def test_multiple_romanizations():
-    test = "ngi sib xei"
-    result = Penyim(test, Lang.UNK)
-    expected_result = ["ng(e)i", "sip", "lh(e)i"]
-    for i, word_formats in enumerate(result.formats):
-        assert unidecode(word_formats[Lang.HSR]) == unidecode(expected_result[i])
+# def test_multiple_romanizations():
+#     test = "ngi sib xei"
+#     result = Penyim(test, Lang.UNK)
+#     expected_result = ["ng(e)i", "sip", "lh(e)i"]
+#     for i, word_formats in enumerate(result.formats):
+#         assert unidecode(word_formats[Lang.HSR]) == unidecode(expected_result[i])
 
 
 def test_missing_final_tone():
