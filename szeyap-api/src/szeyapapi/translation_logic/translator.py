@@ -81,13 +81,17 @@ class Translator:
 
             return {
                 "english": defn["DEFN"],
-                "chinese": {"simplified": defn["SIMP"], "penyim": penyim_api_response},
+                "chinese": {
+                    "simplified": defn["SIMP"],
+                    "traditional": defn["TRAD"],
+                    "penyim": penyim_api_response,
+                },
             }
 
         if not answers:
             return response
 
-        answers = self.rank_by_frequency(q, answers)
+        answers = self.rank_by_frequency(answers)
 
         for i, defn in enumerate(answers):
             response.add_answer(construct_translation(i, defn))
@@ -120,7 +124,7 @@ class Translator:
         return self._construct_answer(q, answers, limit)
 
     @staticmethod
-    def rank_by_frequency(q: TranslationQuestion, results: list[dict]):
+    def rank_by_frequency(results: list[dict]):
         ranked_results = []
         for result in results:
             word = result["SIMP"][0]
