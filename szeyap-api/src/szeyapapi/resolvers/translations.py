@@ -21,8 +21,9 @@ def get(phrase: str, src_lang: str, dictionary: str, limit=10):
     responses = translator.ask(q, limit)
     api_resp = responses.as_api_resp()
 
-    api_resp["translations"] = attach_pronunciation(api_resp["translations"], dictionary)
-
+    api_resp["translations"] = attach_pronunciation(api_resp["translations"], dictionary) # Jackson: If this is too coupled
+    # we can move it elsewhere but for now we expect one pronunciation per translation
+    
     return api_resp
 
     # responses = gc_translator.ask(q, limit) if dictionary == "GC_DICT" else sl_translator.ask(q, limit)

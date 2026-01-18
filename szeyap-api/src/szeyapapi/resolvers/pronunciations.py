@@ -24,6 +24,7 @@ def get_audio_url(dictionary: str, jyutping: str) -> str | None:
         return f"/api/pronunciation/{dictionary}/{audio_id}"
     return None
 
+# This is the getter for yml spec
 def get_pronunciation(dictionary: str, pronunciation_id: str):
     if dictionary not in DICTIONARIES:
         abort(404, "Invalid dictionary")
