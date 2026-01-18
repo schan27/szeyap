@@ -65,12 +65,7 @@ class Translator:
                     response.errors.append(f"#{i}: jyutping[{j}] - {jyut.summarize_errors()}")
                 jyut_as_api_resp.append(jyut.as_dict() if jyut else None)
                 
-            # Pick first GC Jyutping for audio
-            pronunciation_url = None
-            if jyut_as_api_resp:
-                canonical_jp = jyut_as_api_resp[0]["GC"]
-                pronunciation_url = get_audio_url(dictionary, canonical_jp)    
-            
+                
             return {
                 "english": defn["DEFN"],
                 "chinese": {

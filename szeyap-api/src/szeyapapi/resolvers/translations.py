@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
-
 from ..utils.enums import LanguageFormats as Lang
 from ..translation_logic.translator import Translator
 from ..translation_logic.question import TranslationQuestion
 
 from ..dictionaries.genechin_dictionary import GC
 from ..dictionaries.stephenli_dictionary import SL
+from .pronunciations import attach_pronunciation
 
 gc_translator = Translator("Gene Chin Translator", GC)
 sl_translator = Translator("Stephen Li Translator", SL)
@@ -16,7 +15,16 @@ def hello_world():
 def get(phrase: str, src_lang: str, dictionary: str, limit=10):
     # construct Question using phrase
     q = TranslationQuestion(phrase, Lang[src_lang])
+    
+    translator = gc_translator if dictionary == "GC_DICT" else sl_translator
 
-    responses = gc_translator.ask(q, limit) if dictionary == "GC_DICT" else sl_translator.ask(q, limit)
+    responses = translator.ask(q, limit)
+    api_resp = responses.as_api_resp()
 
-    return responses.as_api_resp()
+    api_resp["translations"] = attach_pronunciation(api_resp["translations"], dictionary)
+
+    return api_resp
+
+    # responses = gc_translator.ask(q, limit) if dictionary == "GC_DICT" else sl_translator.ask(q, limit)
+
+    # return responses.as_api_resp()

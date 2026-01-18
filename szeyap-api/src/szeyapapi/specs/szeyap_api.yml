@@ -172,11 +172,13 @@ components:
                 $ref: '#/components/schemas/Jyutping'
         pronunciation_id:
           type: string
-          description: Normalized ID used for pronunciation audio
+          description: Normalized ID used for pronunciation audio (optional)
+          nullable: true
         pronunciation_url:
           type: string
           format: url
-          description: URL to play pronunciation audio
+          description: URL to play pronunciation audio (optional)
+          nullable: true
     Jyutping:
       type: object
       properties:
