@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from ..utils.enums import LanguageFormats as Lang
 from ..translation_logic.translator import Translator
 from ..translation_logic.question import TranslationQuestion

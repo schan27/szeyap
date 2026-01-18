@@ -10,6 +10,7 @@ from .response import Response
 from .question import TranslationQuestion
 from ..dictionaries.dictionary_base import DictionaryBase
 from .jyutping import Jyutping
+from ..resolvers.pronunciations import get_audio_url
 
 # A Translator receives Questions and create Responses
 #  - the Translator is created by giving it a dictionary, and it uses the dictionary to create Responses
@@ -63,6 +64,12 @@ class Translator:
                 if jyut and jyut.has_errors():
                     response.errors.append(f"#{i}: jyutping[{j}] - {jyut.summarize_errors()}")
                 jyut_as_api_resp.append(jyut.as_dict() if jyut else None)
+                
+            # Pick first GC Jyutping for audio
+            pronunciation_url = None
+            if jyut_as_api_resp:
+                canonical_jp = jyut_as_api_resp[0]["GC"]
+                pronunciation_url = get_audio_url(dictionary, canonical_jp)    
             
             return {
                 "english": defn["DEFN"],

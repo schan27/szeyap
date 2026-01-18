@@ -44,7 +44,7 @@ paths:
 
       responses:
         '200':
-          description: A response with metadata and a list of translations
+          description: A response with metadata and a list of translations, each with option pronunciation audio
           content:
             application/json:
               schema:
@@ -75,6 +75,31 @@ paths:
                   - detected_language
                   - translations
                   - metadata
+
+  /pronunciation/{dictionary}/{pronunciation_id}:
+    get:
+      summary: Returns pronunciation audio (Romanization/Jyutping)
+      operationId: pronunciation.get
+      parameters:
+        - name: dictionary
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [GC_DICT, SL_DICT]
+        - name: pronunciation_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pronunciation audio
+          content:
+            audio/mpeg: {}
+        '404':
+          description: Audio not found              
+
   /romanizations:
     get:
       summary: Returns a Jyutping Object
@@ -145,6 +170,13 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Jyutping'
+        pronunciation_id:
+          type: string
+          description: Normalized ID used for pronunciation audio
+        pronunciation_url:
+          type: string
+          format: url
+          description: URL to play pronunciation audio
     Jyutping:
       type: object
       properties:
