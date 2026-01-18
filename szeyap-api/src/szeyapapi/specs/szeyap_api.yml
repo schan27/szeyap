@@ -79,7 +79,7 @@ paths:
   /pronunciation/{dictionary}/{pronunciation_id}:
     get:
       summary: Returns pronunciation audio (Romanization/Jyutping)
-      operationId: pronunciation.get
+      operationId: pronunciations.get_pronunciation
       parameters:
         - name: dictionary
           in: path
