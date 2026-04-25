@@ -36,7 +36,7 @@ class Translator:
                     re.search(rf"\b{lemmatized_phrase.lower()}\b", x[field].lower())
                     is not None
                 )
-            return phrase.lower() in x[field].lower()
+            return lemmatized_phrase.lower() in x[field].lower()
 
         return filter(_search_match_fn, self.data.dictionary)
 

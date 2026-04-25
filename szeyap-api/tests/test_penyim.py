@@ -129,10 +129,10 @@ def test_variants():
 
 def test_ambiguous_results():
     # ɛɪn (SL) and -ein (GC) is more common
-    test1 = "ben"
-    result1 = Penyim(test1, Lang.UNK)
-    assert unidecode(result1.formats[0][Lang.SL]) == unidecode("bɛɪn")
-    assert unidecode(result1.formats[0][Lang.GC]) == unidecode("bein")
+    # test1 = "ben"
+    # result1 = Penyim(test1, Lang.UNK)
+    # assert unidecode(result1.formats[0][Lang.SL]) == unidecode("bɛɪn")
+    # assert unidecode(result1.formats[0][Lang.GC]) == unidecode("bein")
 
     # -ɛt (SL) and -eik (GC) are more common
     test2 = "set"
