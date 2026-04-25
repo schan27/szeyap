@@ -21,7 +21,5 @@ COPY . .
 ARG PORT=8000
 EXPOSE $PORT
 
-# TODO: Download FastText language models
-
 # Use uv to run the application
 CMD ["uv", "run", "gunicorn", "-k", "uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:8000", "szeyapapi.api:app"]

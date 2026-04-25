@@ -25,7 +25,7 @@
   },
   "SL": {
     "initials": ["", "b", "p", "m", "f", "v", "d", "t", "n", "l", "ɬ", "g", "k", "ŋ", "h", "dz", "ts", "s", "y"],
-    "finals": ["a", "ai", "au", "ɔu", "am", "an", "aŋ", "ap", "at", "ak", "m", "ə", "i", "əu", "əm", "ɛɪn", "ian", "əp", "ɛt", "iat", "ŋ", "ɔ", "ɔi", "ɔn", "ɔŋ", "ɔt", "ɔk", "i", "iu", "im", "in", "ip", "it", "ia", "iau", "iam", "iaŋ", "iap", "iak", "u", "ui", "ɔ", "un", "əŋ", "ut", "ək"],
+    "finals": ["a", "ai", "au", "ɔu", "am", "an", "aŋ", "ap", "at", "ak", "m", "ə", "i", "əu", "əm", "ein", "ian", "əp", "ɛt", "iat", "ŋ", "ɔ", "ɔi", "ɔn", "ɔŋ", "ɔt", "ɔk", "i", "iu", "im", "in", "ip", "it", "ia", "iau", "iam", "iaŋ", "iap", "iak", "u", "ui", "ɔ", "un", "əŋ", "ut", "ək"],
     "tones": {
       "HIGH_FLAT": "55",
       "MID_FLAT": "33",
