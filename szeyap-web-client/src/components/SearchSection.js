@@ -10,8 +10,8 @@ import HandwritingInput from "./HandwritingInput";
 import { Checkbox } from "radix-ui";
 
 
-const API_URL = "https://szeyap-backend-production.up.railway.app/api/translation";
-// const API_URL = "http://localhost:8000/api/translation";
+// const API_URL = "https://szeyap-backend-production.up.railway.app/api/translation";
+const API_URL = "http://localhost:8000/api/translation";
 
 export default function SearchSection() {
   const resultsRef = useRef(null);

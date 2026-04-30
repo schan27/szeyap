@@ -52,6 +52,7 @@ class Penyim:
             if not all(self.formats)
             else ""
         )
+
         return preamble + "\n".join(
             self._repr_format(format_i) for format_i in range(len(self.formats))
         )
@@ -100,6 +101,10 @@ class Penyim:
       )
       """
         )
+
+        print(f"{self.sample=}")
+        print(f"{self.lang_type=}")
+        print(f"{finals_pattern=}")
 
         start = 0
         # Remove brackets
@@ -177,6 +182,9 @@ class Penyim:
         return syllables
 
     def _set_as_err(self, msg):
+        import ipdb
+
+        ipdb.set_trace()
         self.errors[0] = msg
         self.indices.append((-1, -1))
         self.formats.append(None)
@@ -200,6 +208,9 @@ class Penyim:
                 self.indices.append((-1, -1))
                 self.formats.append(None)
                 self.tone.append(None)
+                import ipdb
+
+                ipdb.set_trace()
                 self.errors[i] = f"Failed to parse penyim candidate '{self.sample}'"
             else:
                 self.indices.append(indices)
