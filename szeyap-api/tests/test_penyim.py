@@ -179,3 +179,8 @@ def test_nan_segment():
     result = Penyim(test, Lang.GC)
     assert unidecode(result.formats[0][Lang.GC]) == unidecode("nãn")
     assert unidecode(result.formats[1][Lang.GC]) == unidecode("häm")
+
+
+def test_sl_apple():
+    test = "pɛɪn22 gɔ55"
+    result = Penyim(test, Lang.SL)
