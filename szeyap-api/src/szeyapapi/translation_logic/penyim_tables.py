@@ -6,9 +6,8 @@ import numpy as np
 import pandas as pd
 
 import szeyapapi.config as cfg
-
-from ..utils.enums import LanguageFormats as Lang
-from ..utils.enums import Tones as Tone
+from szeyapapi.utils.enums import LanguageFormats as Lang
+from szeyapapi.utils.enums import Tones as Tone
 
 PROJECT_ROOT_PATH = os.path.join(os.path.dirname(__file__), "..")
 PENYIM_LANG_TYPES = [Lang.HSR, Lang.GC, Lang.SL, Lang.DJ, Lang.JW]
