@@ -1,16 +1,9 @@
 # TODO: All the tests are being compared against the parsed result for HSR, we should also test for the other systems
-from pathlib import Path
 from unicodedata import normalize
 
-import pandas as pd
 from szeyapapi.translation_logic.penyim import Penyim
 from szeyapapi.utils.enums import LanguageFormats as Lang
 from unidecode import unidecode
-
-current_dir = Path(__file__).resolve().parent
-penyim_data_path = Path(current_dir, "..", "src/szeyapapi/data/initials_finals.xlsx")
-
-df = pd.read_excel(penyim_data_path, sheet_name=None, index_col=0)
 
 
 def test_gc_no_initial():
@@ -184,3 +177,5 @@ def test_nan_segment():
 def test_sl_apple():
     test = "pɛɪn22 gɔ55"
     result = Penyim(test, Lang.SL)
+    assert unidecode(result.formats[0][Lang.SL]) == unidecode("pɛɪn22")
+    assert unidecode(result.formats[1][Lang.SL]) == unidecode("gɔ55")

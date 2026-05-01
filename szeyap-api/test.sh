@@ -1,1 +1,0 @@
-uv run --with . pytest tests/test_penyim.py::test_sl_apple -s # --pdb --pdbcls=IPython.terminal.debugger:TerminalPdb
