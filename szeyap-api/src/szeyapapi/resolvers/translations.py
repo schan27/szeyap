@@ -2,6 +2,7 @@ from ..dictionaries.genechin_dictionary import GC
 from ..dictionaries.stephenli_dictionary import SL
 from ..translation_logic.question import TranslationQuestion
 from ..translation_logic.translator import Translator
+from .pronunciations import attach_pronunciation
 
 gc_translator = Translator("Gene Chin Translator", GC)
 sl_translator = Translator("Stephen Li Translator", SL)
@@ -36,3 +37,18 @@ def get(phrase: str, dictionary: str, penyim: bool, limit=10):
         responses = sl_responses
 
     return responses
+    # q = TranslationQuestion(phrase, Lang[src_lang])
+    
+    # translator = gc_translator if dictionary == "GC_DICT" else sl_translator
+
+    # responses = translator.ask(q, limit)
+    # api_resp = responses.as_api_resp()
+
+    # api_resp["translations"] = attach_pronunciation(api_resp["translations"], dictionary) # Jackson: If this is too coupled
+    # # we can move it elsewhere but for now we expect one pronunciation per translation
+    
+    # return api_resp
+
+    # # responses = gc_translator.ask(q, limit) if dictionary == "GC_DICT" else sl_translator.ask(q, limit)
+
+    # # return responses.as_api_resp()
