@@ -7,6 +7,12 @@ from starlette.middleware.cors import CORSMiddleware
 
 import szeyapapi.config as cfg
 
+import sys
+import io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8") # encoding test - Jackson
+
 app = AsyncApp(
     __name__, specification_dir=f"{os.path.dirname(os.path.realpath(__file__))}/specs"
 )

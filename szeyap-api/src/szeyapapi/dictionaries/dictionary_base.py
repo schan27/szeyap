@@ -28,5 +28,5 @@ class DictionaryBase:
         self.type = None
 
     def load_json(self, path):
-        with open(os.path.join(PROJ_ROOT, path), "r") as file:
+        with open(os.path.join(PROJ_ROOT, path), "r", encoding="utf-8") as file:
             self.dictionary = json.load(file)
