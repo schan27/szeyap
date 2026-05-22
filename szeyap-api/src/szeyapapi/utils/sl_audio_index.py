@@ -34,8 +34,4 @@ def get_sl_audio_index() -> dict:
     global _sl_audio_index
     if _sl_audio_index is None:
         _sl_audio_index = load_sl_audio_index()
-        print(f"SL audio index loaded: {len(_sl_audio_index)} entries")
-        # print a sample
-        sample = list(_sl_audio_index.items())[:3]
-        print(f"Sample: {sample}")
     return _sl_audio_index

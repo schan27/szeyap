@@ -52,7 +52,6 @@ def get_pronunciation(dictionary: str, pronunciation_id: str):
 
 # Attach pronunciation URLs to the translations based on the Chinese characters
 def attach_pronunciation(translations: list, dictionary: str) -> list:
-    print(f"attach_pronunciation called: {dictionary}, {len(translations)} items")
     for t in translations:
         chinese = t.get("chinese", {})
  
