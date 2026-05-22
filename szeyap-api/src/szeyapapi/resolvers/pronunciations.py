@@ -3,7 +3,7 @@ from pathlib import Path
 import re
 from flask import send_from_directory, abort
 
-from ..utils.audio_index import get_audio_index
+from ..utils.sl_audio_index import get_sl_audio_index
 
 AUDIO_ROOT = Path("src/szeyapapi/data/pronunciations") #TODO: change placeholder later
 DICTIONARIES = {"GC_DICT", "SL_DICT"}
@@ -14,18 +14,21 @@ def normalize_for_audio(jyutping: str) -> str:
     jp = re.sub(r"[^a-z0-9_]", "", jp)
     return jp
 
-# Return the API URL for the pronunciation audio, or None if missing
+# Lookup the audio URL for a given dictionary and Jyutping, returning None if not found
 def get_audio_url(dictionary: str, jyutping: str) -> str | None:
     if dictionary not in DICTIONARIES:
         raise ValueError(f"Unknown dictionary: {dictionary!r}")
  
-    audio_id = normalize_for_audio(jyutping)
+    if dictionary == "SL_DICT":
+        index = get_sl_audio_index()
+        if lookup_key not in index:
+            raise KeyError(f"No audio found for {lookup_key!r} in SL index")
+        url = index[lookup_key]
+        pronunciation_id = url.split("/")[-1]
+        return pronunciation_id, url
  
-    index = get_audio_index()
-    if audio_id not in index:
-        raise KeyError(f"No audio found for jyutping {jyutping!r} (normalised: {audio_id!r})")
- 
-    return f"/api/pronunciation/{dictionary}/{audio_id}"
+    # GC_DICT — not yet implemented, return None gracefully
+    return None, None
 
 # Flask route handler to serve the pronunciation audio files
 def get_pronunciation(dictionary: str, pronunciation_id: str):
@@ -38,17 +41,26 @@ def get_pronunciation(dictionary: str, pronunciation_id: str):
  
     return send_from_directory(file_path.parent, file_path.name, mimetype="audio/mpeg")
 
-# Given a list of translations, attach pronunciation URLs where possible based on the jyutping and dictionary
+# Attach pronunciation URLs to the translations based on the Chinese characters
 def attach_pronunciation(translations: list, dictionary: str):
-    key = dictionary.replace("_DICT", "")
     for t in translations:
-        jyutping_list = t["chinese"].get("jyutping")
-        if jyutping_list:
-            canonical_jp = jyutping_list[0].get(key)
-            if canonical_jp:
-                t["pronunciation_url"] = get_audio_url(dictionary, canonical_jp)
-            else:
-                t["pronunciation_url"] = None
+        chinese = t.get("chinese", {})
+ 
+        simp = chinese.get("simplified")
+        trad = chinese.get("traditional")
+ 
+        lookup_key = None
+        if simp and simp[0]:
+            lookup_key = simp[0]
+        elif trad and trad[0]:
+            lookup_key = trad[0]
+ 
+        if lookup_key:
+            pronunciation_id, pronunciation_url = get_audio_url(dictionary, lookup_key)
+            t["pronunciation_id"] = pronunciation_id
+            t["pronunciation_url"] = pronunciation_url
         else:
+            t["pronunciation_id"] = None
             t["pronunciation_url"] = None
+ 
     return translations
