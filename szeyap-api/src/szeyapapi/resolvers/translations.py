@@ -25,13 +25,20 @@ def get(phrase: str, dictionary: str, penyim: bool, limit=10):
             attach_pronunciation(gc_responses["translations"], "GC_DICT")
         except Exception:
             for item in gc_responses["translations"]:
+                item.setdefault("pronunciation_id", None)
                 item.setdefault("pronunciation_url", None)
 
     if dictionary == "SL_DICT" or dictionary == "ALL_DICT":
         sl_responses = sl_translator.ask(q, limit, penyim).as_api_resp()
         for item in sl_responses["translations"]:
             item["source"] = "Stephen Li"
-        attach_pronunciation(sl_responses["translations"], "SL_DICT")
+        try:
+            attach_pronunciation(sl_responses["translations"], "SL_DICT")
+        except Exception as e:
+            print(f"attach_pronunciation error: {e}")
+            for item in sl_responses["translations"]:
+                item.setdefault("pronunciation_id", None)
+                item.setdefault("pronunciation_url", None)
 
     if dictionary == "ALL_DICT":
         responses = dict(

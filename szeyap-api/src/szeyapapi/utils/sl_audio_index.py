@@ -1,7 +1,8 @@
 import json
 from pathlib import Path
- 
-SL_DICT_PATH = Path("src/szeyapapi/data/stephenli_dictionary.json") 
+from szeyapapi.config import STEPHEN_LI_DICTIONARY_PATH
+
+SL_DICT_PATH = Path(STEPHEN_LI_DICTIONARY_PATH)
  
 AUDIO_BASE_URL = "https://taishandict.com/"
 _SL_OLD_BASE = "http://www.stephen-li.com/TaishaneseVocabulary/"
@@ -30,8 +31,11 @@ def load_sl_audio_index() -> dict:
  
  
 def get_sl_audio_index() -> dict:
-    """Return the cached SL audio index, loading from JSON once on first call."""
     global _sl_audio_index
     if _sl_audio_index is None:
         _sl_audio_index = load_sl_audio_index()
+        print(f"SL audio index loaded: {len(_sl_audio_index)} entries")
+        # print a sample
+        sample = list(_sl_audio_index.items())[:3]
+        print(f"Sample: {sample}")
     return _sl_audio_index

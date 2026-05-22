@@ -1,7 +1,7 @@
 
 from pathlib import Path
 import re
-from flask import send_from_directory, abort
+from flask import send_from_directory, abort, redirect
 
 from ..utils.sl_audio_index import get_sl_audio_index
 
@@ -18,15 +18,15 @@ def normalize_for_audio(jyutping: str) -> str:
 def get_audio_url(dictionary: str, jyutping: str) -> str | None:
     if dictionary not in DICTIONARIES:
         raise ValueError(f"Unknown dictionary: {dictionary!r}")
- 
+
     if dictionary == "SL_DICT":
         index = get_sl_audio_index()
-        if lookup_key not in index:
-            raise KeyError(f"No audio found for {lookup_key!r} in SL index")
-        url = index[lookup_key]
+        if jyutping not in index:
+            raise KeyError(f"No audio found for {jyutping!r} in SL index")
+        url = index[jyutping]
         pronunciation_id = url.split("/")[-1]
         return pronunciation_id, url
- 
+
     # GC_DICT — not yet implemented, return None gracefully
     return None, None
 
@@ -35,6 +35,15 @@ def get_pronunciation(dictionary: str, pronunciation_id: str):
     if dictionary not in DICTIONARIES:
         abort(404, "Invalid dictionary")
  
+    if dictionary == "SL_DICT":
+        index = get_sl_audio_index()
+        # pronunciation_id is the filename segment — find the matching full URL
+        url = next((u for u in index.values() if u.endswith(pronunciation_id)), None)
+        if not url:
+            abort(404, "Audio not found")
+        return redirect(url)
+ 
+    # GC_DICT — serve from disk for testing, but in practice these will likely be hosted externally like SL audio
     file_path = AUDIO_ROOT / dictionary / f"{pronunciation_id}.mp3"
     if not file_path.exists():
         abort(404, "Audio not found")
@@ -42,7 +51,8 @@ def get_pronunciation(dictionary: str, pronunciation_id: str):
     return send_from_directory(file_path.parent, file_path.name, mimetype="audio/mpeg")
 
 # Attach pronunciation URLs to the translations based on the Chinese characters
-def attach_pronunciation(translations: list, dictionary: str):
+def attach_pronunciation(translations: list, dictionary: str) -> list:
+    print(f"attach_pronunciation called: {dictionary}, {len(translations)} items")
     for t in translations:
         chinese = t.get("chinese", {})
  
