@@ -19,11 +19,19 @@ def get(phrase: str, dictionary: str, penyim: bool, limit=10):
         gc_responses = gc_translator.ask(q, limit, penyim).as_api_resp()
         for item in gc_responses["translations"]:
             item["source"] = "Gene Chin"
+        # NOTE: GC audio links are not yet available — pronunciation_url will
+        # be None for all GC items until the index is populated.
+        try:
+            attach_pronunciation(gc_responses["translations"], "GC_DICT")
+        except Exception:
+            for item in gc_responses["translations"]:
+                item.setdefault("pronunciation_url", None)
 
     if dictionary == "SL_DICT" or dictionary == "ALL_DICT":
         sl_responses = sl_translator.ask(q, limit, penyim).as_api_resp()
         for item in sl_responses["translations"]:
             item["source"] = "Stephen Li"
+        attach_pronunciation(sl_responses["translations"], "SL_DICT")
 
     if dictionary == "ALL_DICT":
         responses = dict(
@@ -37,18 +45,3 @@ def get(phrase: str, dictionary: str, penyim: bool, limit=10):
         responses = sl_responses
 
     return responses
-    # q = TranslationQuestion(phrase, Lang[src_lang])
-    
-    # translator = gc_translator if dictionary == "GC_DICT" else sl_translator
-
-    # responses = translator.ask(q, limit)
-    # api_resp = responses.as_api_resp()
-
-    # api_resp["translations"] = attach_pronunciation(api_resp["translations"], dictionary) # Jackson: If this is too coupled
-    # # we can move it elsewhere but for now we expect one pronunciation per translation
-    
-    # return api_resp
-
-    # # responses = gc_translator.ask(q, limit) if dictionary == "GC_DICT" else sl_translator.ask(q, limit)
-
-    # # return responses.as_api_resp()
