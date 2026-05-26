@@ -46,7 +46,7 @@ paths:
             default: false
       responses:
         '200':
-          description: A response with metadata and a list of translations, each with option pronunciation audio
+          description: A response with metadata and a list of translations, each with optional pronunciation audio
           content:
             application/json:
               schema:
