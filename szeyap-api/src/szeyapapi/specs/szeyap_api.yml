@@ -22,7 +22,7 @@ paths:
               value: "cats"
             chinese:
               summary: Chinese word
-              value: "t" # tempoorary removal of 貓 to avoid encoding issues in Swagger UI - Jackson
+              value: "貓"
             penyim:
               summary: Penyim
               value: "miu2"

@@ -5,7 +5,7 @@ from flask import send_from_directory, abort, redirect
 
 from ..utils.sl_audio_index import get_sl_audio_index
 
-AUDIO_ROOT = Path("src/szeyapapi/data/pronunciations") #TODO: change placeholder later
+AUDIO_ROOT = Path(__file__).parent / "data" / "pronunciations"
 DICTIONARIES = {"GC_DICT", "SL_DICT"}
 
 def normalize_for_audio(jyutping: str) -> str:
