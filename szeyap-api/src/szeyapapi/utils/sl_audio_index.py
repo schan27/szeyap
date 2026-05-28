@@ -4,11 +4,7 @@ from szeyapapi.config import STEPHEN_LI_DICTIONARY_PATH
 
 SL_DICT_PATH = Path(STEPHEN_LI_DICTIONARY_PATH)
  
-AUDIO_BASE_URL = "https://taishandict.com/"
-_SL_OLD_BASE = "http://www.stephen-li.com/TaishaneseVocabulary/"
- 
 _sl_audio_index: dict | None = None
- 
  
 def load_sl_audio_index() -> dict:
     with open(SL_DICT_PATH, encoding="utf-8") as f:
@@ -16,19 +12,16 @@ def load_sl_audio_index() -> dict:
  
     index = {}
     for entry in entries:
-        raw_url = entry.get("taishaneseAudio")
-        if not raw_url:
+        url = entry.get("taishaneseAudio")
+        if not url:
             continue
- 
-        url = AUDIO_BASE_URL + raw_url.removeprefix(_SL_OLD_BASE)
- 
+        
         for key in ("taishanese", "cantonese", "mandarin"):
             val = entry.get(key)
             if val:
                 index[val] = url
  
     return index
- 
  
 def get_sl_audio_index() -> dict:
     global _sl_audio_index
