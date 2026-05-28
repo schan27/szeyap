@@ -35,7 +35,6 @@ def get(phrase: str, dictionary: str, penyim: bool, limit=10):
         try:
             attach_pronunciation(sl_responses["translations"], "SL_DICT")
         except Exception as e:
-            print(f"attach_pronunciation error: {e}")
             for item in sl_responses["translations"]:
                 item.setdefault("pronunciation_id", None)
                 item.setdefault("pronunciation_url", None)
