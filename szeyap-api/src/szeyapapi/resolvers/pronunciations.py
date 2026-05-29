@@ -8,13 +8,6 @@ AUDIO_ROOT = Path(__file__).parent / "data" / "pronunciations"
 DICTIONARIES = {"GC_DICT", "SL_DICT"}
 
 
-def normalize_for_audio(jyutping: str) -> str:
-    jp = jyutping.lower()
-    jp = re.sub(r"\s+", "_", jp)
-    jp = re.sub(r"[^a-z0-9_]", "", jp)
-    return jp
-
-
 # Lookup the audio URL for a given dictionary, lookup key, and SL romanization, returning None if not found
 def get_audio_url(dictionary: str, sl_romanization: str = "") -> tuple[str, str]:
     if dictionary not in DICTIONARIES:
