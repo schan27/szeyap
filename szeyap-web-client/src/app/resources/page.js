@@ -19,51 +19,10 @@ export default function ResourcesPage() {
           </div>
 
           {/* Resources Content */}
-          <div className="max-w-3xl mx-auto">
-            {/* Dictionary Data Section */}
-            <section className="text-center mb-12">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Dictionary Data</h2>
-              <ul className="space-y-3">
-                <li>
-                  <a 
-                    href="https://taishandict.com/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800 hover:underline"
-                  >
-                    Stephen Li
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="https://www.chinfamilytree.com/hed/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800 hover:underline"
-                  >
-                    Gene Chin
-                  </a>
-                </li>
-              </ul>
+          <section className="text-center mb-12">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Under Construction</h2>
+             Check back soon for more Taishanese resources here!
             </section>
-
-            {/* Romanization Systems Section */}
-            <section className="text-center mb-12">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Romanization Systems</h2>
-              <ul className="space-y-3">
-                <li>Learn to Speak Taishanese 1 by Jade Wu</li>
-                <li>Taishanese Essentials 台山話概要 by Deng Jun 鄧鈞</li>
-              </ul>
-            </section>
-
-            {/* Acknowledgements Section */}
-            <section className="text-center mb-12">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Acknowledgements</h2>
-              <p className="text-gray-700">
-                Thank you to @suspiciouscactus on Discord for helping us retrieve the Stephen Li dictionary data, and to Chen-Yu Ho for creating <a href="https://www.chenyuho.com/project/handwritingjs/#demo">handwriting.js</a>
-              </p>
-            </section>
-          </div>
         </div>
       </main>
       <Footer />

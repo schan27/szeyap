@@ -3,25 +3,33 @@
 // Social media links data
 export const socialLinks = [
   {
-    imgSrc: "youtube_icon.svg",
-    altText: "Hoisan Sauce Profile Pic",
+    imgSrc: "youtube_logo.svg",
+    altText: "YouTube logo",
     platform: "YouTube",
+    className: "h-1",
     href: "https://www.youtube.com/@HoisanSauce"
   },
   {
     imgSrc: "discord_logo.jpeg",
-    altText: "Hoisan Sauce Profile Pic",
+    altText: "Discord logo",
     platform: "Discord",
     className: "h-8 rounded-lg",
     href: "https://discord.gg/TtU2v3S"
   },
   {
     imgSrc: "github_logo.png",
-    altText: "GitHub Repository",
+    altText: "GitHub logo",
     platform: "GitHub",
     className: "h-8 rounded-lg",
     href: "https://github.com/schan27/szeyap"
-  }
+  },
+  {
+    imgSrc: "linktree_logo.png",
+    altText: "Linktree logo",
+    platform: "Linktree",
+    className: "h-8 rounded-lg",
+    href: "https://linktr.ee/hoisansauce"
+  },
 ];
 
 export default function SocialSidebar() {
