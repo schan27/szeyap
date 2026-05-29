@@ -104,7 +104,7 @@ export default function SearchSection() {
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-24 xl:px-8 py-8 sm:py-12 lg:py-16">
       {/* Main Logo */}
-      <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+      <div className="text-center mb-8 sm:mb-12 lg:mb-10">
         <img
           src="/hoisan_sauce_logo.webp"
           alt="台山醬 Hoisan Sauce Logo"
@@ -113,9 +113,9 @@ export default function SearchSection() {
       </div>
 
 
-      <div className="max-w-7xl mt-8 mb-8">
-        <div className="flex flex-col gap-6 items-center ">
-          <div className="w-5/6">
+      <div className="max-w-7xl mt-8 mb-10">
+        <div className="flex flex-col gap-6 items-center">
+          <div className="w-4/6 text-justify text-base">
           <center>
             Welcome to the Hoisan Sauce Taishanese Project! 
           </center>
@@ -130,7 +130,7 @@ export default function SearchSection() {
           If this is new to you, start by reading our guide to <a href="https://docs.google.com/presentation/d/1LOyTlHdMsmPbm7Bh1pytuQ0b-Xz3pLP1/" className="text-blue-600 hover:text-blue-800">Hoisan Sauce Romanization (HSR)</a>
           &nbsp;or by watching a video on <a href="https://youtu.be/bbZaJMl5tpU?si=V-uI1-oJH2l2xErK" className="text-blue-600 hover:text-blue-800">Wu's Phonetic System (WPS)</a>.
           Optionally, take a look at our <a href="https://drive.google.com/file/d/1-CcXD4u8ITw3orEAUttsujrrcQc6iKXz/" className="text-blue-600 hover:text-blue-800">comparison chart</a> 
-          &nbsp;to understand the differences between the five different romanization systems used on this site. 
+          &nbsp;to understand the differences between the 5 romanization systems used on this site. 
           </div>
         </div>
       </div>
