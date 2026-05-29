@@ -30,10 +30,7 @@ class StephenLiDictionary(DictionaryBase):
                 audio_index = {}
                 if audio_url:
                     sl_romanization = penyim.as_dict().get(lang.SL, "")
-                    for key in ("taishanese", "cantonese", "mandarin"):
-                        val = dict_entry.get(key)
-                        if val:
-                            audio_index[(val, sl_romanization)] = audio_url
+                    audio_index[sl_romanization] = audio_url
 
                 dictionary_entry = {
                     "SIMP": [dict_entry["mandarin"]],

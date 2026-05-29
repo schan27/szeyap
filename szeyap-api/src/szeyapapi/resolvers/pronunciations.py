@@ -16,20 +16,17 @@ def normalize_for_audio(jyutping: str) -> str:
 
 
 # Lookup the audio URL for a given dictionary, lookup key, and SL romanization, returning None if not found
-def get_audio_url(
-    dictionary: str, lookup_key: str, sl_romanization: str = ""
-) -> tuple[str, str]:
+def get_audio_url(dictionary: str, sl_romanization: str = "") -> tuple[str, str]:
     if dictionary not in DICTIONARIES:
         raise ValueError(f"Unknown dictionary: {dictionary!r}")
 
     if dictionary == "SL_DICT":
         index = SL.audio_index
-        url = index.get((lookup_key, sl_romanization))
+        url = index.get(sl_romanization)
         if not url:
-            raise KeyError(
-                f"No audio found for {lookup_key!r} / {sl_romanization!r} in SL index"
-            )
-        return lookup_key, url
+            raise KeyError(f"No audio found for {sl_romanization!r} in SL index")
+        pronunciation_id = url.split("/")[-1]
+        return pronunciation_id, url
 
     # GC_DICT — not yet implemented, return None gracefully
     return None, None
@@ -78,7 +75,7 @@ def attach_pronunciation(translations: list, dictionary: str) -> list:
 
         if lookup_key:
             pronunciation_id, pronunciation_url = get_audio_url(
-                dictionary, lookup_key, sl_romanization
+                dictionary, sl_romanization
             )
             t["pronunciation_id"] = pronunciation_id
             t["pronunciation_url"] = pronunciation_url
