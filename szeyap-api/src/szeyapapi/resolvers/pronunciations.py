@@ -14,7 +14,7 @@ def normalize_for_audio(jyutping: str) -> str:
     jp = re.sub(r"[^a-z0-9_]", "", jp)
     return jp
 
-# Lookup the audio URL for a given dictionary and Jyutping, returning None if not found
+# Lookup the audio URL for a given dictionary, lookup key, and SL romanization, returning None if not found
 def get_audio_url(dictionary: str, lookup_key: str, sl_romanization: str = "") -> tuple[str, str]:
     if dictionary not in DICTIONARIES:
         raise ValueError(f"Unknown dictionary: {dictionary!r}")
