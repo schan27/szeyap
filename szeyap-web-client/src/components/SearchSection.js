@@ -5,7 +5,7 @@ import { Search, Clipboard, Loader2, Edit2, Check, Volume2 } from "lucide-react"
 import { Tooltip, TooltipTrigger, TooltipContent } from "./ui/tooltip";
 import { Input } from "./ui/input";
 import DictionarySettings from "./DictionarySettings";
-import DisplayOptions from "./DisplayOptions";
+import DisplayPreferences from "./DisplayPreferences";
 import HandwritingInput from "./HandwritingInput";
 import { Checkbox } from "radix-ui";
 
@@ -121,7 +121,7 @@ export default function SearchSection() {
           </center>
 
           <br></br>
-            Use the search bar below to look up phrases in English or Chinese, or select the checkbox to search using penyim.&nbsp;  
+            Use the search bar below to look up terms in English or Chinese, or select the checkbox to search using penyim.&nbsp;  
             <b><i>Penyim</i></b> is derived from Mandarin <b><i>pinyin</i></b>, and refers to Taishanese romanization 
             (i.e., writing a non-Latin language using Latin characters).
           <br></br>
@@ -276,7 +276,7 @@ export default function SearchSection() {
                         </span>
                       )}
                     </div>
-                    <DisplayOptions
+                    <DisplayPreferences
                       settings={dictionarySettings}
                       onSettingsChange={setDictionarySettings}
                     />
