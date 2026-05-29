@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Search, Clipboard, Loader2, Edit2, Check } from "lucide-react";
+import { Search, Clipboard, Loader2, Edit2, Check, Volume2 } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent } from "./ui/tooltip";
 import { Input } from "./ui/input";
 import DictionarySettings from "./DictionarySettings";
@@ -275,11 +275,18 @@ export default function SearchSection() {
                                   {/* Character and Romanization */}
                                   <div className="flex flex-col gap-2">
                                     {/* Character */}
-                                    <div className="flex items-baseline gap-3">
+                                    <div className="flex items-center gap-3">
                                       <span className="text-2xl font-medium">
-                                        {translation.chinese?.simplified?.[0] ||
-                                          results.original_phrase}
+                                        {translation.chinese?.simplified?.[0] || results.original_phrase}
                                       </span>
+                                      {translation.pronunciation_url && (
+                                        <button
+                                          onClick={() => new Audio(translation.pronunciation_url).play()}
+                                          className="text-muted-foreground hover:text-foreground transition-colors"
+                                        >
+                                          <Volume2 size={16} className="w-5 h-5 sm:w-5 sm:h-5" />
+                                        </button>
+                                      )}
                                     </div>
 
                                     {/* Source */}

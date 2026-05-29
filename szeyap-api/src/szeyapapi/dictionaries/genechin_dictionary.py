@@ -15,7 +15,7 @@ class GeneChinDictionary(DictionaryBase):
         self.src_url = src_url
 
     def load_dictionary(self):
-        with open(os.path.join(PROJ_ROOT, GENE_CHIN_DICTIONARY_PATH), "r") as file:
+        with open(os.path.join(PROJ_ROOT, GENE_CHIN_DICTIONARY_PATH), "r", encoding="utf-8") as file:
             self.dictionary = json.load(file)
 
         # remove header if exists
