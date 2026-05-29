@@ -4,40 +4,62 @@ from ..translation_logic.question import TranslationQuestion
 from ..translation_logic.translator import Translator
 from .pronunciations import attach_pronunciation
 
-gc_translator = Translator("Gene Chin Translator", GC)
-sl_translator = Translator("Stephen Li Translator", SL)
-
 
 def hello_world():
     return "Hello, World!"
 
 
+def get_translator(dictionary: str):
+    if dictionary == "GC_DICT":
+        return Translator("Gene Chin Translator", GC)
+    elif dictionary == "SL_DICT":
+        return Translator("Stephen Li Translator", SL)
+    return None
+
+
+def get_source(dictionary: str):
+    if dictionary == "GC_DICT":
+        return "Gene Chin"
+    elif dictionary == "SL_DICT":
+        return "Stephen Li"
+    return None
+
+
+def process_translation_question(
+    dictionary: str, q: TranslationQuestion, limit: int, penyim: bool
+):
+    translator = get_translator(dictionary)
+    responses = translator.ask(q, limit, penyim).as_api_resp()
+
+    for item in responses["translations"]:
+        item["source"] = get_source(dictionary)
+        item.setdefault("pronunciation_id", None)
+        item.setdefault("pronunciation_url", None)
+
+    try:
+        attach_pronunciation(responses["translations"], dictionary)
+    except Exception:
+        print(f'Could not attach pronunciation for {responses["translations"]=}')
+
+    return responses
+
+
 def get(phrase: str, dictionary: str, penyim: bool, limit=10):
     # construct Question using phrase
     q = TranslationQuestion(phrase)
+    search_params = dict(q=q, limit=limit, penyim=penyim)
+
     if dictionary == "GC_DICT" or dictionary == "ALL_DICT":
-        gc_responses = gc_translator.ask(q, limit, penyim).as_api_resp()
-        for item in gc_responses["translations"]:
-            item["source"] = "Gene Chin"
         # NOTE: GC audio links are not yet available — pronunciation_url will
         # be None for all GC items until the index is populated.
-        try:
-            attach_pronunciation(gc_responses["translations"], "GC_DICT")
-        except Exception:
-            for item in gc_responses["translations"]:
-                item.setdefault("pronunciation_id", None)
-                item.setdefault("pronunciation_url", None)
+        gc_responses = process_translation_question(
+            dictionary="GC_DICT", **search_params
+        )
 
     if dictionary == "SL_DICT" or dictionary == "ALL_DICT":
-        sl_responses = sl_translator.ask(q, limit, penyim).as_api_resp()
-        for item in sl_responses["translations"]:
-            item["source"] = "Stephen Li"
-        try:
-            attach_pronunciation(sl_responses["translations"], "SL_DICT")
-        except Exception as e:
-            for item in sl_responses["translations"]:
-                item.setdefault("pronunciation_id", None)
-                item.setdefault("pronunciation_url", None)
+        sl_responses = process_translation_question(
+            dictionary="SL_DICT", **search_params
+        )
 
     if dictionary == "ALL_DICT":
         responses = dict(
@@ -47,7 +69,9 @@ def get(phrase: str, dictionary: str, penyim: bool, limit=10):
         )
     elif dictionary == "GC_DICT":
         responses = gc_responses
-    else:
+    elif dictionary == "SL_DICT":
         responses = sl_responses
+    else:
+        responses = None
 
     return responses

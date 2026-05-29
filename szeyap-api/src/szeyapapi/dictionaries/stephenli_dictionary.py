@@ -43,7 +43,6 @@ class StephenLiDictionary(DictionaryBase):
                     "LEMMA": dict_entry["LEMMA"],
                 }
 
-                # audio_index = {key: audio_url}
                 return (dictionary_entry, audio_index)
             except Exception:
                 return (None, None)
