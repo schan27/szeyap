@@ -21,13 +21,14 @@ export default function AboutPage() {
           {/* About Content */}
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 mb-8">
-              This is a modern, searchable dictionary that compiles existing dictionary resources in Taishanese, also known as Hoisanva
+              This is a modern, searchable dictionary that compiles existing dictionary resources in Taishanese, also known as Hoisanva.
             </p>
             
             <div className="mt-12">
               <h2 className="text-xl sm:text-2xl font-medium text-gray-800 mb-4">Team</h2>
               <p className="text-lg sm:text-xl text-gray-700">
-                Edmond Xu, Evan Loe, Sophia Chan, and Sabrina Yu
+                Contributors in alphabetical order: <br></br>
+                Sophia Chan, Jackson Chen, Evan Loe, Edmond Xu, Sabrina Yu
               </p>
             </div>
           </div>
