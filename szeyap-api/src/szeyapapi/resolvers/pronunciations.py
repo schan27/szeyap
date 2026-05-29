@@ -15,22 +15,21 @@ def normalize_for_audio(jyutping: str) -> str:
     return jp
 
 # Lookup the audio URL for a given dictionary and Jyutping, returning None if not found
-def get_audio_url(dictionary: str, jyutping: str) -> str | None:
+def get_audio_url(dictionary: str, lookup_key: str, sl_romanization: str = "") -> tuple[str, str]:
     if dictionary not in DICTIONARIES:
         raise ValueError(f"Unknown dictionary: {dictionary!r}")
-
+ 
     if dictionary == "SL_DICT":
         index = get_sl_audio_index()
-        if jyutping not in index:
-            raise KeyError(f"No audio found for {jyutping!r} in SL index")
-        url = index[jyutping]
-        pronunciation_id = url.split("/")[-1]
-        return pronunciation_id, url
-
+        url = index.get((lookup_key, sl_romanization))
+        if not url:
+            raise KeyError(f"No audio found for {lookup_key!r} / {sl_romanization!r} in SL index")
+        return lookup_key, url
+ 
     # GC_DICT — not yet implemented, return None gracefully
     return None, None
 
-# Flask route handler to serve the pronunciation audio files
+# Flask route handler to serve the pronunciation audio files - BACKUP ONLY, as these are not currently used in production
 def get_pronunciation(dictionary: str, pronunciation_id: str):
     if dictionary not in DICTIONARIES:
         abort(404, "Invalid dictionary")
@@ -64,8 +63,14 @@ def attach_pronunciation(translations: list, dictionary: str) -> list:
         elif trad and trad[0]:
             lookup_key = trad[0]
  
+        # penyim[0]["SL"] matches the SL romanization used as the index key, hopefully - Jackson
+        penyim_list = chinese.get("penyim")
+        sl_romanization = ""
+        if penyim_list and penyim_list[0]:
+            sl_romanization = penyim_list[0].get("SL", "")
+ 
         if lookup_key:
-            pronunciation_id, pronunciation_url = get_audio_url(dictionary, lookup_key)
+            pronunciation_id, pronunciation_url = get_audio_url(dictionary, lookup_key, sl_romanization)
             t["pronunciation_id"] = pronunciation_id
             t["pronunciation_url"] = pronunciation_url
         else:
