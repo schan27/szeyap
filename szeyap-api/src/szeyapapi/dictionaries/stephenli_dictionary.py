@@ -4,6 +4,7 @@ from szeyapapi.config import STEPHEN_LI_DICTIONARY_PATH
 from szeyapapi.dictionaries.dictionary_base import DictionaryBase
 from szeyapapi.translation_logic.penyim import Penyim
 from szeyapapi.utils.enums import LanguageFormats as lang
+from szeyapapi.utils.normalization import sl_normalization
 
 FILE_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -19,15 +20,8 @@ class StephenLiDictionary(DictionaryBase):
 
         def safe_transform(dict_entry: dict[str, str]):
             try:
-                penyim_string = (
-                    dict_entry["taishaneseRomanization"]
-                    .replace("[", "")
-                    .replace("]", "")
-                )
-
-                splitted = penyim_string.split("/")
-                splitted = [s.strip() for s in splitted if not s.isdigit()]
-                penyim_string = " ".join(splitted)
+                raw = dict_entry["taishaneseRomanization"]
+                penyim_string = sl_normalization(raw)
 
                 return {
                     "SIMP": [dict_entry["mandarin"]],

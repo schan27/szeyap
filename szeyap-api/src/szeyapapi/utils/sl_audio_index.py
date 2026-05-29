@@ -1,14 +1,15 @@
 import json
-from pathlib import Path
+
 from szeyapapi.config import STEPHEN_LI_DICTIONARY_PATH
 from szeyapapi.translation_logic.penyim import Penyim
 from szeyapapi.utils.enums import LanguageFormats as lang
+from szeyapapi.utils.normalization import sl_normalization
 
-SL_DICT_PATH = Path(STEPHEN_LI_DICTIONARY_PATH)
 _sl_audio_index: dict | None = None
 
+
 def load_sl_audio_index() -> dict:
-    with open(SL_DICT_PATH, encoding="utf-8") as f:
+    with open(STEPHEN_LI_DICTIONARY_PATH, encoding="utf-8") as f:
         entries = json.load(f)
 
     index = {}
@@ -19,9 +20,7 @@ def load_sl_audio_index() -> dict:
 
         # Run through the same normalization as stephenli_dictionary.py
         raw = entry.get("taishaneseRomanization", "")
-        penyim_string = raw.replace("[", "").replace("]", "")
-        splitted = penyim_string.split("/")
-        penyim_string = " ".join(s.strip() for s in splitted if not s.isdigit())
+        penyim_string = sl_normalization(raw)
 
         try:
             sl_romanization = Penyim(penyim_string, lang.SL).as_dict().get(lang.SL, "")
