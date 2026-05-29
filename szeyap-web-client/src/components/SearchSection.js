@@ -7,7 +7,7 @@ import { Input } from "./ui/input";
 import DictionarySettings from "./DictionarySettings";
 import DisplayOptions from "./DisplayOptions";
 import HandwritingInput from "./HandwritingInput";
-import { Checkbox } from "radix-ui";
+import { Checkbox, Grid } from "radix-ui";
 
 
 const API_URL = "https://szeyap-backend-production.up.railway.app/api/translation";
@@ -110,6 +110,34 @@ export default function SearchSection() {
           alt="台山醬 Hoisan Sauce Logo"
           className="h-24 sm:h-32 md:h-36 lg:h-40 object-contain mx-auto mb-4 sm:mb-6"
         />
+      </div>
+
+
+      <div className="max-w-7xl mt-8 mb-8">
+        <div className="flex flex-col gap-6 items-center">
+          <div className="w-5/6">
+          <center>
+            Welcome to the Hoisan Sauce Taishanese dictionary! 
+          </center>
+
+          <br></br>
+            Use the search bar below to look up phrases in English or Chinese, or select the checkbox to search using penyim.&nbsp;  
+            <b><i>Penyim</i></b> is derived from Mandarin <b><i>pinyin</i></b>, and refers to Taishanese romanization 
+            (i.e., writing a non-Latin language using Latin characters).
+          <br></br>
+          <br></br>
+
+          For each dictionary entry we include five romanization systems: <br></br>
+
+          <div className="grid grid-cols-3 gap-3" style={{ gridTemplateRows: "repeat(2, 64px)", width: "auto" }}>
+              <div className="bg-gray-200 rounded flex items-center justify-center"><a href="https://youtu.be/bbZaJMl5tpU?si=V-uI1-oJH2l2xErK">Wu's Phonetic System (WPS)</a></div>
+              <div className="bg-gray-200 rounded flex items-center justify-center"><a href="https://taishandict.com">Stephen Li (SL)</a></div>
+              <div className="bg-gray-200 rounded flex items-center justify-center"><a href="https://www.chinfamilytree.com/hed/rad/index.html">Gene Chin (GC)</a></div>
+              <div className="bg-gray-200 rounded flex items-center justify-center"><a href="https://docs.google.com/presentation/d/1LOyTlHdMsmPbm7Bh1pytuQ0b-Xz3pLP1/edit?slide=id.p1#slide=id.p1">Hoisan Sauce Romanization (HSR)</a></div>
+              <div className="bg-gray-200 rounded flex items-center justify-center">Deng Jun (DJ)</div>
+          </div>
+          </div>
+        </div>
       </div>
 
       {/* Search Input */}
@@ -258,6 +286,8 @@ export default function SearchSection() {
                       onSettingsChange={setDictionarySettings}
                     />
                   </div>
+
+                  
 
                   {/* Translations */}
                   <div className="space-y-4">
