@@ -7,7 +7,7 @@ import { Input } from "./ui/input";
 import DictionarySettings from "./DictionarySettings";
 import DisplayOptions from "./DisplayOptions";
 import HandwritingInput from "./HandwritingInput";
-import { Checkbox, Grid } from "radix-ui";
+import { Checkbox } from "radix-ui";
 
 
 const API_URL = "https://szeyap-backend-production.up.railway.app/api/translation";
@@ -114,10 +114,10 @@ export default function SearchSection() {
 
 
       <div className="max-w-7xl mt-8 mb-8">
-        <div className="flex flex-col gap-6 items-center">
+        <div className="flex flex-col gap-6 items-center ">
           <div className="w-5/6">
           <center>
-            Welcome to the Hoisan Sauce Taishanese dictionary! 
+            Welcome to the Hoisan Sauce Taishanese Project! 
           </center>
 
           <br></br>
@@ -127,15 +127,10 @@ export default function SearchSection() {
           <br></br>
           <br></br>
 
-          For each dictionary entry we include five romanization systems: <br></br>
-
-          <div className="grid grid-cols-3 gap-3" style={{ gridTemplateRows: "repeat(2, 64px)", width: "auto" }}>
-              <div className="bg-gray-200 rounded flex items-center justify-center"><a href="https://youtu.be/bbZaJMl5tpU?si=V-uI1-oJH2l2xErK">Wu's Phonetic System (WPS)</a></div>
-              <div className="bg-gray-200 rounded flex items-center justify-center"><a href="https://taishandict.com">Stephen Li (SL)</a></div>
-              <div className="bg-gray-200 rounded flex items-center justify-center"><a href="https://www.chinfamilytree.com/hed/rad/index.html">Gene Chin (GC)</a></div>
-              <div className="bg-gray-200 rounded flex items-center justify-center"><a href="https://docs.google.com/presentation/d/1LOyTlHdMsmPbm7Bh1pytuQ0b-Xz3pLP1/edit?slide=id.p1#slide=id.p1">Hoisan Sauce Romanization (HSR)</a></div>
-              <div className="bg-gray-200 rounded flex items-center justify-center">Deng Jun (DJ)</div>
-          </div>
+          If this is new to you, start by reading our guide to <a href="https://docs.google.com/presentation/d/1LOyTlHdMsmPbm7Bh1pytuQ0b-Xz3pLP1/" className="text-blue-600 hover:text-blue-800">Hoisan Sauce Romanization (HSR)</a>
+          &nbsp;or by watching a video on <a href="https://youtu.be/bbZaJMl5tpU?si=V-uI1-oJH2l2xErK" className="text-blue-600 hover:text-blue-800">Wu's Phonetic System (WPS)</a>.
+          Optionally, take a look at our <a href="https://drive.google.com/file/d/1-CcXD4u8ITw3orEAUttsujrrcQc6iKXz/" className="text-blue-600 hover:text-blue-800">comparison chart</a> 
+          &nbsp;to understand the differences between the five different romanization systems used on this site. 
           </div>
         </div>
       </div>
