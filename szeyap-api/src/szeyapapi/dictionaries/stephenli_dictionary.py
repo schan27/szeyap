@@ -1,9 +1,11 @@
 import os
+from collections import ChainMap
 
 from szeyapapi.config import STEPHEN_LI_DICTIONARY_PATH
 from szeyapapi.dictionaries.dictionary_base import DictionaryBase
 from szeyapapi.translation_logic.penyim import Penyim
 from szeyapapi.utils.enums import LanguageFormats as lang
+from szeyapapi.utils.normalization import sl_normalization
 
 FILE_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -19,29 +21,37 @@ class StephenLiDictionary(DictionaryBase):
 
         def safe_transform(dict_entry: dict[str, str]):
             try:
-                penyim_string = (
-                    dict_entry["taishaneseRomanization"]
-                    .replace("[", "")
-                    .replace("]", "")
-                )
+                raw = dict_entry["taishaneseRomanization"]
+                penyim_string = sl_normalization(raw)
+                penyim = Penyim(penyim_string, lang.SL)
 
-                splitted = penyim_string.split("/")
-                splitted = [s.strip() for s in splitted if not s.isdigit()]
-                penyim_string = " ".join(splitted)
+                audio_index = None
+                audio_url = dict_entry.get("taishaneseAudio")
+                audio_index = {}
+                if audio_url:
+                    sl_romanization = penyim.as_dict().get(lang.SL, "")
+                    audio_index[sl_romanization] = audio_url
 
-                return {
+                dictionary_entry = {
                     "SIMP": [dict_entry["mandarin"]],
                     "TRAD": None,  # we just group everything as simplified for stephen li
-                    "PENYIM": [Penyim(penyim_string, lang.SL)],
+                    "PENYIM": [penyim],
                     "DEFN": dict_entry["english"],
                     "LEMMA": dict_entry["LEMMA"],
                 }
-            except Exception:
-                pass
 
-        self.dictionary = [
-            item for item in map(safe_transform, self.dictionary) if item is not None
+                return (dictionary_entry, audio_index)
+            except Exception:
+                return (None, None)
+
+        result = [
+            (entry, index)
+            for (entry, index) in map(safe_transform, self.dictionary)
+            if entry is not None
         ]
+        self.dictionary, audio_index_list = zip(*result)
+        # convert list of mappings into one
+        self.audio_index = dict(ChainMap(*audio_index_list))
 
 
 # Singleton instance of StephenLiDictionary
