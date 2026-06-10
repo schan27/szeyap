@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Search, Clipboard, Loader2, Edit2, Check, Volume2 } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent } from "./ui/tooltip";
 import { Input } from "./ui/input";
@@ -10,8 +10,8 @@ import HandwritingInput from "./HandwritingInput";
 import { Checkbox } from "radix-ui";
 
 
-const API_URL = "https://szeyap-backend-production.up.railway.app/api/translation";
-// const API_URL = "http://localhost:8000/api/translation";
+// const API_URL = "https://szeyap-backend-production.up.railway.app/api/translation";
+const API_URL = "http://localhost:8000/api/translation";
 
 export default function SearchSection() {
   const resultsRef = useRef(null);
@@ -100,6 +100,12 @@ export default function SearchSection() {
       console.error("Failed to read clipboard contents: ", err);
     }
   };
+
+  const searchRef = useRef(null);
+
+  useEffect(() => {
+    searchRef.current?.focus();
+  }, []);
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-24 xl:px-8 py-8 sm:py-12 lg:py-16">
@@ -202,6 +208,7 @@ export default function SearchSection() {
         {/* Input Field */}
         <div className="flex gap-0 group">
           <Input
+            ref={searchRef}
             type="text"
             value={searchTerm}
             onKeyPress={handleKeyPress}
