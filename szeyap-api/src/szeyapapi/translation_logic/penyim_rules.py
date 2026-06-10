@@ -1,14 +1,21 @@
 def apply_penyim_rules(segment: str):
-    # Normalize cei to ci
-    if segment == "cei":
-        segment = "ci"
+    # Some speakers have the final /ei/ and other villages /i/
+    if segment.endswith("ei"):
+        if not any(
+            segment.startswith(onset)
+            for onset in ["dz", "ts", "s", "y", "j", "c", "ch", "q", "x"]
+        ):
+            segment = segment.replace("ei", "(e)i")
 
-    # Convert to bracketed format
-    if segment.endswith("ei") and not any(
-        segment.startswith(onset)
-        for onset in ["dz", "ts", "s", "y", "j", "c", "ch", "q", "x"]
-    ):
-        segment = segment.replace("ei", "(e)i")
+        if not any(
+            segment.startswith(onset) for onset in ["dz", "s", "y", "j", "q", "x"]
+        ):
+            segment = segment.replace("ei", "i")
+            segment = segment.replace("(e)i", "i")
+
+    # Long vowel
+    if segment.endswith("uo"):
+        segment = segment.replace("uo", "o")
 
     # LH reversal
     if segment.startswith("hl"):
