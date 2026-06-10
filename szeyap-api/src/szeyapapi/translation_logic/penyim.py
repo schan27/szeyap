@@ -93,7 +93,7 @@ class Penyim:
         finals_pattern = "|".join([re.escape(f) for f in finals_sorted])
 
         syllable_pattern = re.compile(
-            rf"""(?xiu)                            # enables VERBOSE, IGNORECASE, UNICODE
+            rf"""(?xiu)                      # enables VERBOSE, IGNORECASE, UNICODE
       (?P<syllable>
           (?P<initial>{initials_pattern})?   # optional initial
           (?P<final>{finals_pattern})        # required final 
