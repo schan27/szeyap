@@ -1,9 +1,14 @@
 from enum import StrEnum
 
 
-class LanguageFormats(StrEnum):
-    EN = "EN"
-    CH = "CH"
+class SearchLanguage(StrEnum):
+    ENGLISH = "en"
+    MANDARIN = "zh"
+    CANTONESE = "yue"
+    TAISHANESE = "tisa"
+
+
+class PenyimFormats(StrEnum):
     HSR = "HSR"
     SL = "SL"
     GC = "GC"

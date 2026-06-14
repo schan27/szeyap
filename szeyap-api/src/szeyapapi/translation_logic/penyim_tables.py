@@ -6,11 +6,17 @@ import numpy as np
 import pandas as pd
 
 import szeyapapi.config as cfg
-from szeyapapi.utils.enums import LanguageFormats as Lang
+from szeyapapi.utils.enums import PenyimFormats
 from szeyapapi.utils.enums import Tones as Tone
 
 PROJECT_ROOT_PATH = os.path.join(os.path.dirname(__file__), "..")
-PENYIM_LANG_TYPES = [Lang.HSR, Lang.GC, Lang.SL, Lang.DJ, Lang.JW]
+PENYIM_LANG_TYPES = [
+    PenyimFormats.HSR,
+    PenyimFormats.GC,
+    PenyimFormats.SL,
+    PenyimFormats.DJ,
+    PenyimFormats.JW,
+]
 
 
 class PenyimTables:
@@ -54,28 +60,28 @@ class PenyimTables:
             self.finals[type] = tone_dict[type]["finals"]
 
     def _get_gc_tone_type_from_combining_ch(
-        self, sample_tone: tuple[str, str], lang: Lang
+        self, sample_tone: tuple[str, str], format: PenyimFormats
     ) -> Tone:
         # extract only the unicode combining character and include the slash if present
         # find the matching tone as described in the GC tones dictionary
-        for tone, tone_deconstructed in self.tones[lang].items():
+        for tone, tone_deconstructed in self.tones[format].items():
             if sample_tone == tuple(tone_deconstructed):
                 return tone
         else:
             return None
 
-    def _get_tone_type_from_num(self, lang: Lang, num: str) -> Tone:
-        for tone, tone_num in self.tones[lang].items():
+    def _get_tone_type_from_num(self, format: PenyimFormats, num: str) -> Tone:
+        for tone, tone_num in self.tones[format].items():
             if num == tone_num:
                 return Tone[tone]
         else:
             return None
 
-    def _answer_tone_q(self, tone_q: str | tuple, lang: Lang) -> Tone:
+    def _answer_tone_q(self, tone_q: str | tuple, format: PenyimFormats) -> Tone:
         if isinstance(tone_q, tuple):
-            return self._get_gc_tone_type_from_combining_ch(tone_q, Lang.GC)
+            return self._get_gc_tone_type_from_combining_ch(tone_q, PenyimFormats.GC)
         else:
-            return self._get_tone_type_from_num(lang, tone_q)
+            return self._get_tone_type_from_num(format, tone_q)
 
     def search(self, penyim_q: str, tone_q: str) -> tuple[tuple[int, int], Tone | None]:
         for table in PENYIM_LANG_TYPES:
@@ -99,16 +105,18 @@ class PenyimTables:
 
         return (-1, -1), None
 
-    def get_tone(self, lang_type: Lang, tone: Tone) -> dict:
-        return self.tones[lang_type].get(tone, "")
+    def get_tone(self, format: PenyimFormats, tone: Tone) -> dict:
+        return self.tones[format].get(tone, "")
 
-    def get_initial_final(self, indices: tuple, lang_type: Lang) -> tuple[str, str]:
+    def get_initial_final(
+        self, indices: tuple, format: PenyimFormats
+    ) -> tuple[str, str]:
         initial_i, final_i = indices
-        return self.initials[lang_type][initial_i], self.finals[lang_type][final_i]
+        return self.initials[format][initial_i], self.finals[format][final_i]
 
-    def get_transdimensional_match(self, indices: tuple, lang_type: Lang) -> str:
+    def get_transdimensional_match(self, indices: tuple, format: PenyimFormats) -> str:
         initial_i, final_i = indices
-        result = self.tables[lang_type].iat[final_i, initial_i]
+        result = self.tables[format].iat[final_i, initial_i]
         if isinstance(result, float) and np.isnan(result):
             return ""
         return result

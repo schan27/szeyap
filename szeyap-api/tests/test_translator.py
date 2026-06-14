@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from szeyapapi.translation_logic.question import TranslationQuestion
 from szeyapapi.translation_logic.translator import Translator
-from szeyapapi.utils.enums import LanguageFormats as Lang
+from szeyapapi.utils.enums import PenyimFormats as Lang
 
 
 class TestSearch(unittest.TestCase):

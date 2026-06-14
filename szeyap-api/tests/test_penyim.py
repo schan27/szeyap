@@ -2,7 +2,7 @@
 from unicodedata import normalize
 
 from szeyapapi.translation_logic.penyim import Penyim
-from szeyapapi.utils.enums import LanguageFormats as Lang
+from szeyapapi.utils.enums import PenyimFormats as Lang
 from unidecode import unidecode
 
 
