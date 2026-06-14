@@ -49,7 +49,7 @@ paths:
           required: false
           schema:
             type: string 
-            enum: [zh, yue, tisa]
+            enum: [zh, yue, tisa, en]
       responses:
         '200':
           description: A response with metadata and a list of translations, each with optional pronunciation audio
