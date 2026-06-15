@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from szeyapapi.translation_logic.question import TranslationQuestion
 from szeyapapi.translation_logic.translator import Translator
-from szeyapapi.utils.enums import PenyimFormats as Lang
+from szeyapapi.utils.enums import PenyimFormats, SearchLanguage
 
 
 class TestSearch(unittest.TestCase):
@@ -31,7 +31,7 @@ class TestSearch(unittest.TestCase):
         res = self.trans.ask(question, 1).as_api_resp()
         expected_res = {
             "original_phrase": "cats",
-            "detected_language": Lang.EN,
+            "detected_language": SearchLanguage.ENGLISH.value,
             "metadata": {
                 "dictionary_name": "Test Dictionary",
                 "dictionary_url": "www.testurl.com",
@@ -42,16 +42,19 @@ class TestSearch(unittest.TestCase):
                     "chinese": {
                         "penyim": [
                             {
-                                Lang.DJ: "miu-",
-                                Lang.GC: "mīu",
-                                Lang.HSR: "miu55",
-                                Lang.JW: "miu2",
-                                Lang.SL: "miu55",
+                                PenyimFormats.DJ: "miu-",
+                                PenyimFormats.GC: "mīu",
+                                PenyimFormats.HSR: "miu55",
+                                PenyimFormats.JW: "miu2",
+                                PenyimFormats.SL: "miu55",
                             }
                         ],
                         "traditional": ["\u8c93"],
                         "simplified": ["\u732b"],
                     },
+                    "mandarin": "\u732b",
+                    "cantonese": "\u732b",
+                    "taishanese": "\u732b",
                 }
             ],
         }
@@ -72,6 +75,10 @@ class TestSearch(unittest.TestCase):
 
     def test_chinese_search(self):
         question = TranslationQuestion("\u732b")  # 猫
-        matches = list(self.trans._search_dictionary_by_chinese(question.query))
+        matches = list(
+            self.trans._search_dictionary_by_chinese(
+                question.query, language=SearchLanguage.MANDARIN.value
+            )
+        )
         expected_matches = 2
         self.assertEqual(expected_matches, len(matches))

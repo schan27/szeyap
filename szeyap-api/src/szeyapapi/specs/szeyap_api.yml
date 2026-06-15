@@ -49,7 +49,7 @@ paths:
           required: false
           schema:
             type: string 
-            enum: [zh, yue, tisa, en]
+            enum: [zh, yue, tisa, en, unk]
       responses:
         '200':
           description: A response with metadata and a list of translations, each with optional pronunciation audio
@@ -62,7 +62,7 @@ paths:
                     type: string
                   detected_language:
                     type: string
-                    enum: [hsr, sl, gc, dj, jw, unk]
+                    enum: [en, ch, zh, yue, tisa, unk]
                   translations:
                     type: array
                     items:

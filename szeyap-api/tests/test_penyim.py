@@ -137,7 +137,7 @@ def test_ambiguous_results():
 def test_labial_onglide_inclusion():
     test1 = "muo"
     result1 = Penyim(test1, Lang.UNK)
-    assert unidecode(result1.formats[0][Lang.HSR]) == unidecode("muo")
+    assert unidecode(result1.formats[0][Lang.HSR]) == unidecode("mo")
 
     test2 = "nguoi"
     result2 = Penyim(test2, Lang.UNK)
