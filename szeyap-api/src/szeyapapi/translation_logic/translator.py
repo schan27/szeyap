@@ -123,7 +123,7 @@ class Translator:
                 Penyim(q.query, PenyimFormats.UNK)
             )
         else:
-            if language is None:
+            if (language == SearchLanguage.UNK.value) or (language is None):
                 detected_lang = langid.classify(q.query)[0]
             else:
                 detected_lang = language

@@ -50,6 +50,7 @@ paths:
           schema:
             type: string 
             enum: [zh, yue, tisa, en, unk]
+            default: unk
       responses:
         '200':
           description: A response with metadata and a list of translations, each with optional pronunciation audio

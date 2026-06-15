@@ -6,6 +6,7 @@ class SearchLanguage(StrEnum):
     MANDARIN = "zh"
     CANTONESE = "yue"
     TAISHANESE = "tisa"
+    UNK = "unk"
 
 
 class PenyimFormats(StrEnum):
