@@ -9,13 +9,18 @@ from szeyapapi.dictionaries.dictionary_base import DictionaryBase
 from szeyapapi.translation_logic.penyim import Penyim
 from szeyapapi.translation_logic.question import TranslationQuestion
 from szeyapapi.translation_logic.response import Response
-from szeyapapi.utils.enums import LanguageFormats as lang
+from szeyapapi.utils.enums import PenyimFormats, SearchLanguage
 
 # A Translator receives Questions and create Responses
 #  - the Translator is created by giving it a dictionary, and it uses the dictionary to create Responses
 #  - like 3D printer, it takes in different colour filaments (different dictionaries) and prints designs (response objects)
 
 langid.set_languages(["en", "zh"])
+CHINESE_LANGS = {
+    SearchLanguage.MANDARIN.value,
+    SearchLanguage.CANTONESE.value,
+    SearchLanguage.TAISHANESE.value,
+}
 
 
 class Translator:
@@ -51,11 +56,11 @@ class Translator:
 
         return filter(_search_match_fn, self.data.dictionary)
 
-    def _search_dictionary_by_chinese(self, phrase: str) -> Response:
+    def _search_dictionary_by_chinese(self, phrase: str, language: str) -> Response:
         """Chinese search"""
 
         def _search_match_fn(x):
-            for simp in x["SIMP"]:
+            for simp in x[language]:
                 if simp and HanziConv.toSimplified(phrase) in simp:
                     return True
 
@@ -86,6 +91,9 @@ class Translator:
                     "traditional": defn["TRAD"],
                     "penyim": penyim_api_response,
                 },
+                "taishanese": defn[SearchLanguage.TAISHANESE.value],
+                "cantonese": defn[SearchLanguage.CANTONESE.value],
+                "mandarin": defn[SearchLanguage.MANDARIN.value],
             }
 
         if not answers:
@@ -102,19 +110,30 @@ class Translator:
     # based on the src language format, we search the dictionaries accordingly
     # Search algorithm is simple here, just iterate the dictionary and search for
     # matching string
-    def ask(self, q: TranslationQuestion, limit: int, penyim: bool = False) -> Response:
+    def ask(
+        self,
+        q: TranslationQuestion,
+        limit: int,
+        penyim: bool = False,
+        language: str = None,
+    ) -> Response:
         answers = None
         if penyim:
             answers = self._search_dictionary_by_penyim(
-                Penyim(q.query, lang_type=lang.UNK)
+                Penyim(q.query, PenyimFormats.UNK)
             )
         else:
-            detected_lang = langid.classify(q.query)[0]
-            if detected_lang == "zh":
-                answers = self._search_dictionary_by_chinese(q.query)
-                q.lang = lang.CH
-            elif detected_lang == "en":
-                q.lang = lang.EN
+            if (language == SearchLanguage.UNK.value) or (language is None):
+                detected_lang = langid.classify(q.query)[0]
+            else:
+                detected_lang = language
+
+            q.lang = detected_lang
+            if detected_lang in CHINESE_LANGS:
+                answers = self._search_dictionary_by_chinese(
+                    q.query, language=detected_lang
+                )
+            elif detected_lang == SearchLanguage.ENGLISH.value:
                 answers = self._search_dictionary(q.query, "LEMMA", full_match=True)
 
         if answers is None:
