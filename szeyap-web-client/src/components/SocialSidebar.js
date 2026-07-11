@@ -3,28 +3,28 @@
 // Social media links data
 export const socialLinks = [
   {
-    imgSrc: "youtube_logo.svg",
+    imgSrc: "/youtube_logo.svg",
     altText: "YouTube logo",
     platform: "YouTube",
     className: "h-1",
     href: "https://www.youtube.com/@HoisanSauce"
   },
   {
-    imgSrc: "discord_logo.jpeg",
+    imgSrc: "/discord_logo.jpeg",
     altText: "Discord logo",
     platform: "Discord",
     className: "h-8 rounded-lg",
     href: "https://discord.gg/TtU2v3S"
   },
   {
-    imgSrc: "github_logo.png",
+    imgSrc: "/github_logo.png",
     altText: "GitHub logo",
     platform: "GitHub",
     className: "h-8 rounded-lg",
     href: "https://github.com/schan27/szeyap"
   },
   {
-    imgSrc: "linktree_logo.png",
+    imgSrc: "/linktree_logo.png",
     altText: "Linktree logo",
     platform: "Linktree",
     className: "h-8 rounded-lg",
