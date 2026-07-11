@@ -5,8 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on Keep a Changelog.
 
 ## [0.5.18] -2026-07-11
+
 ### Added
 * Searches are now done on a new page /search/[term] and not in /.
+
 ### Changed
 * Updated icon image paths.
 

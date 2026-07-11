@@ -37,13 +37,20 @@ paths:
           required: true
           schema:
             type: string
-            enum: [GC_DICT, SL_DICT, ALL_DICT]
+            enum: [ALL_DICT, GC_DICT, SL_DICT]
         - in: query
           name: penyim
           required: false
           schema:
             type: boolean
             default: false
+        - in: query 
+          name: language 
+          required: false
+          schema:
+            type: string 
+            enum: [zh, yue, tisa, en, unk]
+            default: unk
       responses:
         '200':
           description: A response with metadata and a list of translations, each with optional pronunciation audio
@@ -56,7 +63,8 @@ paths:
                     type: string
                   detected_language:
                     type: string
-                    enum: [en, ch, hsr, sl, gc, dj, jw, unk]
+                    # TODO: Remove 'en' and 'ch' once V1 UI is done
+                    enum: [en, ch, zh, yue, tisa, unk]
                   translations:
                     type: array
                     items:
@@ -186,4 +194,5 @@ components:
         - HSR
         - SL
         - GC
+        - DJ
         - JW
