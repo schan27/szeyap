@@ -5,9 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on Keep a Changelog.
 
 ## [0.5.18] -2026-07-11
+
 ### Added
+
 * Searches are now done on a new page /search/[term] and not in /.
+*Added  button so the user can jump to the top of the page rather than manually scrolling
+
 ### Changed
+
 * Updated icon image paths.
 
 ## [0.4.18] -2026-06-16

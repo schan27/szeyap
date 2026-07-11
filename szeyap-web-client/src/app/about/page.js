@@ -1,6 +1,8 @@
 import Header from '../../components/Header';
 import SocialSidebar from '../../components/SocialSidebar';
 import Footer from '../../components/Footer';
+import ScrollToTop from "@/components/ScrollToTop";
+
 
 export default function AboutPage() {
   return (
@@ -80,6 +82,7 @@ export default function AboutPage() {
           </div>
         </div>
       </main>
+      <ScrollToTop />
       <Footer />
     </div>
   );

@@ -6,6 +6,8 @@ import Header from '../../components/Header';
 import SocialSidebar from '../../components/SocialSidebar';
 import Footer from '../../components/Footer';
 import { useForm } from "@formspree/react";
+import ScrollToTop from "@/components/ScrollToTop";
+
 
 export default function Contact() {
     const [state, handleSubmit] = useForm("xwpgqaza");
@@ -107,6 +109,7 @@ export default function Contact() {
 
                 </div>
             </main>
+            <ScrollToTop />
             <Footer />
         </div>
     );
