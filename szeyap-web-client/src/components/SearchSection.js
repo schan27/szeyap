@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Search, Clipboard, Loader2, Edit2, Check, Volume2 } from "lucide-react";
+import { useRouter } from "next/navigation";import { Search, Clipboard, Loader2, Edit2, Check, Volume2 } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent } from "./ui/tooltip";
 import { Input } from "./ui/input";
 import DictionarySettings from "./DictionarySettings";
@@ -13,9 +13,10 @@ import { Checkbox } from "radix-ui";
 const API_URL = "https://szeyap-backend-production.up.railway.app/api/translation";
 // const API_URL = "http://localhost:8000/api/translation";
 
-export default function SearchSection() {
+export default function SearchSection({ initialSearch = "" }) {
   const resultsRef = useRef(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
+  const [searchTerm, setSearchTerm] = useState(initialSearch);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [results, setResults] = useState(null);
@@ -32,7 +33,7 @@ export default function SearchSection() {
     },
   });
 
-  const handleSearch = async () => {
+  const fetchSearchResults = async (searchTerm) => {
     if (!searchTerm.trim()) return;
 
     setInputMode("keyboard");
@@ -86,6 +87,12 @@ export default function SearchSection() {
     }
   };
 
+  const handleSearch = () => {
+    if (!searchTerm.trim()) return;
+
+    router.push(`/search/${encodeURIComponent(searchTerm.trim())}`);
+  };
+
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearch();
@@ -106,6 +113,12 @@ export default function SearchSection() {
   useEffect(() => {
     searchRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    if (initialSearch) {
+      fetchSearchResults(initialSearch);
+    }
+  }, [initialSearch]);
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-24 xl:px-8 py-8 sm:py-12 lg:py-16">
