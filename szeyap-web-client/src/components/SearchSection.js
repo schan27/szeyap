@@ -45,6 +45,7 @@ export default function SearchSection({ initialSearch = "" }) {
       const params = new URLSearchParams({
         phrase: searchTerm.trim(),
         dictionary: dictionarySettings.dictionary,
+        language: 'unk'
       });
 
       if (searchByPenyim) {

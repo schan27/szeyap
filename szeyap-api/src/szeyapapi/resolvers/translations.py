@@ -26,10 +26,14 @@ def get_source(dictionary: str):
 
 
 def process_translation_question(
-    dictionary: str, q: TranslationQuestion, limit: int, penyim: bool
+    dictionary: str,
+    q: TranslationQuestion,
+    limit: int,
+    penyim: bool,
+    language: str = None,
 ):
     translator = get_translator(dictionary)
-    responses = translator.ask(q, limit, penyim).as_api_resp()
+    responses = translator.ask(q, limit, penyim, language).as_api_resp()
 
     for item in responses["translations"]:
         item["source"] = get_source(dictionary)
@@ -44,10 +48,10 @@ def process_translation_question(
     return responses
 
 
-def get(phrase: str, dictionary: str, penyim: bool, limit=10):
+def get(phrase: str, dictionary: str, penyim: bool, language: str, limit=10):
     # construct Question using phrase
     q = TranslationQuestion(phrase)
-    search_params = dict(q=q, limit=limit, penyim=penyim)
+    search_params = dict(q=q, limit=limit, penyim=penyim, language=language)
 
     if dictionary == "GC_DICT" or dictionary == "ALL_DICT":
         # NOTE: GC audio links are not yet available — pronunciation_url will

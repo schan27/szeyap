@@ -23,7 +23,7 @@ export default function AboutPage() {
           {/* About Content */}
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-lg sm:text-xl lg:text-l text-gray-700 mb-8">
-              This is a modern, searchable dictionary that compiles existing dictionary resources in Taishanese, also known as Hoisanva.
+              This is a modern, searchable dictionary that compiles existing dictionary resources in Taishanese, also known as Hoisanwa.
             </p>
 
              <div className="max-w-3xl mx-auto">

@@ -9,7 +9,7 @@ The format is based on Keep a Changelog.
 ### Added
 
 * Searches are now done on a new page /search/[term] and not in /.
-*Added  button so the user can jump to the top of the page rather than manually scrolling
+* Added button so the user can jump to the top of the page rather than manually scrolling
 
 ### Changed
 
