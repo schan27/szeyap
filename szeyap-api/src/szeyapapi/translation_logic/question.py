@@ -1,5 +1,5 @@
-from ..utils.enums import LanguageFormats as Lang
 from ..utils.enums import QueryTypes as Qtype
+from ..utils.enums import SearchLanguage
 
 
 # This class describes the question object, which is used to represent a query by the user
@@ -17,11 +17,9 @@ class Question:
 
 
 class TranslationQuestion(Question):
-    def __init__(self, query: str, lang: str = Lang.UNK) -> None:
+    def __init__(self, query: str, lang: str = None) -> None:
         super().__init__(query, Qtype.TRANSLATE)
-        self.lang: Lang = (
-            lang  # if lang != Lang.UNK else Translator.detect_language_format(query)
-        )
+        self.lang: SearchLanguage = lang
 
     def __repr__(self) -> str:
         query = super().__repr__()[:-1] + f", lang={self.lang})"
