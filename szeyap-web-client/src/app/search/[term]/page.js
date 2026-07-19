@@ -5,15 +5,21 @@ import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 
 
-export default async function SearchPage({ params }) {
+export default async function SearchPage({ params, searchParams }) {
   const { term } = await params;
+  const { penyim } = await searchParams;
+
+  const decodedTerm = decodeURIComponent(term);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <SocialSidebar />
       <main className="pt-32 flex-grow">
-        <SearchSection initialSearch={term} />
+        <SearchSection
+          initialSearch={decodedTerm}
+          initialPenyim={penyim === "true"}
+        />
       </main>
       <ScrollToTop />
       <Footer />

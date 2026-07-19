@@ -4,7 +4,7 @@ from collections import ChainMap
 from szeyapapi.config import STEPHEN_LI_DICTIONARY_PATH
 from szeyapapi.dictionaries.dictionary_base import DictionaryBase
 from szeyapapi.translation_logic.penyim import Penyim
-from szeyapapi.utils.enums import LanguageFormats as lang
+from szeyapapi.utils.enums import PenyimFormats, SearchLanguage
 from szeyapapi.utils.normalization import sl_normalization
 
 FILE_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -13,7 +13,6 @@ FILE_DIR = os.path.dirname(os.path.realpath(__file__))
 class StephenLiDictionary(DictionaryBase):
     def __init__(self, name, src_url):
         super().__init__(name)
-        self.penyim_lang_type = lang.SL
         self.src_url = src_url
 
     def load_dictionary(self):
@@ -23,17 +22,21 @@ class StephenLiDictionary(DictionaryBase):
             try:
                 raw = dict_entry["taishaneseRomanization"]
                 penyim_string = sl_normalization(raw)
-                penyim = Penyim(penyim_string, lang.SL)
+                penyim = Penyim(penyim_string, PenyimFormats.SL)
 
                 audio_index = None
                 audio_url = dict_entry.get("taishaneseAudio")
                 audio_index = {}
                 if audio_url:
-                    sl_romanization = penyim.as_dict().get(lang.SL, "")
+                    sl_romanization = penyim.as_dict().get(PenyimFormats.SL, "")
                     audio_index[sl_romanization] = audio_url
 
                 dictionary_entry = {
+                    # NOTE: This will need to be added for Gene Chin too
                     "SIMP": [dict_entry["mandarin"]],
+                    SearchLanguage.MANDARIN.value: [dict_entry["mandarin"]],
+                    SearchLanguage.CANTONESE.value: [dict_entry["cantonese"]],
+                    SearchLanguage.TAISHANESE.value: [dict_entry["taishanese"]],
                     "TRAD": None,  # we just group everything as simplified for stephen li
                     "PENYIM": [penyim],
                     "DEFN": dict_entry["english"],

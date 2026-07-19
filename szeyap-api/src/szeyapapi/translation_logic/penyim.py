@@ -2,7 +2,7 @@ import re
 from itertools import chain
 from unicodedata import normalize
 
-from ..utils.enums import LanguageFormats as Lang
+from ..utils.enums import PenyimFormats
 from ..utils.enums import Tones as Tone
 from .penyim_rules import apply_penyim_rules, match_syllables_backward
 from .penyim_tables import PENYIM_LANG_TYPES, PENYIM_TABLES
@@ -21,14 +21,14 @@ TONE_PATTERN = r"""
 
 
 class Penyim:
-    def __init__(self, sample: str, lang_type: Lang) -> None:
+    def __init__(self, sample: str, penyim_format: PenyimFormats) -> None:
         self.sample = normalize("NFD", sample).lower()
         self.indices = []
         self.formats = []
         self.tone = []
         self.errors = {}
-        self.lang_type = lang_type
-        self.init_penyim(lang_type)
+        self.format = penyim_format
+        self.init_penyim(penyim_format)
 
     def _repr_format(self, format_index: int) -> str:
         indices = self.indices[format_index]
@@ -39,11 +39,11 @@ class Penyim:
             return self.errors[format_index]
 
         return f"""Pos: [{indices[0]}, {indices[1]}] Tone: {tone}
-  HSR: {formats[Lang.HSR]}
-  GC: {formats[Lang.GC]}
-  SL: {formats[Lang.SL]}
-  DJ: {formats[Lang.DJ]}
-  JW: {formats[Lang.JW]}
+  HSR: {formats[PenyimFormats.HSR]}
+  GC: {formats[PenyimFormats.GC]}
+  SL: {formats[PenyimFormats.SL]}
+  DJ: {formats[PenyimFormats.DJ]}
+  JW: {formats[PenyimFormats.JW]}
 """
 
     def __str__(self) -> str:
@@ -64,12 +64,12 @@ class Penyim:
     # recognize penyim looking phrases and separate tone from initial_final
     def extract_penyim_phrases(self) -> tuple[tuple]:
         syllables = []
-        if self.lang_type == Lang.UNK:
+        if self.format == PenyimFormats.UNK:
             all_initials = list(chain.from_iterable(PENYIM_TABLES.initials.values()))
             all_finals = list(chain.from_iterable(PENYIM_TABLES.finals.values()))
         else:
-            all_initials = PENYIM_TABLES.initials[self.lang_type]
-            all_finals = PENYIM_TABLES.finals[self.lang_type]
+            all_initials = PENYIM_TABLES.initials[self.format]
+            all_finals = PENYIM_TABLES.finals[self.format]
 
         # Append initials to the list for edge cases
         all_initials = all_initials + ["hl", "gn", "sh", "w"]
@@ -183,9 +183,9 @@ class Penyim:
         self.formats.append(None)
         self.tone.append(None)
 
-    def init_penyim(self, lang_type: Lang):
-        if lang_type not in PENYIM_LANG_TYPES + [Lang.UNK]:
-            self._set_as_err(f"Invalid language type '{lang_type}'")
+    def init_penyim(self, format: PenyimFormats):
+        if format not in PENYIM_LANG_TYPES + [PenyimFormats.UNK]:
+            self._set_as_err(f"Invalid language type '{format}'")
             return
 
         phrases = self.extract_penyim_phrases()
@@ -213,28 +213,28 @@ class Penyim:
                 )
 
     def _merge_initial_final_tone(
-        self, indices: tuple[int, int], tone: Tone, lang: Lang
+        self, indices: tuple[int, int], tone: Tone, format: PenyimFormats
     ):
-        tone = PENYIM_TABLES.get_tone(lang, tone)
+        tone = PENYIM_TABLES.get_tone(format, tone)
 
-        if lang == lang.GC:  # Treat Gene Chin tones differently
+        if format == PenyimFormats.GC:  # Treat Gene Chin tones differently
             if (tone) and (tone not in RARE_TONES):
                 combining_ch, slash = (
                     (tone[0], "/") if len(tone) == 2 else (tone[0], "")
                 )
-                initial, final = PENYIM_TABLES.get_initial_final(indices, lang)
+                initial, final = PENYIM_TABLES.get_initial_final(indices, format)
                 return initial + final[:1] + combining_ch + final[1:] + slash
 
-        result = PENYIM_TABLES.get_transdimensional_match(indices, lang) + tone
+        result = PENYIM_TABLES.get_transdimensional_match(indices, format) + tone
         return result
 
-    def render_in_original_format(self, lang: Lang) -> str:
+    def render_in_original_format(self, format: PenyimFormats) -> str:
         result = ""
         for syllable in self.formats:
             if syllable is None:
                 # There was an error in the penyim parsing
                 return ""
-            result += syllable[lang]
+            result += syllable[format]
         return result
 
     def summarize_errors(self):

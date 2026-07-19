@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog.
 
+## [0.5.19] -2026-07-19
+
+### Changed
+* Preserved URL now works for chinese characters and Penyim
+
 ## [0.5.18] -2026-07-11
 
 ### Added
