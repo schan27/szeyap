@@ -13,7 +13,10 @@ import { Checkbox } from "radix-ui";
 const API_URL = "https://szeyap-backend-production.up.railway.app/api/translation";
 // const API_URL = "http://localhost:8000/api/translation";
 
-export default function SearchSection({ initialSearch = "" }) {
+export default function SearchSection({
+  initialSearch = "",
+  initialPenyim = false,
+}) {
   const resultsRef = useRef(null);
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState(initialSearch);
@@ -21,8 +24,7 @@ export default function SearchSection({ initialSearch = "" }) {
   const [error, setError] = useState(null);
   const [results, setResults] = useState(null);
   const [inputMode, setInputMode] = useState("keyboard"); // "keyboard" or "handwriting"
-  const [searchByPenyim, setSearchByPenyim] = useState(false);
-  const [dictionarySettings, setDictionarySettings] = useState({
+  const [searchByPenyim, setSearchByPenyim] = useState(initialPenyim);  const [dictionarySettings, setDictionarySettings] = useState({
     dictionary: "ALL_DICT", // ALL_DICT, GC_DICT, SL_DICT or HS_DICT
     script: "traditional", // traditional or simplified
     romanization: "hsr", // hsr, wps, sl, gps, dj
@@ -33,7 +35,10 @@ export default function SearchSection({ initialSearch = "" }) {
     },
   });
 
-  const fetchSearchResults = async (searchTerm) => {
+  const fetchSearchResults = async (
+    searchTerm,
+    penyim = searchByPenyim
+  ) => {
     if (!searchTerm.trim()) return;
 
     setInputMode("keyboard");
@@ -47,7 +52,7 @@ export default function SearchSection({ initialSearch = "" }) {
         dictionary: dictionarySettings.dictionary,
       });
 
-      if (searchByPenyim) {
+      if (penyim) {
         params.append('penyim', 'true');
       }
 
@@ -90,8 +95,26 @@ export default function SearchSection({ initialSearch = "" }) {
   const handleSearch = () => {
     if (!searchTerm.trim()) return;
 
-    router.push(`/search/${encodeURIComponent(searchTerm.trim())}`);
+    const params = new URLSearchParams();
+
+    if (searchByPenyim) {
+      params.set("penyim", "true");
+    }
+
+    router.push(
+      `/search/${searchTerm.trim()}${params.toString() ? `?${params}` : ""}`
+    );
   };
+
+  useEffect(() => {
+    setSearchByPenyim(initialPenyim);
+  }, [initialPenyim]);
+
+  useEffect(() => {
+    if (initialSearch) {
+      fetchSearchResults(initialSearch, initialPenyim);
+    }
+  }, [initialSearch, initialPenyim]);
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
