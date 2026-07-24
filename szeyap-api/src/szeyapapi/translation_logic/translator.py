@@ -9,6 +9,7 @@ from szeyapapi.dictionaries.dictionary_base import DictionaryBase
 from szeyapapi.translation_logic.penyim import Penyim
 from szeyapapi.translation_logic.question import TranslationQuestion
 from szeyapapi.translation_logic.response import Response
+from szeyapapi.translation_logic import orthography
 from szeyapapi.utils.enums import PenyimFormats, SearchLanguage
 
 # A Translator receives Questions and create Responses
@@ -83,12 +84,16 @@ class Translator:
                 penyim_api_response.append(
                     parsed_penyim.as_dict() if parsed_penyim else None
                 )
+            
+            forms = orthography.add_missing_hanzi_form(defn)
+            simp = forms["SIMP"]
+            trad = forms["TRAD"]
 
             return {
                 "english": defn["DEFN"],
                 "chinese": {
-                    "simplified": defn["SIMP"],
-                    "traditional": defn["TRAD"],
+                    "simplified": simp,
+                    "traditional": trad,
                     "penyim": penyim_api_response,
                 },
                 "taishanese": defn[SearchLanguage.TAISHANESE.value],
