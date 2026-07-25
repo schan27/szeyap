@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Search, Clipboard, Loader2, Edit2, Check, Volume2 } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent } from "./ui/tooltip";
 import { Input } from "./ui/input";
@@ -9,28 +10,29 @@ import DisplayPreferences from "./DisplayPreferences";
 import HandwritingInput from "./HandwritingInput";
 import { Checkbox } from "radix-ui";
 
-
-const API_URL = "https://szeyap-backend-production.up.railway.app/api/translation";
+const API_URL =
+  "https://szeyap-backend-production.up.railway.app/api/translation";
 // const API_URL = "http://localhost:8000/api/translation";
 
-<<<<<<< HEAD
 export default function SearchSection({
   initialSearch = "",
   initialPenyim = false,
 }) {
-=======
-export default function SearchSection() {
->>>>>>> origin/main
   const resultsRef = useRef(null);
+  const searchRef = useRef(null);
+  const router = useRouter();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [results, setResults] = useState(null);
-  const [inputMode, setInputMode] = useState("keyboard"); // "keyboard" or "handwriting"
-  const [searchByPenyim, setSearchByPenyim] = useState(initialPenyim);  const [dictionarySettings, setDictionarySettings] = useState({
-    dictionary: "ALL_DICT", // ALL_DICT, GC_DICT, SL_DICT or HS_DICT
-    script: "traditional", // traditional or simplified
-    romanization: "hsr", // hsr, wps, sl, gps, dj
+  const [inputMode, setInputMode] = useState("keyboard");
+  const [searchByPenyim, setSearchByPenyim] = useState(initialPenyim);
+
+  const [dictionarySettings, setDictionarySettings] = useState({
+    dictionary: "ALL_DICT",
+    script: "traditional",
+    romanization: "hsr",
     accent: {
       ing_en: false,
       s_lh: false,
@@ -38,16 +40,11 @@ export default function SearchSection() {
     },
   });
 
-<<<<<<< HEAD
+
   const fetchSearchResults = async (
     searchTerm,
     penyim = searchByPenyim
   ) => {
-=======
-  const handleSearch = async () => {
->>>>>>> origin/main
-    if (!searchTerm.trim()) return;
-
     setInputMode("keyboard");
     setIsLoading(true);
     setError(null);
@@ -57,11 +54,11 @@ export default function SearchSection() {
       const params = new URLSearchParams({
         phrase: searchTerm.trim(),
         dictionary: dictionarySettings.dictionary,
-        language: 'unk'
+        language: "unk",
       });
 
       if (penyim) {
-        params.append('penyim', 'true');
+        params.append("penyim", "true");
       }
 
       const response = await fetch(`${API_URL}?${params}`, {
@@ -79,26 +76,18 @@ export default function SearchSection() {
       }
 
       const data = await response.json();
-      console.log("Translation response:", {
-        status: response.status,
-        headers: Object.fromEntries(response.headers.entries()),
-        data,
-      });
-      console.log("First translation:", data.translations?.[0]);
+
       setResults(data);
-      setTimeout(() => {
-        const offset = 200;
-        const elementPosition = resultsRef.current?.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - offset;
-        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-      }, 100);
+
     } catch (err) {
       console.error("Translation error:", err);
       setError(err.message);
+
     } finally {
       setIsLoading(false);
     }
   };
+
 
   const handleSearch = () => {
     if (!searchTerm.trim()) return;
@@ -114,9 +103,11 @@ export default function SearchSection() {
     );
   };
 
+
   useEffect(() => {
     setSearchByPenyim(initialPenyim);
   }, [initialPenyim]);
+
 
   useEffect(() => {
     if (initialSearch) {
@@ -131,20 +122,20 @@ export default function SearchSection() {
     }
   };
 
+
   const handlePaste = async () => {
     try {
       const text = await navigator.clipboard.readText();
       setSearchTerm(text);
     } catch (err) {
-      console.error("Failed to read clipboard contents: ", err);
+      console.error("Failed to read clipboard contents:", err);
     }
   };
 
-  const searchRef = useRef(null);
 
   useEffect(() => {
     searchRef.current?.focus();
-  }, []);
+  }, []);;
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-24 xl:px-8 py-8 sm:py-12 lg:py-16">
@@ -450,4 +441,5 @@ export default function SearchSection() {
       </div>
     </div>
   );
+
 }
