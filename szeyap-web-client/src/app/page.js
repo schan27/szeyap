@@ -2,6 +2,8 @@ import Header from '../components/Header';
 import SocialSidebar from '../components/SocialSidebar';
 import SearchSection from '../components/SearchSection';
 import Footer from '../components/Footer';
+import ScrollToTop from "@/components/ScrollToTop";
+
 
 export default function Home() {
   return (
@@ -11,6 +13,7 @@ export default function Home() {
       <main className="pt-32 flex-grow">
         <SearchSection />
       </main>
+      <ScrollToTop />
       <Footer />
     </div>
   );

@@ -1,6 +1,8 @@
 import Header from '../../components/Header';
 import SocialSidebar from '../../components/SocialSidebar';
 import Footer from '../../components/Footer';
+import ScrollToTop from "@/components/ScrollToTop";
+
 
 export default function AboutPage() {
   return (
@@ -73,13 +75,14 @@ export default function AboutPage() {
             <section className="text-center mb-12">
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">Contributors</h2>
               <p className="text-gray-700">
-                Edmond Xu, Evan Loe, Sophia Chan, Sabrina Yu, Jackson Chen, Eric Chen
+                Edmond Xu, Evan Loe, Sophia Chan, Sabrina Yu, Jackson Chen, Eric Chen, Maria C. 
               </p>
             </section>
           </div>
           </div>
         </div>
       </main>
+      <ScrollToTop />
       <Footer />
     </div>
   );

@@ -1,6 +1,8 @@
 import Header from '../../components/Header';
 import SocialSidebar from '../../components/SocialSidebar';
 import Footer from '../../components/Footer';
+import ScrollToTop from "@/components/ScrollToTop";
+
 
 export default function ResourcesPage() {
   return (
@@ -25,6 +27,7 @@ export default function ResourcesPage() {
             </section>
         </div>
       </main>
+      <ScrollToTop />
       <Footer />
     </div>
   );

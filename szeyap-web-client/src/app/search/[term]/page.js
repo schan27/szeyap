@@ -2,6 +2,8 @@ import Header from "@/components/Header";
 import SocialSidebar from "@/components/SocialSidebar";
 import SearchSection from "@/components/SearchSection";
 import Footer from "@/components/Footer";
+import ScrollToTop from "@/components/ScrollToTop";
+
 
 export default async function SearchPage({ params, searchParams }) {
   const { term } = await params;
@@ -19,6 +21,7 @@ export default async function SearchPage({ params, searchParams }) {
           initialPenyim={penyim === "true"}
         />
       </main>
+      <ScrollToTop />
       <Footer />
     </div>
   );
