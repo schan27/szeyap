@@ -22,9 +22,9 @@ export default function Contact() {
                         {/* Main Logo */}
                         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
                             <img
-                                src="/hoisan_sauce_logo.webp"
+                                src="/HSRlogo_full_dark.png"
                                 alt="台山醬 Hoisan Sauce Logo"
-                                className="h-24 sm:h-32 md:h-36 lg:h-40 object-contain mx-auto mb-4 sm:mb-6"
+                                className="h-36 sm:h-48 md:h-52 lg:h-64 object-contain mx-auto mb-4 sm:mb-6"
                             />
                         </div>
                         <div className="text-center mb-8">
@@ -47,9 +47,9 @@ export default function Contact() {
                     {/* Main Logo */}
                     <div className="text-center mb-8 sm:mb-12 lg:mb-16">
                         <img
-                            src="/hoisan_sauce_logo.webp"
+                            src="/HSRlogo_full_dark.png"
                             alt="台山醬 Hoisan Sauce Logo"
-                            className="h-24 sm:h-32 md:h-36 lg:h-40 object-contain mx-auto mb-4 sm:mb-6"
+                            className="h-36 sm:h-48 md:h-52 lg:h-64 object-contain mx-auto mb-4 sm:mb-6"
                         />
                     </div>
 

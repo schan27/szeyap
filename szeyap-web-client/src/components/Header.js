@@ -22,10 +22,10 @@ import { socialLinks } from './SocialSidebar';
 
 // Single source of truth for menu items
 const menuItems = [
-  { title: "HOME", href: "/" },
-  { title: "ABOUT", href: "/about" },
-  { title: "RESOURCES", href: "/resources" },
-  { title: "CONTACT US", href: "/contact" },
+  { title: "Home", href: "/" },
+  { title: "About", href: "/about" },
+  { title: "Resources", href: "/resources" },
+  { title: "Contact Us", href: "/contact" },
 ];
 
 export default function Header() {
@@ -34,12 +34,12 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 w-full bg-white border-b border-gray-200 z-50">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-24">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center space-x-3">
             <Link href="/">
               <img
-                src="/hoisan_sauce_logo.webp"
+                src="/HSRlogo_C.png"
                 alt="台山醬 Hoisan Sauce"
                 className="h-14 w-auto object-contain cursor-pointer hover:opacity-80 transition-opacity"
               />
@@ -80,7 +80,7 @@ export default function Header() {
                 <SheetHeader>
                   <SheetTitle className="flex items-center space-x-3">
                     <img
-                      src="/hoisan_sauce_logo.webp"
+                      src="/HSRlogo_C.png"
                       alt="台山醬 Hoisan Sauce"
                       className="h-16 w-auto object-contain ml-2"
                     />

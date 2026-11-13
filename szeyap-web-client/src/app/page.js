@@ -10,7 +10,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <SocialSidebar />
-      <main className="pt-32 flex-grow">
+      <main className="pt-24 flex-grow">
         <SearchSection />
       </main>
       <ScrollToTop />

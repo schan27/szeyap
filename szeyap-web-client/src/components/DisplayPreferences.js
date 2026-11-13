@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/animated-tabs";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import {
   Popover,
@@ -65,38 +66,43 @@ function DisplayPreferences({ className, settings, onSettingsChange }) {
 
           <AnimatedTabsContent
             value="romanization"
-            className="border-2 p-4 rounded-lg bg-sidebar-primary-foreground mt-4"
+            className="border-2 p-4 rounded-lg bg-sidebar-primary-foreground mt-4 flex flex-col gap-3"
           >
-            <RadioGroup
-              value={settings.romanization}
-              onValueChange={(value) =>
-                onSettingsChange({
-                  ...settings,
-                  romanization: value,
-                })
-              }
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="wps" id="wps" />
-                <Label htmlFor="wps">WPS (Inspirlang)</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="sl" id="sl" />
-                <Label htmlFor="sl">SL (Stephen Li)</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="gc" id="gc" />
-                <Label htmlFor="gc">GC (Gene Chin)</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="hsr" id="hsr" />
-                <Label htmlFor="hsr">HSR (Hoisan Sauce)</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="dj" id="dj" />
-                <Label htmlFor="dj">DJ (Deng Jun)</Label>
-              </div>
-            </RadioGroup>
+            {[
+              { id: "wps", label: "WPS (Inspirlang)" },
+              { id: "sl", label: "SL (Stephen Li)" },
+              { id: "gc", label: "GC (Gene Chin)" },
+              { id: "hsr", label: "HSR (Hoisan Sauce)" },
+              { id: "dj", label: "DJ (Deng Jun)" },
+            ].map(({ id, label }) => {
+              const isChecked =
+                typeof settings.romanization === "object" && settings.romanization !== null
+                  ? settings.romanization[id] !== false
+                  : true;
+
+              return (
+                <div key={id} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={id}
+                    checked={isChecked}
+                    onCheckedChange={(checked) =>
+                      onSettingsChange({
+                        ...settings,
+                        romanization: {
+                          ...(typeof settings.romanization === "object" && settings.romanization !== null
+                            ? settings.romanization
+                            : { wps: true, sl: true, gc: true, hsr: true, dj: true }),
+                          [id]: checked === true,
+                        },
+                      })
+                    }
+                  />
+                  <Label htmlFor={id} className="cursor-pointer">
+                    {label}
+                  </Label>
+                </div>
+              );
+            })}
           </AnimatedTabsContent>
 
           <AnimatedTabsContent

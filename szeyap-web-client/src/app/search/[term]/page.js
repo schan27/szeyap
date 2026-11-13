@@ -15,7 +15,7 @@ export default async function SearchPage({ params, searchParams }) {
     <div className="min-h-screen flex flex-col">
       <Header />
       <SocialSidebar />
-      <main className="pt-32 flex-grow">
+      <main className="pt-24 flex-grow">
         <SearchSection
           initialSearch={decodedTerm}
           initialPenyim={penyim === "true"}
