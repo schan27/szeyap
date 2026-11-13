@@ -1,9 +1,9 @@
-import { Inter } from "next/font/google";
+import { Huninn } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const inter = Huninn({
   subsets: ["latin"],
-  display: "swap",
+  weight: ["400"],
 });
 
 export const metadata = {
@@ -16,7 +16,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Huninn&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className={`${inter.className} antialiased`}>
         {children}

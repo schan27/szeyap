@@ -14,6 +14,15 @@ const API_URL =
   "https://szeyap-backend-production.up.railway.app/api/translation";
 // const API_URL = "http://localhost:8000/api/translation";
 
+const formatLanguageTerm = (term) => {
+  if (!term) return null;
+  if (Array.isArray(term)) {
+    const filtered = term.filter(Boolean);
+    return filtered.length > 0 ? filtered.join(", ") : null;
+  }
+  return String(term).trim() || null;
+};
+
 export default function SearchSection({
   initialSearch = "",
   initialPenyim = false,
@@ -32,7 +41,13 @@ export default function SearchSection({
   const [dictionarySettings, setDictionarySettings] = useState({
     dictionary: "ALL_DICT",
     script: "traditional",
-    romanization: "hsr",
+    romanization: {
+      wps: true,
+      sl: true,
+      gc: true,
+      hsr: true,
+      dj: true,
+    },
     accent: {
       ing_en: false,
       s_lh: false,
@@ -138,20 +153,20 @@ export default function SearchSection({
   }, []);;
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-24 xl:px-8 py-8 sm:py-12 lg:py-16">
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-24 xl:px-8 pt-2 sm:pt-4 pb-8 sm:pb-12 lg:pb-16">
       {/* Main Logo */}
       <div className="text-center mb-8 sm:mb-12 lg:mb-10">
         <img
-          src="/hoisan_sauce_logo.webp"
+          src="/HSRlogo_full_dark.png"
           alt="台山醬 Hoisan Sauce Logo"
-          className="h-24 sm:h-32 md:h-36 lg:h-40 object-contain mx-auto mb-4 sm:mb-6"
+          className="h-36 sm:h-48 md:h-52 lg:h-64 object-contain mx-auto mb-4 sm:mb-6"
         />
       </div>
 
 
       <div className="max-w-7xl mt-8 mb-10">
         <div className="flex flex-col gap-6 items-center">
-          <div className="w-4/6 text-justify text-base">
+          <div className="w-5/6 text-justify text-base">
           <center>
             Welcome to the Hoisan Sauce Taishanese Project! 
           </center>
@@ -322,7 +337,7 @@ export default function SearchSection({
                   
 
                   {/* Translations */}
-                  <div className="space-y-4">
+                  <div className="space-y-8">
                     {results.translations &&
                       results.translations.map((translation, index) => (
                         <div key={index} className="group">
@@ -338,8 +353,11 @@ export default function SearchSection({
                                   <div className="flex flex-col gap-2">
                                     {/* Character */}
                                     <div className="flex items-center gap-3">
-                                      <span className="text-2xl font-medium">
-                                        {translation.chinese?.simplified?.[0] || results.original_phrase}
+                                      <span className="text-3xl sm:text-4xl font-medium font-kaiti">
+                                        {translation.chinese?.[dictionarySettings.script]?.[0] ||
+                                          translation.chinese?.traditional?.[0] ||
+                                          translation.chinese?.simplified?.[0] ||
+                                          results.original_phrase}
                                       </span>
                                       {translation.pronunciation_url && (
                                         <button
@@ -351,6 +369,33 @@ export default function SearchSection({
                                       )}
                                     </div>
 
+                                    {/* Multi-language results (Mandarin, Cantonese, Taishanese) */}
+                                    {(() => {
+                                      const languages = [
+                                        { label: "Mandarin", value: formatLanguageTerm(translation.mandarin) },
+                                        { label: "Cantonese", value: formatLanguageTerm(translation.cantonese) },
+                                        { label: "Taishanese", value: formatLanguageTerm(translation.taishanese) },
+                                      ].filter((item) => Boolean(item.value));
+
+                                      if (languages.length === 0) return null;
+
+                                      return (
+                                        <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+                                          {languages.map((item, idx) => (
+                                            <span key={item.label} className="inline-flex items-center gap-1.5">
+                                              {idx > 0 && <span className="text-gray-300 mr-1.5">·</span>}
+                                              <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
+                                                {item.label}:
+                                              </span>
+                                              <span className="text-gray-900 font-kaiti text-lg">
+                                                {item.value}
+                                              </span>
+                                            </span>
+                                          ))}
+                                        </div>
+                                      );
+                                    })()}
+
                                     {/* Source */}
                                     <div className="flex items-center gap-4">
                                       <span className="text-sm text-gray-500">
@@ -359,67 +404,44 @@ export default function SearchSection({
                                     </div>
 
                                     {/* Romanization Systems */}
-                                    <div className="flex flex-wrap gap-3">
-                                      {translation.chinese?.penyim?.[0] && (
-                                        <>
-                                          <div className="flex items-center gap-2">
-                                            <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
-                                              WPS
+                                    {(() => {
+                                      const penyim = translation.chinese?.penyim?.[0];
+                                      if (!penyim) return null;
+
+                                      const isSelected = (key) => {
+                                        if (!dictionarySettings?.romanization) return true;
+                                        if (typeof dictionarySettings.romanization === "object") {
+                                          return dictionarySettings.romanization[key] !== false;
+                                        }
+                                        return true;
+                                      };
+
+                                      const systems = [
+                                        { key: "wps", label: "WPS", value: penyim.JW },
+                                        { key: "sl", label: "SL", value: penyim.SL },
+                                        { key: "gc", label: "GC", value: penyim.GC },
+                                        { key: "hsr", label: "HSR", value: penyim.HSR },
+                                        { key: "dj", label: "DJ", value: penyim.DJ },
+                                      ].filter((sys) => isSelected(sys.key) && sys.value);
+
+                                      if (systems.length === 0) return null;
+
+                                      return (
+                                        <div className="flex flex-wrap items-center gap-3">
+                                          {systems.map((sys, idx) => (
+                                            <span key={sys.key} className="inline-flex items-center gap-2">
+                                              {idx > 0 && <span className="text-gray-300 mr-2">·</span>}
+                                              <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
+                                                {sys.label}
+                                              </span>
+                                              <span className="text-gray-900">
+                                                {sys.value}
+                                              </span>
                                             </span>
-                                            <span className="text-gray-900">
-                                              {
-                                                translation.chinese.penyim[0]
-                                                  .JW
-                                              }
-                                            </span>
-                                          </div>
-                                          <span className="text-gray-300">
-                                            ·
-                                          </span>
-                                          <div className="flex items-center gap-2">
-                                            <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
-                                              SL
-                                            </span>
-                                            <span className="text-gray-900">
-                                              {translation.chinese.penyim[0].SL}
-                                            </span>
-                                          </div>
-                                          <span className="text-gray-300">
-                                            ·
-                                          </span>
-                                          <div className="flex items-center gap-2">
-                                            <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
-                                              GC
-                                            </span>
-                                            <span className="text-gray-900">
-                                              {translation.chinese.penyim[0].GC}
-                                            </span>
-                                          </div>
-                                          <span className="text-gray-300">
-                                            ·
-                                          </span>
-                                          <div className="flex items-center gap-2">
-                                            <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
-                                              HSR
-                                            </span>
-                                            <span className="text-gray-900">
-                                              {translation.chinese.penyim[0].HSR}
-                                            </span>
-                                          </div>
-                                          <span className="text-gray-300">
-                                            ·
-                                          </span>
-                                          <div className="flex items-center gap-2">
-                                            <span className="text-xs uppercase tracking-wider font-semibold text-gray-500">
-                                              DJ
-                                            </span>
-                                            <span className="text-gray-900">
-                                              {translation.chinese.penyim[0].DJ}
-                                            </span>
-                                          </div>
-                                        </>
-                                      )}
-                                    </div>
+                                          ))}
+                                        </div>
+                                      );
+                                    })()}
                                   </div>
 
                                   {/* Definition */}

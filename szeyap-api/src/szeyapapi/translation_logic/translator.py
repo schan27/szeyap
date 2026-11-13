@@ -84,6 +84,9 @@ class Translator:
                     parsed_penyim.as_dict() if parsed_penyim else None
                 )
 
+            if defn["TRAD"] is None:
+                defn["TRAD"] = [HanziConv.toTraditional(wd) for wd in defn["SIMP"]]
+
             return {
                 "english": defn["DEFN"],
                 "chinese": {
